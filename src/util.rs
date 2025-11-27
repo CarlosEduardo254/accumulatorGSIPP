@@ -40,7 +40,7 @@ pub fn shamir_trick<G: Group>(
     return None;
   }
 
-  let (gcd, a, b) = <(Integer, Integer, Integer)>::from(x.gcd_cofactors_ref(&y));
+  let (gcd, a, b) = <(Integer, Integer, Integer)>::from(x.extended_gcd_ref(&y));
 
   if gcd != int(1) {
     return None;
@@ -49,15 +49,13 @@ pub fn shamir_trick<G: Group>(
   Some(G::op(&G::exp(xth_root, &b), &G::exp(yth_root, &a)))
 }
 
-/// Solves a linear congruence of form `ax = b mod m` for the set of solutions `x`. Solution sets
-/// are characterized by integers `mu` and `v` s.t. `x = mu + vn` and `n` is any integer.
 pub fn solve_linear_congruence(
   a: &Integer,
   b: &Integer,
   m: &Integer,
 ) -> Option<(Integer, Integer)> {
   // g = gcd(a, m) => da + em = g
-  let (g, d, _) = <(Integer, Integer, Integer)>::from(a.gcd_cofactors_ref(m));
+  let (g, d, _) = <(Integer, Integer, Integer)>::from(a.extended_gcd_ref(m));
 
   // q = floor_div(b, g)
   // r = b % g
@@ -189,4 +187,25 @@ mod tests {
     let ints = vec![int(3), int(5), int(7), int(9), int(11)];
     assert!(merge_product(&ints) == int(10395));
   }
+}
+
+pub mod serde_integer {
+    use rug::Integer;
+    use serde::{self, Deserialize, Serializer, Deserializer};
+
+    pub fn serialize<S>(i: &Integer, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let s = i.to_string_radix(16);
+        serializer.serialize_str(&s)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Integer, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Integer::from_str_radix(&s, 16).map_err(serde::de::Error::custom)
+    }
 }

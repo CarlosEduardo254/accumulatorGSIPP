@@ -34,9 +34,9 @@ impl Ristretto {
 //
 // It may make sense to fork `curve25519-dalek` to add the `Hash` impl. Then we won't need to wrap.
 #[allow(clippy::module_name_repetitions)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 /// A Ristretto group element, directly wrapping a Ristretto point.
-pub struct RistrettoElem(RistrettoPoint);
+pub struct RistrettoElem(#[serde(with = "ristretto_serde")] RistrettoPoint);
 
 #[allow(clippy::derive_hash_xor_eq)]
 impl Hash for RistrettoElem {
@@ -104,5 +104,34 @@ mod tests {
     let exp_b = Ristretto::exp(&bp, &int(2).pow(257));
     let exp_b_2 = Ristretto::exp(&exp_b, &int(2));
     assert_eq!(exp_a, exp_b_2);
+  }
+}
+
+mod ristretto_serde {
+  use curve25519_dalek::ristretto::RistrettoPoint;
+  use serde::{self, Deserialize, Deserializer, Serializer};
+
+  pub fn serialize<S>(point: &RistrettoPoint, serializer: S) -> Result<S::Ok, S::Error>
+  where
+    S: Serializer,
+  {
+    let compressed = point.compress();
+    let bytes = compressed.as_bytes();
+    serializer.serialize_bytes(bytes)
+  }
+
+  pub fn deserialize<'de, D>(deserializer: D) -> Result<RistrettoPoint, D::Error>
+  where
+    D: Deserializer<'de>,
+  {
+    let bytes: Vec<u8> = Vec::deserialize(deserializer)?;
+    if bytes.len() != 32 {
+      return Err(serde::de::Error::custom("Invalid RistrettoPoint length"));
+    }
+    let mut array = [0u8; 32];
+    array.copy_from_slice(&bytes);
+    curve25519_dalek::ristretto::CompressedRistretto(array)
+      .decompress()
+      .ok_or_else(|| serde::de::Error::custom("Invalid RistrettoPoint"))
   }
 }

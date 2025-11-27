@@ -6,6 +6,8 @@
 //! of the `Ed25519` group.
 use crate::util::{int, TypeRep};
 use rug::Integer;
+use serde::Serialize;
+use serde::de::DeserializeOwned;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::Sized;
@@ -41,7 +43,7 @@ pub trait Group: Clone + Debug + Eq + Hash + TypeRep + Send + Sync {
   // associated types are not currently supported by Rust.
 
   /// The associated group element type for this group.
-  type Elem: Clone + Debug + Eq + Hash + Sized + Send + Sync;
+  type Elem: Clone + Debug + Eq + Hash + Sized + Send + Sync + Serialize + DeserializeOwned;
 
   /// A group-specific wrapper for `id`.
   fn id_(rep: &Self::Rep) -> Self::Elem;

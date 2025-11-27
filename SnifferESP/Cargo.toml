@@ -1,0 +1,27 @@
+[package]
+name = "sniffer-controller"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Dependência local do acumulador
+accumulator = { path = ".." }
+
+# Serialização
+serde = { version = "1.0", features = ["derive"] }
+serde_cbor = "0.11"
+serde_bytes = "0.11"
+
+# Utilitários
+anyhow = "1.0"
+
+# Informações do sistema (para métricas de memória/CPU)
+sysinfo = "0.30"
+
+[[bin]]
+name = "sniffer-controller"
+path = "src/main.rs"
+
+[[bin]]
+name = "setup"
+path = "src/setup.rs"

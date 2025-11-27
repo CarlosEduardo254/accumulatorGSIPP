@@ -34,12 +34,15 @@ lazy_static! {
 }
 
 #[allow(clippy::module_name_repetitions)]
-#[derive(Clone, Debug, Eq)]
+#[derive(Clone, Debug, Eq, serde::Serialize, serde::Deserialize)]
 /// A class group element, which wraps three GMP integers from the `rug` crate. You should never
 /// need to construct a class group element yourself.
 pub struct ClassElem {
+  #[serde(with = "crate::util::serde_integer")]
   a: Integer,
+  #[serde(with = "crate::util::serde_integer")]
   b: Integer,
+  #[serde(with = "crate::util::serde_integer")]
   c: Integer,
 }
 

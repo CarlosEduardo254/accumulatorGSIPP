@@ -1,0 +1,12 @@
+C:\GSIPP\ImplementacaoAC\SnifferESP\target\release\deps\half-0b2dc83859702ca0.d: C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\lib.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\slice.rs
+
+C:\GSIPP\ImplementacaoAC\SnifferESP\target\release\deps\libhalf-0b2dc83859702ca0.rlib: C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\lib.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\slice.rs
+
+C:\GSIPP\ImplementacaoAC\SnifferESP\target\release\deps\libhalf-0b2dc83859702ca0.rmeta: C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\lib.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16\convert.rs C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\slice.rs
+
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\lib.rs:
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat.rs:
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\bfloat\convert.rs:
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16.rs:
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\binary16\convert.rs:
+C:\Users\caduc\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\half-1.8.3\src\slice.rs:

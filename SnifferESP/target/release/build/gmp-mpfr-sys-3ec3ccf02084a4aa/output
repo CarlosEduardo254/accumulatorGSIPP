@@ -1,0 +1,22 @@
+cargo:rerun-if-env-changed=GMP_MPFR_SYS_CACHE
+$ mkdir -p "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib"
+$ mkdir -p "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/include"
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/libmpc.a" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib/libmpc.a"
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/mpc.h" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/include/mpc.h"
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/libmpfr.a" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib/libmpfr.a"
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/mpfr.h" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/include/mpfr.h"
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/libgmp.a" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib/libgmp.a"
+cargo:limb_bits=64
+cargo:rustc-check-cfg=cfg(nails)
+cargo:rustc-check-cfg=cfg(long_long_limb)
+$ cp "/home/eduardo/.cache/gmp-mpfr-sys/1.6/x86_64-unknown-linux-gnu/1.6.8/gmp.h" "/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/include/gmp.h"
+cargo:limb_bits=64
+cargo:rustc-check-cfg=cfg(nails)
+cargo:rustc-check-cfg=cfg(long_long_limb)
+cargo:out_dir=/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out
+cargo:lib_dir=/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib
+cargo:include_dir=/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/include
+cargo:rustc-link-search=native=/mnt/c/GSIPP/ImplementacaoAC/SnifferESP/target/release/build/gmp-mpfr-sys-3ec3ccf02084a4aa/out/lib
+cargo:rustc-link-lib=static=mpc
+cargo:rustc-link-lib=static=mpfr
+cargo:rustc-link-lib=static=gmp

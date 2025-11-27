@@ -1,0 +1,6 @@
+$ mkdir -p "C:\\GSIPP\\ImplementacaoAC\\SnifferESP\\target\\release\\build\\az-c934ea1ad9e396f7\\out\\try_track_caller"
+$ cd "C:\\GSIPP\\ImplementacaoAC\\SnifferESP\\target\\release\\build\\az-c934ea1ad9e396f7\\out\\try_track_caller"
+$ printf '%s' "// try_tra"... > "C:\\GSIPP\\ImplementacaoAC\\SnifferESP\\target\\release\\build\\az-c934ea1ad9e396f7\\out\\try_track_caller\\try_track_caller.rs"
+$ "C:\\Users\\caduc\\.rustup\\toolchains\\stable-x86_64-pc-windows-gnu\\bin\\rustc.exe" "try_track_caller.rs" "--emit=dep-info,metadata" >& /dev/null
+cargo:rustc-cfg=track_caller
+$ rm -r "C:\\GSIPP\\ImplementacaoAC\\SnifferESP\\target\\release\\build\\az-c934ea1ad9e396f7\\out\\try_track_caller"
