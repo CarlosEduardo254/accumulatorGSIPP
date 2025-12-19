@@ -3413,7 +3413,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for attr_get
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccSgzaNB.o:conftest.c:(.text.startup+0xa): undefined reference to `attr_get'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc6Mu2XS.o:conftest.c:(.text.startup+0xa): undefined reference to `attr_get'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -3519,7 +3519,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for cputime
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccSMEysw.o:conftest.c:(.text.startup+0xa): undefined reference to `cputime'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc2JLjse.o:conftest.c:(.text.startup+0xa): undefined reference to `cputime'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -3626,7 +3626,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for getrusage
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccS6v2tn.o:conftest.c:(.text.startup+0xa): undefined reference to `getrusage'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc0XgFEa.o:conftest.c:(.text.startup+0xa): undefined reference to `getrusage'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -3734,7 +3734,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for getsysinfo
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccA4RwQZ.o:conftest.c:(.text.startup+0xa): undefined reference to `getsysinfo'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccaqeyJ5.o:conftest.c:(.text.startup+0xa): undefined reference to `getsysinfo'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -3853,7 +3853,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for mmap
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccAeeuSw.o:conftest.c:(.text.startup+0xa): undefined reference to `mmap'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccIUnpFt.o:conftest.c:(.text.startup+0xa): undefined reference to `mmap'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -3964,7 +3964,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for nl_langinfo
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccCrDVVo.o:conftest.c:(.text.startup+0xa): undefined reference to `nl_langinfo'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccQ71Lf1.o:conftest.c:(.text.startup+0xa): undefined reference to `nl_langinfo'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4072,7 +4072,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for obstack_vprintf
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccmulKMG.o:conftest.c:(.text.startup+0xa): undefined reference to `obstack_vprintf'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccMgg52k.o:conftest.c:(.text.startup+0xa): undefined reference to `obstack_vprintf'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4184,7 +4184,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for processor_info
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc2eXTI8.o:conftest.c:(.text.startup+0xa): undefined reference to `processor_info'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccqgB49X.o:conftest.c:(.text.startup+0xa): undefined reference to `processor_info'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4293,7 +4293,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for pstat_getprocessor
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccSw9bJ3.o:conftest.c:(.text.startup+0xa): undefined reference to `pstat_getprocessor'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc4KvNEP.o:conftest.c:(.text.startup+0xa): undefined reference to `pstat_getprocessor'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4406,7 +4406,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for read_real_time
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccorL8Q0.o:conftest.c:(.text.startup+0xa): undefined reference to `read_real_time'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc0tVgJz.o:conftest.c:(.text.startup+0xa): undefined reference to `read_real_time'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4516,7 +4516,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for sigaction
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cccEbtMc.o:conftest.c:(.text.startup+0xa): undefined reference to `sigaction'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccWrSw6O.o:conftest.c:(.text.startup+0xa): undefined reference to `sigaction'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4626,7 +4626,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for sigaltstack
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccUPS2mX.o:conftest.c:(.text.startup+0xa): undefined reference to `sigaltstack'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccIyIjCQ.o:conftest.c:(.text.startup+0xa): undefined reference to `sigaltstack'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4736,7 +4736,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for sigstack
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccodoL9d.o:conftest.c:(.text.startup+0xa): undefined reference to `sigstack'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cc2IxMDk.o:conftest.c:(.text.startup+0xa): undefined reference to `sigstack'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4846,7 +4846,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for syssgi
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccKnkSpQ.o:conftest.c:(.text.startup+0xa): undefined reference to `syssgi'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cccWQWTt.o:conftest.c:(.text.startup+0xa): undefined reference to `syssgi'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -4985,7 +4985,7 @@ configure:24675: $? = 0
 configure:24675: result: yes
 configure:24675: checking for sysconf
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cccyA6cW.o:conftest.c:(.text.startup+0xa): undefined reference to `sysconf'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cclEjuml.o:conftest.c:(.text.startup+0xa): undefined reference to `sysconf'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -5100,7 +5100,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for sysctl
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccQeNFxA.o:conftest.c:(.text.startup+0xa): undefined reference to `sysctl'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\cci1uZb9.o:conftest.c:(.text.startup+0xa): undefined reference to `sysctl'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -5215,7 +5215,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for sysctlbyname
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccgtYBmk.o:conftest.c:(.text.startup+0xa): undefined reference to `sysctlbyname'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccW5LZHZ.o:conftest.c:(.text.startup+0xa): undefined reference to `sysctlbyname'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -5330,7 +5330,7 @@ configure: failed program was:
 configure:24675: result: no
 configure:24675: checking for times
 configure:24675: gcc -o conftest.exe -O2 -pedantic -fomit-frame-pointer -m64   conftest.c  >&5
-C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccOr5Xbc.o:conftest.c:(.text.startup+0xa): undefined reference to `times'
+C:/Strawberry/c/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\caduc\AppData\Local\Temp\ccydv5HX.o:conftest.c:(.text.startup+0xa): undefined reference to `times'
 collect2.exe: error: ld returned 1 exit status
 configure:24675: $? = 1
 configure: failed program was:
@@ -5930,3 +5930,698 @@ generated by GNU Autoconf 2.69.  Invocation command line was
 
 on NeiklotDrade
 
+config.status:1555: creating Makefile
+config.status:1555: creating mpf/Makefile
+config.status:1555: creating mpn/Makefile
+config.status:1555: creating mpq/Makefile
+config.status:1555: creating mpz/Makefile
+config.status:1555: creating printf/Makefile
+config.status:1555: creating scanf/Makefile
+config.status:1555: creating rand/Makefile
+config.status:1555: creating cxx/Makefile
+config.status:1555: creating tests/Makefile
+config.status:1555: creating tests/devel/Makefile
+config.status:1555: creating tests/mpf/Makefile
+config.status:1555: creating tests/mpn/Makefile
+config.status:1555: creating tests/mpq/Makefile
+config.status:1555: creating tests/mpz/Makefile
+config.status:1555: creating tests/rand/Makefile
+config.status:1555: creating tests/misc/Makefile
+config.status:1555: creating tests/cxx/Makefile
+config.status:1555: creating tune/Makefile
+config.status:1555: creating gmp.h
+config.status:1555: creating gmp.pc
+config.status:1555: creating gmpxx.pc
+config.status:1555: creating config.h
+config.status:1781: linking ../gmp-src/mpn/x86_64/invert_limb_table.asm to mpn/invert_limb_table.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/fat/fat.c to mpn/fat.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/fat/fat_entry.asm to mpn/fat_entry.asm
+config.status:1781: linking ../gmp-src/mpn/generic/add.c to mpn/add.c
+config.status:1781: linking ../gmp-src/mpn/generic/add_1.c to mpn/add_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/sub.c to mpn/sub.c
+config.status:1781: linking ../gmp-src/mpn/generic/sub_1.c to mpn/sub_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/cnd_swap.c to mpn/cnd_swap.c
+config.status:1781: linking ../gmp-src/mpn/generic/neg.c to mpn/neg.c
+config.status:1781: linking ../gmp-src/mpn/generic/add_err1_n.c to mpn/add_err1_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/add_err2_n.c to mpn/add_err2_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/add_err3_n.c to mpn/add_err3_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/sub_err1_n.c to mpn/sub_err1_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/sub_err2_n.c to mpn/sub_err2_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/sub_err3_n.c to mpn/sub_err3_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/diveby3.c to mpn/diveby3.c
+config.status:1781: linking ../gmp-src/mpn/generic/divis.c to mpn/divis.c
+config.status:1781: linking ../gmp-src/mpn/generic/divrem.c to mpn/divrem.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/divrem_2.asm to mpn/divrem_2.asm
+config.status:1781: linking ../gmp-src/mpn/generic/fib2_ui.c to mpn/fib2_ui.c
+config.status:1781: linking ../gmp-src/mpn/generic/fib2m.c to mpn/fib2m.c
+config.status:1781: linking ../gmp-src/mpn/generic/dump.c to mpn/dump.c
+config.status:1781: linking ../gmp-src/mpn/generic/mod_1_3.c to mpn/mod_1_3.c
+config.status:1781: linking ../gmp-src/mpn/generic/mul.c to mpn/mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/mul_fft.c to mpn/mul_fft.c
+config.status:1781: linking ../gmp-src/mpn/generic/mul_n.c to mpn/mul_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/sqr.c to mpn/sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/nussbaumer_mul.c to mpn/nussbaumer_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/mulmid_basecase.c to mpn/mulmid_basecase.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom42_mulmid.c to mpn/toom42_mulmid.c
+config.status:1781: linking ../gmp-src/mpn/generic/mulmid_n.c to mpn/mulmid_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/mulmid.c to mpn/mulmid.c
+config.status:1781: linking ../gmp-src/mpn/generic/random.c to mpn/random.c
+config.status:1781: linking ../gmp-src/mpn/generic/random2.c to mpn/random2.c
+config.status:1781: linking ../gmp-src/mpn/generic/pow_1.c to mpn/pow_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/rootrem.c to mpn/rootrem.c
+config.status:1781: linking ../gmp-src/mpn/generic/sqrtrem.c to mpn/sqrtrem.c
+config.status:1781: linking ../gmp-src/mpn/generic/sizeinbase.c to mpn/sizeinbase.c
+config.status:1781: linking ../gmp-src/mpn/generic/get_str.c to mpn/get_str.c
+config.status:1781: linking ../gmp-src/mpn/generic/set_str.c to mpn/set_str.c
+config.status:1781: linking ../gmp-src/mpn/generic/compute_powtab.c to mpn/compute_powtab.c
+config.status:1781: linking ../gmp-src/mpn/generic/scan0.c to mpn/scan0.c
+config.status:1781: linking ../gmp-src/mpn/generic/scan1.c to mpn/scan1.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/popham.asm to mpn/popcount.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/popham.asm to mpn/hamdist.asm
+config.status:1781: linking ../gmp-src/mpn/generic/cmp.c to mpn/cmp.c
+config.status:1781: linking ../gmp-src/mpn/generic/zero_p.c to mpn/zero_p.c
+config.status:1781: linking ../gmp-src/mpn/generic/perfsqr.c to mpn/perfsqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/perfpow.c to mpn/perfpow.c
+config.status:1781: linking ../gmp-src/mpn/generic/strongfibo.c to mpn/strongfibo.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcd_22.c to mpn/gcd_22.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcd_1.c to mpn/gcd_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcd.c to mpn/gcd.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcdext_1.c to mpn/gcdext_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcdext.c to mpn/gcdext.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcd_subdiv_step.c to mpn/gcd_subdiv_step.c
+config.status:1781: linking ../gmp-src/mpn/generic/gcdext_lehmer.c to mpn/gcdext_lehmer.c
+config.status:1781: linking ../gmp-src/mpn/generic/div_q.c to mpn/div_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/tdiv_qr.c to mpn/tdiv_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/jacbase.c to mpn/jacbase.c
+config.status:1781: linking ../gmp-src/mpn/generic/jacobi_2.c to mpn/jacobi_2.c
+config.status:1781: linking ../gmp-src/mpn/generic/jacobi.c to mpn/jacobi.c
+config.status:1781: linking ../gmp-src/mpn/generic/get_d.c to mpn/get_d.c
+config.status:1781: linking ../gmp-src/mpn/generic/matrix22_mul.c to mpn/matrix22_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/matrix22_mul1_inverse_vector.c to mpn/matrix22_mul1_inverse_vector.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd_matrix.c to mpn/hgcd_matrix.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd2.c to mpn/hgcd2.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd_step.c to mpn/hgcd_step.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd_reduce.c to mpn/hgcd_reduce.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd.c to mpn/hgcd.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd_appr.c to mpn/hgcd_appr.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd2_jacobi.c to mpn/hgcd2_jacobi.c
+config.status:1781: linking ../gmp-src/mpn/generic/hgcd_jacobi.c to mpn/hgcd_jacobi.c
+config.status:1781: linking ../gmp-src/mpn/generic/mullo_n.c to mpn/mullo_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/sqrlo.c to mpn/sqrlo.c
+config.status:1781: linking ../gmp-src/mpn/generic/sqrlo_basecase.c to mpn/sqrlo_basecase.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom22_mul.c to mpn/toom22_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom32_mul.c to mpn/toom32_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom42_mul.c to mpn/toom42_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom52_mul.c to mpn/toom52_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom62_mul.c to mpn/toom62_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom33_mul.c to mpn/toom33_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom43_mul.c to mpn/toom43_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom53_mul.c to mpn/toom53_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom54_mul.c to mpn/toom54_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom63_mul.c to mpn/toom63_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom44_mul.c to mpn/toom44_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom6h_mul.c to mpn/toom6h_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom6_sqr.c to mpn/toom6_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom8h_mul.c to mpn/toom8h_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom8_sqr.c to mpn/toom8_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_couple_handling.c to mpn/toom_couple_handling.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom2_sqr.c to mpn/toom2_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom3_sqr.c to mpn/toom3_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom4_sqr.c to mpn/toom4_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_dgr3_pm1.c to mpn/toom_eval_dgr3_pm1.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_dgr3_pm2.c to mpn/toom_eval_dgr3_pm2.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_pm1.c to mpn/toom_eval_pm1.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_pm2.c to mpn/toom_eval_pm2.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_pm2exp.c to mpn/toom_eval_pm2exp.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_eval_pm2rexp.c to mpn/toom_eval_pm2rexp.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_5pts.c to mpn/toom_interpolate_5pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_6pts.c to mpn/toom_interpolate_6pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_7pts.c to mpn/toom_interpolate_7pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_8pts.c to mpn/toom_interpolate_8pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_12pts.c to mpn/toom_interpolate_12pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/toom_interpolate_16pts.c to mpn/toom_interpolate_16pts.c
+config.status:1781: linking ../gmp-src/mpn/generic/invertappr.c to mpn/invertappr.c
+config.status:1781: linking ../gmp-src/mpn/generic/invert.c to mpn/invert.c
+config.status:1781: linking ../gmp-src/mpn/generic/binvert.c to mpn/binvert.c
+config.status:1781: linking ../gmp-src/mpn/generic/mulmod_bnm1.c to mpn/mulmod_bnm1.c
+config.status:1781: linking ../gmp-src/mpn/generic/sqrmod_bnm1.c to mpn/sqrmod_bnm1.c
+config.status:1781: linking ../gmp-src/mpn/generic/mulmod_bknp1.c to mpn/mulmod_bknp1.c
+config.status:1781: linking ../gmp-src/mpn/generic/div_qr_1.c to mpn/div_qr_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/div_qr_1n_pi1.c to mpn/div_qr_1n_pi1.c
+config.status:1781: linking ../gmp-src/mpn/generic/div_qr_2.c to mpn/div_qr_2.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/div_qr_2n_pi1.asm to mpn/div_qr_2n_pi1.asm
+config.status:1781: linking ../gmp-src/mpn/generic/div_qr_2u_pi1.c to mpn/div_qr_2u_pi1.c
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_div_q.c to mpn/sbpi1_div_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_div_qr.c to mpn/sbpi1_div_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_divappr_q.c to mpn/sbpi1_divappr_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/dcpi1_div_q.c to mpn/dcpi1_div_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/dcpi1_div_qr.c to mpn/dcpi1_div_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/dcpi1_divappr_q.c to mpn/dcpi1_divappr_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/mu_div_qr.c to mpn/mu_div_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/mu_divappr_q.c to mpn/mu_divappr_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/mu_div_q.c to mpn/mu_div_q.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/bdiv_q_1.asm to mpn/bdiv_q_1.asm
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_bdiv_q.c to mpn/sbpi1_bdiv_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_bdiv_qr.c to mpn/sbpi1_bdiv_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/sbpi1_bdiv_r.c to mpn/sbpi1_bdiv_r.c
+config.status:1781: linking ../gmp-src/mpn/generic/dcpi1_bdiv_q.c to mpn/dcpi1_bdiv_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/dcpi1_bdiv_qr.c to mpn/dcpi1_bdiv_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/mu_bdiv_q.c to mpn/mu_bdiv_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/mu_bdiv_qr.c to mpn/mu_bdiv_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/bdiv_q.c to mpn/bdiv_q.c
+config.status:1781: linking ../gmp-src/mpn/generic/bdiv_qr.c to mpn/bdiv_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/broot.c to mpn/broot.c
+config.status:1781: linking ../gmp-src/mpn/generic/brootinv.c to mpn/brootinv.c
+config.status:1781: linking ../gmp-src/mpn/generic/bsqrt.c to mpn/bsqrt.c
+config.status:1781: linking ../gmp-src/mpn/generic/bsqrtinv.c to mpn/bsqrtinv.c
+config.status:1781: linking ../gmp-src/mpn/generic/divexact.c to mpn/divexact.c
+config.status:1781: linking ../gmp-src/mpn/generic/redc_n.c to mpn/redc_n.c
+config.status:1781: linking ../gmp-src/mpn/generic/powm.c to mpn/powm.c
+config.status:1781: linking ../gmp-src/mpn/generic/powlo.c to mpn/powlo.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_powm.c to mpn/sec_powm.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_mul.c to mpn/sec_mul.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_sqr.c to mpn/sec_sqr.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_div.c to mpn/sec_div_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_div.c to mpn/sec_div_r.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_pi1_div.c to mpn/sec_pi1_div_qr.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_pi1_div.c to mpn/sec_pi1_div_r.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_aors_1.c to mpn/sec_add_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_aors_1.c to mpn/sec_sub_1.c
+config.status:1781: linking ../gmp-src/mpn/generic/sec_invert.c to mpn/sec_invert.c
+config.status:1781: linking ../gmp-src/mpn/generic/trialdiv.c to mpn/trialdiv.c
+config.status:1781: linking ../gmp-src/mpn/generic/remove.c to mpn/remove.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/and_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/andn_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/nand_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/ior_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/iorn_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/nior_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/xor_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/logops_n.asm to mpn/xnor_n.asm
+config.status:1781: linking ../gmp-src/mpn/generic/zero.c to mpn/zero.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/sec_tabselect.asm to mpn/sec_tabselect.asm
+config.status:1781: linking ../gmp-src/mpn/generic/comb_tables.c to mpn/comb_tables.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/invert_limb.asm to mpn/invert_limb.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/sqr_diag_addlsh1.asm to mpn/sqr_diag_addlsh1.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/mul_2.asm to mpn/mul_2.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/aorrlsh1_n.asm to mpn/rsblsh1_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/rsh1aors_n.asm to mpn/rsh1add_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/rsh1aors_n.asm to mpn/rsh1sub_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/aorrlsh2_n.asm to mpn/rsblsh2_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/aorrlsh_n.asm to mpn/addlsh_n.asm
+config.status:1781: linking ../gmp-src/mpn/x86_64/aorrlsh_n.asm to mpn/rsblsh_n.asm
+config.status:1781: linking ../gmp-src/mpn/generic/add_n_sub_n.c to mpn/add_n_sub_n.c
+config.status:1781: linking ../gmp-src/mpn/x86_64/fat/gmp-mparam.h to gmp-mparam.h
+config.status:1800: executing libtool commands
+configure:30565: summary of build options:
+
+  Version:           GNU MP 6.3.0
+  Host type:         zen2-pc-msys
+  ABI:               64
+  Install prefix:    
+  Compiler:          gcc
+  Static libraries:  yes
+  Shared libraries:  no
+
+
+## ---------------- ##
+## Cache variables. ##
+## ---------------- ##
+
+ac_cv_build=zen2-pc-msys
+ac_cv_c_bigendian=no
+ac_cv_c_compiler_gnu=yes
+ac_cv_c_inline=inline
+ac_cv_c_restrict=__restrict
+ac_cv_c_volatile=yes
+ac_cv_env_ABI_set=
+ac_cv_env_ABI_value=
+ac_cv_env_build_alias_set=
+ac_cv_env_build_alias_value=
+ac_cv_env_CC_FOR_BUILD_set=
+ac_cv_env_CC_FOR_BUILD_value=
+ac_cv_env_CC_set=
+ac_cv_env_CC_value=
+ac_cv_env_CCC_set=
+ac_cv_env_CCC_value=
+ac_cv_env_CFLAGS_set=
+ac_cv_env_CFLAGS_value=
+ac_cv_env_CPP_FOR_BUILD_set=
+ac_cv_env_CPP_FOR_BUILD_value=
+ac_cv_env_CPP_set=
+ac_cv_env_CPP_value=
+ac_cv_env_CPPFLAGS_set=
+ac_cv_env_CPPFLAGS_value=
+ac_cv_env_CXX_set=
+ac_cv_env_CXX_value=
+ac_cv_env_CXXCPP_set=
+ac_cv_env_CXXCPP_value=
+ac_cv_env_CXXFLAGS_set=
+ac_cv_env_CXXFLAGS_value=
+ac_cv_env_host_alias_set=
+ac_cv_env_host_alias_value=
+ac_cv_env_LDFLAGS_set=
+ac_cv_env_LDFLAGS_value=
+ac_cv_env_LIBS_set=
+ac_cv_env_LIBS_value=
+ac_cv_env_LT_SYS_LIBRARY_PATH_set=
+ac_cv_env_LT_SYS_LIBRARY_PATH_value=
+ac_cv_env_M4_set=
+ac_cv_env_M4_value=
+ac_cv_env_target_alias_set=
+ac_cv_env_target_alias_value=
+ac_cv_env_YACC_set=
+ac_cv_env_YACC_value=
+ac_cv_env_YFLAGS_set=
+ac_cv_env_YFLAGS_value=
+ac_cv_exeext=.exe
+ac_cv_func_alarm=yes
+ac_cv_func_attr_get=no
+ac_cv_func_clock=yes
+ac_cv_func_cputime=no
+ac_cv_func_getpagesize=yes
+ac_cv_func_getrusage=no
+ac_cv_func_getsysinfo=no
+ac_cv_func_gettimeofday=yes
+ac_cv_func_localeconv=yes
+ac_cv_func_memset=yes
+ac_cv_func_mmap=no
+ac_cv_func_mprotect=yes
+ac_cv_func_nl_langinfo=no
+ac_cv_func_obstack_vprintf=no
+ac_cv_func_popen=yes
+ac_cv_func_processor_info=no
+ac_cv_func_pstat_getprocessor=no
+ac_cv_func_raise=yes
+ac_cv_func_read_real_time=no
+ac_cv_func_sigaction=no
+ac_cv_func_sigaltstack=no
+ac_cv_func_sigstack=no
+ac_cv_func_strchr=yes
+ac_cv_func_strerror=yes
+ac_cv_func_strnlen=yes
+ac_cv_func_strtol=yes
+ac_cv_func_strtoul=yes
+ac_cv_func_sysconf=no
+ac_cv_func_sysctl=no
+ac_cv_func_sysctlbyname=no
+ac_cv_func_syssgi=no
+ac_cv_func_times=no
+ac_cv_func_vsnprintf=yes
+ac_cv_have_decl_fgetc=yes
+ac_cv_have_decl_fscanf=yes
+ac_cv_have_decl_optarg=yes
+ac_cv_have_decl_sys_errlist=no
+ac_cv_have_decl_sys_nerr=no
+ac_cv_have_decl_ungetc=yes
+ac_cv_have_decl_vfprintf=yes
+ac_cv_header_dlfcn_h=no
+ac_cv_header_fcntl_h=yes
+ac_cv_header_float_h=yes
+ac_cv_header_inttypes_h=yes
+ac_cv_header_invent_h=no
+ac_cv_header_langinfo_h=no
+ac_cv_header_locale_h=yes
+ac_cv_header_machine_hal_sysinfo_h=no
+ac_cv_header_memory_h=yes
+ac_cv_header_nl_types_h=no
+ac_cv_header_stdc=yes
+ac_cv_header_stdint_h=yes
+ac_cv_header_stdlib_h=yes
+ac_cv_header_string_h=yes
+ac_cv_header_strings_h=yes
+ac_cv_header_sys_attributes_h=no
+ac_cv_header_sys_iograph_h=no
+ac_cv_header_sys_mman_h=no
+ac_cv_header_sys_param_h=yes
+ac_cv_header_sys_processor_h=no
+ac_cv_header_sys_pstat_h=no
+ac_cv_header_sys_resource_h=no
+ac_cv_header_sys_stat_h=yes
+ac_cv_header_sys_sysctl_h=no
+ac_cv_header_sys_sysinfo_h=no
+ac_cv_header_sys_syssgi_h=no
+ac_cv_header_sys_systemcfg_h=no
+ac_cv_header_sys_time_h=yes
+ac_cv_header_sys_times_h=no
+ac_cv_header_sys_types_h=yes
+ac_cv_header_time=yes
+ac_cv_header_unistd_h=yes
+ac_cv_host=zen2-pc-msys
+ac_cv_lib_m_cos=yes
+ac_cv_member_struct_pst_processor_psp_iticksperclktick=no
+ac_cv_objext=o
+ac_cv_path_EGREP='/usr/bin/grep -E'
+ac_cv_path_FGREP='/usr/bin/grep -F'
+ac_cv_path_GREP=/usr/bin/grep
+ac_cv_path_install='/usr/bin/install -c'
+ac_cv_path_lt_DD=/usr/bin/dd
+ac_cv_path_mkdir=/usr/bin/mkdir
+ac_cv_path_SED=/usr/bin/sed
+ac_cv_prog_ac_ct_AR=ar
+ac_cv_prog_ac_ct_CC=gcc
+ac_cv_prog_ac_ct_DLLTOOL=dlltool
+ac_cv_prog_ac_ct_OBJDUMP=objdump
+ac_cv_prog_ac_ct_RANLIB=ranlib
+ac_cv_prog_ac_ct_STRIP=strip
+ac_cv_prog_AWK=gawk
+ac_cv_prog_cc_c89=
+ac_cv_prog_cc_c99=
+ac_cv_prog_cc_g=yes
+ac_cv_prog_CPP='gcc -E'
+ac_cv_prog_make_make_set=yes
+ac_cv_search_clock_gettime='none required'
+ac_cv_sizeof_mp_limb_t=8
+ac_cv_sizeof_unsigned_long=4
+ac_cv_sizeof_unsigned_short=2
+ac_cv_sizeof_unsigned=4
+ac_cv_sizeof_void_p=8
+ac_cv_type_intmax_t=yes
+ac_cv_type_intptr_t=yes
+ac_cv_type_long_double=yes
+ac_cv_type_long_long=yes
+ac_cv_type_ptrdiff_t=yes
+ac_cv_type_quad_t=no
+ac_cv_type_signal=void
+ac_cv_type_uint_least32_t=yes
+am_cv_make_support_nested_variables=yes
+am_cv_prog_cc_c_o=yes
+cl_cv_as_noexecstack=no
+gmp_cv_asm_align_fill_0x90=yes
+gmp_cv_asm_align_log=no
+gmp_cv_asm_byte=.byte
+gmp_cv_asm_data=.data
+gmp_cv_asm_globl_attr=
+gmp_cv_asm_globl=.globl
+gmp_cv_asm_label_suffix=:
+gmp_cv_asm_lsym_prefix=L
+gmp_cv_asm_rodata='	.section .rdata,"dr"'
+gmp_cv_asm_size=
+gmp_cv_asm_text=.text
+gmp_cv_asm_type=
+gmp_cv_asm_underscore=no
+gmp_cv_asm_w32=.long
+gmp_cv_asm_x86_coff_type=yes
+gmp_cv_asm_x86_mulx=yes
+gmp_cv_c_attribute_const=yes
+gmp_cv_c_attribute_malloc=yes
+gmp_cv_c_attribute_mode=yes
+gmp_cv_c_attribute_noreturn=yes
+gmp_cv_c_double_format='IEEE little endian'
+gmp_cv_c_for_build_ansi=yes
+gmp_cv_c_hidden_alias=yes
+gmp_cv_check_libm_for_build=-lm
+gmp_cv_func_alloca=yes
+gmp_cv_func_sscanf_writable_input=no
+gmp_cv_func_vsnprintf=no
+gmp_cv_header_alloca=no
+gmp_cv_m4_m4wrap_spurious=no
+gmp_cv_option_alloca=alloca
+gmp_cv_prog_cpp_for_build='gcc -E'
+gmp_cv_prog_exeext_for_build=.exe
+gmp_cv_prog_m4=m4
+lt_cv_ar_at_file=@
+lt_cv_deplibs_check_method=unknown
+lt_cv_file_magic_cmd='$MAGIC_CMD'
+lt_cv_file_magic_test_file=
+lt_cv_ld_reload_flag=-r
+lt_cv_nm_interface='BSD nm'
+lt_cv_objdir=.libs
+lt_cv_path_LD=C:/Strawberry/c/x86_64-w64-mingw32/bin/ld.exe
+lt_cv_path_mainfest_tool=no
+lt_cv_path_NM='/usr/bin/nm -B'
+lt_cv_prog_compiler_c_o=yes
+lt_cv_prog_compiler_pic_works=yes
+lt_cv_prog_compiler_pic='-fPIC -DPIC'
+lt_cv_prog_compiler_rtti_exceptions=no
+lt_cv_prog_compiler_static_works=yes
+lt_cv_prog_gnu_ld=yes
+lt_cv_sharedlib_from_linklib_cmd='printf %s\n'
+lt_cv_sys_global_symbol_pipe='sed -n -e '\''s/^.*[	 ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[	 ][	 ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p'\'' | sed '\''/ __gnu_lto/d'\'''
+lt_cv_sys_global_symbol_to_c_name_address_lib_prefix='sed -n -e '\''s/^: \(.*\) .*$/  {"\1", (void *) 0},/p'\'' -e '\''s/^[ABCDGIRSTW][ABCDGIRSTW]* .* \(lib.*\)$/  {"\1", (void *) \&\1},/p'\'' -e '\''s/^[ABCDGIRSTW][ABCDGIRSTW]* .* \(.*\)$/  {"lib\1", (void *) \&\1},/p'\'''
+lt_cv_sys_global_symbol_to_c_name_address='sed -n -e '\''s/^: \(.*\) .*$/  {"\1", (void *) 0},/p'\'' -e '\''s/^[ABCDGIRSTW][ABCDGIRSTW]* .* \(.*\)$/  {"\1", (void *) \&\1},/p'\'''
+lt_cv_sys_global_symbol_to_cdecl='sed -n -e '\''s/^T .* \(.*\)$/extern int \1();/p'\'' -e '\''s/^[ABCDGIRSTW][ABCDGIRSTW]* .* \(.*\)$/extern char \1;/p'\'''
+lt_cv_sys_global_symbol_to_import=
+lt_cv_sys_max_cmd_len=262144
+lt_cv_to_host_file_cmd=func_convert_file_noop
+lt_cv_to_tool_file_cmd=func_convert_file_noop
+lt_cv_truncate_bin='/usr/bin/dd bs=4096 count=1'
+
+## ----------------- ##
+## Output variables. ##
+## ----------------- ##
+
+
+## ----------- ##
+## confdefs.h. ##
+## ----------- ##
+
+/* confdefs.h */
+#define PACKAGE_NAME "GNU MP"
+#define PACKAGE_TARNAME "gmp"
+#define PACKAGE_VERSION "6.3.0"
+#define PACKAGE_STRING "GNU MP 6.3.0"
+#define PACKAGE_BUGREPORT "gmp-bugs@gmplib.org (see https://gmplib.org/manual/Reporting-Bugs.html)"
+#define PACKAGE_URL "http://www.gnu.org/software/gmp/"
+#define PACKAGE "gmp"
+#define VERSION "6.3.0"
+#define WANT_FFT 1
+#define HAVE_HOST_CPU_zen2 1
+#define HOST_DOS64 1
+#define HAVE_SPEED_CYCLECOUNTER 2
+#define STDC_HEADERS 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_SYS_STAT_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_STRING_H 1
+#define HAVE_MEMORY_H 1
+#define HAVE_STRINGS_H 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_STDINT_H 1
+#define HAVE_UNISTD_H 1
+#define LT_OBJDIR ".libs/"
+#define STDC_HEADERS 1
+#define TIME_WITH_SYS_TIME 1
+#define HAVE_FCNTL_H 1
+#define HAVE_FLOAT_H 1
+#define HAVE_LOCALE_H 1
+#define HAVE_SYS_PARAM_H 1
+#define HAVE_SYS_TIME_H 1
+#define HAVE_DECL_FGETC 1
+#define HAVE_DECL_FSCANF 1
+#define HAVE_DECL_OPTARG 1
+#define HAVE_DECL_UNGETC 1
+#define HAVE_DECL_VFPRINTF 1
+#define HAVE_DECL_SYS_ERRLIST 0
+#define HAVE_DECL_SYS_NERR 0
+#define RETSIGTYPE void
+#define HAVE_INTMAX_T 1
+#define HAVE_LONG_DOUBLE 1
+#define HAVE_LONG_LONG 1
+#define HAVE_PTRDIFF_T 1
+#define HAVE_UINT_LEAST32_T 1
+#define HAVE_INTPTR_T 1
+#define restrict __restrict
+#define HAVE_ATTRIBUTE_CONST 1
+#define HAVE_ATTRIBUTE_MALLOC 1
+#define HAVE_ATTRIBUTE_MODE 1
+#define HAVE_ATTRIBUTE_NORETURN 1
+#define HAVE_HIDDEN_ALIAS 1
+#define HAVE_ALLOCA 1
+#define WANT_TMP_ALLOCA 1
+#define HAVE_LIMB_LITTLE_ENDIAN 1
+#define HAVE_DOUBLE_IEEE_LITTLE_ENDIAN 1
+#define HAVE_ALARM 1
+#define HAVE_CLOCK 1
+#define HAVE_GETPAGESIZE 1
+#define HAVE_GETTIMEOFDAY 1
+#define HAVE_LOCALECONV 1
+#define HAVE_MEMSET 1
+#define HAVE_MPROTECT 1
+#define HAVE_POPEN 1
+#define HAVE_RAISE 1
+#define HAVE_STRCHR 1
+#define HAVE_STRERROR 1
+#define HAVE_STRNLEN 1
+#define HAVE_STRTOL 1
+#define HAVE_STRTOUL 1
+#define HAVE_CLOCK_GETTIME 1
+#define WANT_FAT_BINARY 1
+#define HAVE_NATIVE_mpn_add_n 1
+#define HAVE_NATIVE_mpn_addmul_1 1
+#define HAVE_NATIVE_mpn_bdiv_dbm1c 1
+#define HAVE_NATIVE_mpn_com 1
+#define HAVE_NATIVE_mpn_cnd_add_n 1
+#define HAVE_NATIVE_mpn_cnd_sub_n 1
+#define HAVE_NATIVE_mpn_copyd 1
+#define HAVE_NATIVE_mpn_copyi 1
+#define HAVE_NATIVE_mpn_divexact_1 1
+#define HAVE_NATIVE_mpn_divrem_1 1
+#define HAVE_NATIVE_mpn_gcd_11 1
+#define HAVE_NATIVE_mpn_lshift 1
+#define HAVE_NATIVE_mpn_lshiftc 1
+#define HAVE_NATIVE_mpn_mod_1 1
+#define HAVE_NATIVE_mpn_mod_1_1p 1
+#define HAVE_NATIVE_mpn_mod_1_1p_cps 1
+#define HAVE_NATIVE_mpn_mod_1s_2p 1
+#define HAVE_NATIVE_mpn_mod_1s_2p_cps 1
+#define HAVE_NATIVE_mpn_mod_1s_4p 1
+#define HAVE_NATIVE_mpn_mod_1s_4p_cps 1
+#define HAVE_NATIVE_mpn_mod_34lsub1 1
+#define HAVE_NATIVE_mpn_modexact_1c_odd 1
+#define HAVE_NATIVE_mpn_mul_1 1
+#define HAVE_NATIVE_mpn_mul_basecase 1
+#define HAVE_NATIVE_mpn_mullo_basecase 1
+#define HAVE_NATIVE_mpn_preinv_divrem_1 1
+#define HAVE_NATIVE_mpn_preinv_mod_1 1
+#define HAVE_NATIVE_mpn_redc_1 1
+#define HAVE_NATIVE_mpn_redc_2 1
+#define HAVE_NATIVE_mpn_rshift 1
+#define HAVE_NATIVE_mpn_sqr_basecase 1
+#define HAVE_NATIVE_mpn_sub_n 1
+#define HAVE_NATIVE_mpn_submul_1 1
+#define HAVE_NATIVE_mpn_addmul_2 1
+#define HAVE_NATIVE_mpn_addlsh1_n 1
+#define HAVE_NATIVE_mpn_addlsh2_n 1
+#define HAVE_NATIVE_mpn_sublsh1_n 1
+#define HAVE_NATIVE___gmpn_cpuid 1
+#define HAVE_NATIVE_mpn_divrem_2 1
+#define HAVE_NATIVE_mpn_popcount 1
+#define HAVE_NATIVE_mpn_hamdist 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_popcount 1
+#define HAVE_NATIVE_mpn_hamdist 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_div_qr_2n_pi1 1
+#define HAVE_NATIVE_mpn_bdiv_q_1 1
+#define HAVE_NATIVE_mpn_pi1_bdiv_q_1 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_and_n 1
+#define HAVE_NATIVE_mpn_andn_n 1
+#define HAVE_NATIVE_mpn_nand_n 1
+#define HAVE_NATIVE_mpn_ior_n 1
+#define HAVE_NATIVE_mpn_iorn_n 1
+#define HAVE_NATIVE_mpn_nior_n 1
+#define HAVE_NATIVE_mpn_xor_n 1
+#define HAVE_NATIVE_mpn_xnor_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_sec_tabselect 1
+#define HAVE_NATIVE_mpn_invert_limb 1
+#define HAVE_NATIVE_C 1
+#define HAVE_NATIVE_Kn 1
+#define HAVE_NATIVE_C2 1
+#define HAVE_NATIVE_Ci 1
+#define HAVE_NATIVE_mpn_sqr_diag_addlsh1 1
+#define HAVE_NATIVE_mpn_mul_2 1
+#define HAVE_NATIVE_mpn_addlsh1_n 1
+#define HAVE_NATIVE_mpn_rsblsh1_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_rsh1add_n 1
+#define HAVE_NATIVE_mpn_rsh1add_nc 1
+#define HAVE_NATIVE_mpn_rsh1sub_n 1
+#define HAVE_NATIVE_mpn_rsh1sub_nc 1
+#define HAVE_NATIVE_func_nc 1
+#define HAVE_NATIVE_func_n 1
+#define HAVE_NATIVE_mpn_rsh1add_n 1
+#define HAVE_NATIVE_mpn_rsh1add_nc 1
+#define HAVE_NATIVE_mpn_rsh1sub_n 1
+#define HAVE_NATIVE_mpn_rsh1sub_nc 1
+#define HAVE_NATIVE_func_nc 1
+#define HAVE_NATIVE_func_n 1
+#define HAVE_NATIVE_mpn_addlsh2_n 1
+#define HAVE_NATIVE_mpn_rsblsh2_n 1
+#define HAVE_NATIVE_mpn_addlsh_n 1
+#define HAVE_NATIVE_mpn_rsblsh_n 1
+#define HAVE_NATIVE_func 1
+#define HAVE_NATIVE_mpn_addlsh_n 1
+#define HAVE_NATIVE_mpn_rsblsh_n 1
+#define HAVE_NATIVE_func 1
+#define LSYM_PREFIX "L"
+#define X86_ASM_MULX 1
+#define HAVE_HOST_CPU_FAMILY_x86_64 1
+#define GMP_MPARAM_H_SUGGEST "../gmp-src/mpn/x86_64/fat/gmp-mparam.h"
+#define SIZEOF_VOID_P 8
+#define SIZEOF_UNSIGNED_SHORT 2
+#define SIZEOF_UNSIGNED 4
+#define SIZEOF_UNSIGNED_LONG 4
+#define SIZEOF_MP_LIMB_T 8
+
+configure: exit 0

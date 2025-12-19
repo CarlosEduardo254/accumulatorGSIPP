@@ -173,7 +173,7 @@ fn main() -> anyhow::Result<()> {
     println!("✓ Servidor UDP iniciado na porta 4242");
     println!("✓ Aguardando pacotes...\n");
 
-    let mut buf = [0; 512];
+    let mut buf = [0; 65535];
     loop {
         let (size, source) = socket.recv_from(&mut buf)?;
         println!("DEBUG: Recebido {} bytes de {}", size, source); // LOG DE DEBUG
