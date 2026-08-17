@@ -1,0 +1,9 @@
+[target.aarch64-unknown-linux-gnu]
+pre-build = [
+    "ln -sf /usr/bin/aarch64-linux-gnu-gcc /usr/bin/aarch64-unknown-linux-gnu-gcc",
+    "ln -sf /usr/bin/aarch64-linux-gnu-ar /usr/bin/aarch64-unknown-linux-gnu-ar",
+    "ln -sf /usr/bin/aarch64-linux-gnu-ranlib /usr/bin/aarch64-unknown-linux-gnu-ranlib",
+    "ln -sf /usr/bin/aarch64-linux-gnu-strip /usr/bin/aarch64-unknown-linux-gnu-strip",
+    "ln -sf /usr/bin/aarch64-linux-gnu-nm /usr/bin/aarch64-unknown-linux-gnu-nm",
+    "ln -sf /usr/bin/aarch64-linux-gnu-objdump /usr/bin/aarch64-unknown-linux-gnu-objdump"
+]
