@@ -21,17 +21,29 @@ fn main() -> anyhow::Result<()> {
     }
     println!();
 
-    // 1. Criar acumulador vazio
-    let mut acc = Accumulator::<Rsa2048, String>::empty();
+    // 1. Criar acumulador FINAL com todos os sensores de uma vez
+    let acc = Accumulator::<Rsa2048, String>::empty().add(&esp_ids);
     let mut all_proofs = HashMap::new();
 
-    // 2. Adicionar cada ESP ao acumulador e gerar sua prova individual
+    // 2. Para cada sensor, gerar uma prova cuja witness = acumulador de TODOS OS OUTROS.
+    //    Isso garante que witness^hash(id) == acc_final para qualquer sensor,
+    //    independente da ordem em que foram adicionados.
+    //    Complexidade O(N²), mas irrelevante para poucos sensores.
     println!("Gerando provas de pertencimento...");
     for id in &esp_ids {
-        let (new_acc, proof) = acc.add_with_proof(&[id.clone()]);
+        // Acumulador contendo todos EXCETO o sensor atual
+        let others: Vec<String> = esp_ids.iter().filter(|o| *o != id).cloned().collect();
+        let witness_acc = Accumulator::<Rsa2048, String>::empty().add(&others);
+
+        // add_with_proof gera a prova correta: witness = witness_acc (sem o sensor)
+        let (_full_acc, proof) = witness_acc.add_with_proof(&[id.clone()]);
         all_proofs.insert(id.clone(), proof);
-        acc = new_acc;
         println!("  ✓ Prova gerada para {}", id);
+        debug_assert!(
+            acc.verify_membership(id, &proof),
+            "prova inválida gerada para {}",
+            id
+        );
     }
     println!();
 
