@@ -21,16 +21,15 @@ use rsa::{Pkcs1v15Sign, RsaPublicKey};
 use serde::Deserialize;
 use sha2::Digest;
 use std::collections::HashMap;
-use std::net::UdpSocket;
-use std::time::{Instant, SystemTime, UNIX_EPOCH};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use sysinfo::System;
 
 // ============================================
 // CONFIGURAÇÕES
 // ============================================
 
-const BIND_ADDR: &str = "0.0.0.0:4242";
-const MAX_PACKET_SIZE: usize = 4096;
+const SERIAL_PORT: &str = "/dev/serial0";
+const BAUD_RATE: u32 = 115200;
 /// Tolerância máxima de timestamp (em segundos) para proteção anti-replay
 const REPLAY_WINDOW_SECS: u64 = 5;
 
@@ -153,7 +152,10 @@ fn process_packet(
         );
         return Ok(());
     }
-    println!("   ✓ Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)", time_diff, REPLAY_WINDOW_SECS);
+    println!(
+        "   ✓ Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)",
+        time_diff, REPLAY_WINDOW_SECS
+    );
 
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 02: Assinatura Digital RSA-2048
@@ -197,9 +199,8 @@ fn process_packet(
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 03: Acumulador Criptográfico
     // ──────────────────────────────────────────────────
-    let proof: MembershipProof<Rsa2048, String> =
-        serde_cbor::from_slice(&payload.membership_proof)
-            .context("Falha ao desserializar MembershipProof (Witness + PoE)")?;
+    let proof: MembershipProof<Rsa2048, String> = serde_cbor::from_slice(&payload.membership_proof)
+        .context("Falha ao desserializar MembershipProof (Witness + PoE)")?;
 
     if acc.verify_membership(&payload.id, &proof) {
         println!("   ✓ Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
@@ -227,12 +228,7 @@ fn process_packet(
 // MÉTRICAS DE DESEMPENHO
 // ============================================
 
-fn print_metrics(
-    status: &str,
-    elapsed: std::time::Duration,
-    packet_size: usize,
-    sys: &mut System,
-) {
+fn print_metrics(status: &str, elapsed: std::time::Duration, packet_size: usize, sys: &mut System) {
     // Atualizar informações de memória do processo
     sys.refresh_memory();
     sys.refresh_processes();
@@ -259,15 +255,74 @@ fn print_metrics(
 }
 
 // ============================================
-// MAIN — Servidor UDP
+// ESTRUTURAS DE REASSEMBLY
+// ============================================
+
+struct ReassemblyBuffer {
+    // packet_id -> (total_fragments, received_count, fragments_map)
+    packets: HashMap<u8, (u8, u8, HashMap<u8, Vec<u8>>)>,
+    last_activity: Instant,
+}
+
+impl ReassemblyBuffer {
+    fn new() -> Self {
+        Self {
+            packets: HashMap::new(),
+            last_activity: Instant::now(),
+        }
+    }
+
+    // Adiciona fragmento e retorna Some(payload_completo) se terminar
+    fn add_fragment(
+        &mut self,
+        packet_id: u8,
+        total_frags: u8,
+        frag_idx: u8,
+        payload: Vec<u8>,
+    ) -> Option<Vec<u8>> {
+        // Limpar pacotes não terminados após 20 segundos de inatividade
+        if self.last_activity.elapsed().as_secs() > 20 {
+            self.packets.clear();
+        }
+        self.last_activity = Instant::now();
+
+        let entry = self
+            .packets
+            .entry(packet_id)
+            .or_insert_with(|| (total_frags, 0, HashMap::new()));
+
+        // Evitar duplicatas
+        if !entry.2.contains_key(&frag_idx) {
+            entry.2.insert(frag_idx, payload);
+            entry.1 += 1;
+        }
+
+        if entry.1 == entry.0 {
+            // Remontar payload completo
+            let mut full_payload = Vec::new();
+            for i in 0..entry.0 {
+                if let Some(frag) = entry.2.get(&i) {
+                    full_payload.extend_from_slice(frag);
+                }
+            }
+            self.packets.remove(&packet_id);
+            Some(full_payload)
+        } else {
+            None
+        }
+    }
+}
+
+// ============================================
+// MAIN — Controlador Serial (Rádio)
 // ============================================
 
 fn main() -> Result<()> {
     println!("═══════════════════════════════════════════════════════");
-    println!("  UDP Controller — ITS (Arquitetura TCC GSIPP)");
+    println!("  Controller — ITS (Arquitetura TCC GSIPP) via Rádio");
     println!("═══════════════════════════════════════════════════════");
     println!("  Verificações: Timestamp + RSA-2048 + Acumulador");
-    println!("  Porta: {}", BIND_ADDR);
+    println!("  Rádio UART: {} a {} bps", SERIAL_PORT, BAUD_RATE);
     println!("═══════════════════════════════════════════════════════\n");
 
     // --- 1. Construir dicionário de chaves públicas ---
@@ -281,34 +336,82 @@ fn main() -> Result<()> {
     }
 
     // --- 2. Carregar acumulador serializado do disco ---
-    // Este arquivo foi gerado pelo `setup.rs` e contém o estado do acumulador
-    // após adicionar todos os sensores autorizados (ex: ESP-42).
     let acc_bytes = std::fs::read("accumulator.dat").expect(
-        "❌ Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro."
+        "❌ Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro.",
     );
-    let acc: Accumulator<Rsa2048, String> = serde_cbor::from_slice(&acc_bytes)
-        .context("Falha ao desserializar accumulator.dat")?;
+    let acc: Accumulator<Rsa2048, String> =
+        serde_cbor::from_slice(&acc_bytes).context("Falha ao desserializar accumulator.dat")?;
     println!("\n🔐 Acumulador carregado com sucesso do disco.");
 
     // --- 3. Inicializar monitor de sistema ---
     let mut sys = System::new();
 
-    // --- 4. Abrir socket UDP ---
-    let socket = UdpSocket::bind(BIND_ADDR).context("Falha ao fazer bind no socket UDP")?;
-    println!("\n📡 Aguardando pacotes em {}...\n", BIND_ADDR);
+    // --- 4. Abrir porta serial ---
+    let mut port = serialport::new(SERIAL_PORT, BAUD_RATE)
+        .timeout(Duration::from_millis(100))
+        .open()
+        .context(format!("Falha ao abrir porta serial {}", SERIAL_PORT))?;
 
-    let mut buf = [0u8; MAX_PACKET_SIZE];
+    println!("\n📡 Aguardando dados de rádio em {}...\n", SERIAL_PORT);
+
+    let mut reassembly = ReassemblyBuffer::new();
+    let mut buf = [0u8; 1024];
+    let mut stream_buffer = Vec::new();
 
     loop {
-        match socket.recv_from(&mut buf) {
-            Ok((size, src)) => {
-                println!("──── Pacote de {} ({} bytes) ────", src, size);
-                if let Err(e) = process_packet(&buf[..size], &key_store, &acc, &mut sys) {
-                    eprintln!("❌ Erro ao processar pacote: {:#}", e);
+        match port.read(&mut buf) {
+            Ok(t) if t > 0 => {
+                stream_buffer.extend_from_slice(&buf[..t]);
+
+                // Parse stream contínuo
+                while stream_buffer.len() >= 6 {
+                    // Marcadores de sincronismo (0xAA, 0xBB)
+                    if stream_buffer[0] == 0xAA && stream_buffer[1] == 0xBB {
+                        let packet_id = stream_buffer[2];
+                        let total_frags = stream_buffer[3];
+                        let frag_idx = stream_buffer[4];
+                        let payload_len = stream_buffer[5] as usize;
+
+                        if stream_buffer.len() >= 6 + payload_len {
+                            // Payload inteiro disponível
+                            let payload = stream_buffer[6..6 + payload_len].to_vec();
+                            stream_buffer.drain(..6 + payload_len);
+
+                            println!(
+                                "   [Radio] RX: Fragmento {}/{} (Pacote ID: {})",
+                                frag_idx + 1,
+                                total_frags,
+                                packet_id
+                            );
+
+                            if let Some(full_cb_raw) =
+                                reassembly.add_fragment(packet_id, total_frags, frag_idx, payload)
+                            {
+                                println!(
+                                    "──── Pacote Completo Reconstruído ({} bytes) ────",
+                                    full_cb_raw.len()
+                                );
+                                if let Err(e) =
+                                    process_packet(&full_cb_raw, &key_store, &acc, &mut sys)
+                                {
+                                    eprintln!("❌ Erro ao processar pacote CBOR: {:#}", e);
+                                }
+                            }
+                        } else {
+                            // Esperar mais dados do rádio
+                            break;
+                        }
+                    } else {
+                        // Fora de sincronismo, consome 1 byte e tenta de novo
+                        stream_buffer.remove(0);
+                    }
                 }
             }
+            Ok(_) => {}
+            Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut => {}
             Err(e) => {
-                eprintln!("❌ Erro ao receber UDP: {}", e);
+                eprintln!("❌ Erro de leitura serial: {:?}", e);
+                std::thread::sleep(Duration::from_secs(1));
             }
         }
     }

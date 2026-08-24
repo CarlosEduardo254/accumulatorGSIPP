@@ -13,9 +13,8 @@
  */
 
 #include <WiFi.h>
-#include <WiFiUdp.h>
+#include <HTTPClient.h>
 #include <time.h>
-
 // mbedTLS — já incluído no ESP32 Arduino Core (via ESP-IDF)
 #include "mbedtls/ctr_drbg.h"
 #include "mbedtls/entropy.h"
@@ -29,10 +28,19 @@
 
 const char *WIFI_SSID = "Planeta Solar";
 const char *WIFI_PASSWORD = "sede10204";
-const char *SERVER_IP = "172.16.0.55"; // AJUSTE SEU IP
-const uint16_t SERVER_PORT = 4242;
+// SERVER_IP e SERVER_PORT removidos (agora via rádio)
 const char *SENSOR_ID = "ESP-42";
-const uint32_t SEND_INTERVAL_MS = 3000;
+const uint32_t SEND_INTERVAL_MS = 10000; // 10s para não congestionar o ar (2.4kbps)
+
+// ============================================
+// CONFIGURAÇÕES DO RÁDIO EBYTE E49-400T20D
+// ============================================
+
+const int PIN_RX = 16;  // Ligado no TXD do módulo
+const int PIN_TX = 17;  // Ligado no RXD do módulo
+const int PIN_AUX = 15; // Ligado no AUX do módulo
+const int FRAG_SIZE = 200; // Tamanho máximo de payload por fragmento
+
 
 // ============================================
 // CONFIGURAÇÕES NTP
@@ -180,7 +188,6 @@ const size_t PROOF_SIZE = sizeof(MEMBERSHIP_PROOF);
 // VARIÁVEIS GLOBAIS
 // ============================================
 
-WiFiUDP udp;
 uint64_t packetCounter = 0;
 
 // ============================================
@@ -371,14 +378,12 @@ void connectWiFi() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ WiFi conectado!");
+    Serial.println("\n✅ WiFi conectado (apenas para NTP)!");
     Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
-    Serial.printf("   Servidor: %s:%d\n", SERVER_IP, SERVER_PORT);
   } else {
     Serial.println("\n❌ Falha WiFi!");
   }
 }
-
 // ============================================
 // SINCRONIZAÇÃO NTP
 // ============================================
@@ -479,34 +484,59 @@ void sendPacket() {
   // ════════════════════════════════════════════
   unsigned long t_end = millis();
 
-  // --- 3. Enviar via UDP ---
-  IPAddress serverAddr;
-  serverAddr.fromString(SERVER_IP);
+  // --- 3. Enviar via Rádio Serial (Fragmentado) ---
+  uint8_t packet_id = (uint8_t)(packetCounter % 256);
+  uint8_t total_frags = (cborSize + FRAG_SIZE - 1) / FRAG_SIZE;
 
-  udp.beginPacket(serverAddr, SERVER_PORT);
-  size_t sent = udp.write(cborBuffer, cborSize);
-  bool success = udp.endPacket();
+  Serial.printf("   Preparando envio Rádio: %d bytes em %d fragmentos...\n", cborSize, total_frags);
+
+  // Wake-up preamble (4 bytes de lixo para acordar o rádio)
+  uint8_t preamble[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+  Serial2.write(preamble, 4);
+  Serial2.flush();
+  delay(10); // Dá um tempo pro rádio acordar
+
+  for (uint8_t i = 0; i < total_frags; i++) {
+    size_t offset = i * FRAG_SIZE;
+    size_t len = cborSize - offset;
+    if (len > FRAG_SIZE) len = FRAG_SIZE;
+
+    // Aguardar rádio estar totalmente livre (AUX HIGH por 10ms contínuos)
+    // Isso evita falsos positivos caso o rádio dê um pulso HIGH rápido
+    // entre os sub-pacotes de 54 bytes no ar.
+    int high_time = 0;
+    while (high_time < 10) {
+      if (digitalRead(PIN_AUX) == HIGH) {
+        high_time++;
+      } else {
+        high_time = 0;
+      }
+      delay(1);
+    }
+
+    // Cabecalho: 0xAA 0xBB [ID] [Total] [Indice] [Tamanho_Payload]
+    uint8_t header[6] = {0xAA, 0xBB, packet_id, total_frags, i, (uint8_t)len};
+    
+    Serial2.write(header, 6);
+    Serial2.write(&cborBuffer[offset], len);
+    Serial2.flush(); // Aguarda bytes saírem do ESP32 para o módulo
+
+    // Dá um tempo curto para o módulo puxar o AUX pra LOW se começar a transmitir
+    delay(15);
+  }
 
   // --- 4. Imprimir métricas ---
-  if (success && sent == cborSize) {
-    Serial.println("────────────────────────────────────────");
-    Serial.printf("✅ Pacote #%llu enviado com sucesso\n",
-                  (unsigned long long)sensorData);
-    Serial.printf("   Sensor ID:    %s\n", SENSOR_ID);
-    Serial.printf("   Timestamp:    %llu (UNIX)\n",
-                  (unsigned long long)timestamp);
-    Serial.printf("   Sensor Data:  %llu\n", (unsigned long long)sensorData);
-    Serial.printf("   Assinatura:   %d bytes (RSA-2048)\n", signatureLen);
-    Serial.printf("   Proof:        %d bytes\n", PROOF_SIZE);
-    Serial.println("────────────────────────────────────────");
-    Serial.printf("Tempo de processamento no nó sensor (ms): %lu\n",
-                  t_end - t_start);
-    Serial.printf("Overhead de rede e tamanho do pacote (bytes): %d\n",
-                  cborSize);
-    Serial.println("────────────────────────────────────────\n");
-  } else {
-    Serial.printf("❌ Erro no envio (%d/%d bytes)\n", sent, cborSize);
-  }
+  Serial.println("────────────────────────────────────────");
+  Serial.printf("✅ Pacote #%llu enviado com sucesso via rádio\n", (unsigned long long)sensorData);
+  Serial.printf("   Sensor ID:    %s\n", SENSOR_ID);
+  Serial.printf("   Timestamp:    %llu (UNIX)\n", (unsigned long long)timestamp);
+  Serial.printf("   Sensor Data:  %llu\n", (unsigned long long)sensorData);
+  Serial.printf("   Assinatura:   %d bytes (RSA-2048)\n", signatureLen);
+  Serial.printf("   Proof:        %d bytes\n", PROOF_SIZE);
+  Serial.println("────────────────────────────────────────");
+  Serial.printf("Tempo de processamento (ms): %lu\n", t_end - t_start);
+  Serial.printf("Tamanho total (CBOR bytes):  %d\n", cborSize);
+  Serial.println("────────────────────────────────────────\n");
 }
 
 // ============================================
@@ -521,10 +551,12 @@ void setup() {
   Serial.println("  ESP32 Sensor — Arquitetura TCC GSIPP");
   Serial.println("═══════════════════════════════════════");
   Serial.printf(" Sensor ID:        %s\n", SENSOR_ID);
-  Serial.printf(" Proof (placeholder): %d bytes\n", PROOF_SIZE);
-  Serial.printf(" Assinatura:       RSA-2048 (mbedTLS)\n");
-  Serial.printf(" Timestamp:        NTP (UNIX epoch)\n");
+  Serial.printf(" Proof:            %d bytes\n", PROOF_SIZE);
+  Serial.printf(" Rádio:            Serial2 (TX=%d, RX=%d)\n", PIN_TX, PIN_RX);
   Serial.println("═══════════════════════════════════════\n");
+
+  pinMode(PIN_AUX, INPUT);
+  Serial2.begin(115200, SERIAL_8N1, PIN_RX, PIN_TX);
 
   // 1. Conectar Wi-Fi
   connectWiFi();
@@ -534,7 +566,12 @@ void setup() {
     while (1)
       delay(1000);
   }
-
+  // --- Teste de diagnóstico: internet real atrás do hotspot? ---
+  HTTPClient http;
+  http.begin("http://example.com");
+  int code = http.GET();
+  Serial.printf("Teste HTTP: código %d\n", code);
+  http.end();
   // 2. Sincronizar relógio via NTP
   syncNTP();
 
