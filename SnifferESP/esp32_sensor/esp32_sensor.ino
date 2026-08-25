@@ -205,21 +205,40 @@ private:
   uint8_t *buffer;
   size_t pos;
   size_t maxSize;
+  bool overflow; // true se algum write ultrapassou o buffer
+
+  // Verifica se há 'needed' bytes disponíveis; marca overflow e retorna false se não.
+  bool hasSpace(size_t needed) {
+    if (pos + needed > maxSize) {
+      overflow = true;
+      return false;
+    }
+    return true;
+  }
 
 public:
-  SimpleCBOR(uint8_t *buf, size_t size) : buffer(buf), pos(0), maxSize(size) {}
+  SimpleCBOR(uint8_t *buf, size_t size)
+      : buffer(buf), pos(0), maxSize(size), overflow(false) {}
+
+  // Retorna true se alguma escrita não cabeu no buffer
+  bool hasOverflow() const { return overflow; }
 
   // Escreve cabeçalho de mapa CBOR (até 23 pares)
-  void writeMap(uint8_t numPairs) { buffer[pos++] = 0xA0 | numPairs; }
+  void writeMap(uint8_t numPairs) {
+    if (!hasSpace(1)) return;
+    buffer[pos++] = 0xA0 | numPairs;
+  }
 
   // Escreve text string CBOR (Major type 3)
   void writeString(const char *str) {
     size_t len = strlen(str);
+    size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
+    if (!hasSpace(headerSz + len)) return;
     if (len < 24) {
       buffer[pos++] = 0x60 | len;
     } else if (len <= 0xFF) {
       buffer[pos++] = 0x78;
-      buffer[pos++] = len;
+      buffer[pos++] = (uint8_t)len;
     } else {
       buffer[pos++] = 0x79;
       buffer[pos++] = (len >> 8) & 0xFF;
@@ -231,11 +250,16 @@ public:
 
   // Escreve unsigned integer CBOR (Major type 0)
   void writeUint64(uint64_t value) {
+    size_t needed = (value < 24) ? 1
+                  : (value <= 0xFF) ? 2
+                  : (value <= 0xFFFF) ? 3
+                  : (value <= 0xFFFFFFFF) ? 5 : 9;
+    if (!hasSpace(needed)) return;
     if (value < 24) {
-      buffer[pos++] = value;
+      buffer[pos++] = (uint8_t)value;
     } else if (value <= 0xFF) {
       buffer[pos++] = 0x18;
-      buffer[pos++] = value;
+      buffer[pos++] = (uint8_t)value;
     } else if (value <= 0xFFFF) {
       buffer[pos++] = 0x19;
       buffer[pos++] = (value >> 8) & 0xFF;
@@ -256,11 +280,13 @@ public:
 
   // Escreve byte string CBOR (Major type 2)
   void writeBytes(const uint8_t *data, size_t len) {
+    size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
+    if (!hasSpace(headerSz + len)) return;
     if (len < 24) {
       buffer[pos++] = 0x40 | len;
     } else if (len <= 0xFF) {
       buffer[pos++] = 0x58;
-      buffer[pos++] = len;
+      buffer[pos++] = (uint8_t)len;
     } else {
       buffer[pos++] = 0x59;
       buffer[pos++] = (len >> 8) & 0xFF;
@@ -270,7 +296,7 @@ public:
     pos += len;
   }
 
-  size_t getSize() { return pos; }
+  size_t getSize() const { return pos; }
 };
 
 // ============================================
@@ -345,8 +371,10 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
 
   // --- 1. Montar o buffer de dados para hash ---
   // Concatenação estrita: sensor_id + timestamp + sensor_data (como strings)
+  // Delimitador '|' evita ambiguidade de concatenação:
+  // Ex: id="A1" + ts="23" ≠ id="A" + ts="123" (sem delimitador seriam idênticos)
   char dataBuffer[256];
-  snprintf(dataBuffer, sizeof(dataBuffer), "%s%llu%llu", sensorId,
+  snprintf(dataBuffer, sizeof(dataBuffer), "%s|%llu|%llu", sensorId,
            (unsigned long long)timestamp, (unsigned long long)sensorData);
 
   // --- 2. Calcular SHA-256 do buffer concatenado ---
@@ -492,6 +520,13 @@ void sendPacket() {
   cbor.writeBytes(MEMBERSHIP_PROOF, PROOF_SIZE);
 
   size_t cborSize = cbor.getSize();
+
+  // Verificar se houve overflow no buffer CBOR
+  if (cbor.hasOverflow()) {
+    Serial.printf("❌ CBOR overflow! Payload (%d bytes) excede buffer (2048). Pacote descartado.\n",
+                  cborSize);
+    return;
+  }
 
   // ════════════════════════════════════════════
   // FIM DA MEDIÇÃO DE DESEMPENHO

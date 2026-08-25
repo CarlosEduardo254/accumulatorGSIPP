@@ -22,7 +22,7 @@ use rsa::sha2::Sha256;
 use rsa::{Pkcs1v15Sign, RsaPublicKey};
 use serde::Deserialize;
 use sha2::Digest;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
@@ -38,6 +38,8 @@ const BAUD_RATE: u32 = 115200;
 const REPLAY_WINDOW_SECS: u64 = 5;
 /// Timeout de inatividade para descarte de fragmentos incompletos (em segundos)
 const REASSEMBLY_TIMEOUT_SECS: u64 = 10;
+/// Máximo de pacotes em reassembly simultâneo — limita alocação em caso de flood
+const MAX_CONCURRENT_PACKETS: usize = 8;
 
 // ============================================
 // CHAVE PÚBLICA RSA-2048 DE TESTE
@@ -167,6 +169,7 @@ fn process_packet(
     sys: &mut System,
     stats: &mut SessionStats,
     last_readings: &mut HashMap<String, u64>,
+    replay_seen: &mut HashSet<(String, u64, u64)>,
 ) -> Result<()> {
     stats.total_reconstructed += 1;
 
@@ -250,6 +253,28 @@ fn process_packet(
     );
 
     // ──────────────────────────────────────────────────
+    // VERIFICAÇÃO 01b: Anti-Replay Intra-Janela
+    // Rejeita pacote com (id, timestamp, reading) já visto dentro do Δt.
+    // ──────────────────────────────────────────────────
+
+    // Limpar entradas expiradas do cache (timestamp anterior ao início da janela)
+    replay_seen.retain(|(_, ts, _)| now_unix.saturating_sub(*ts) <= REPLAY_WINDOW_SECS);
+
+    let replay_key = (payload.id.clone(), payload.timestamp, payload.reading);
+    if replay_seen.contains(&replay_key) {
+        let elapsed = t_start.elapsed();
+        stats.rejected_replay += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+        print_metrics("REJEITADO (Replay Intra-Janela)", elapsed, raw.len(), sys, stats);
+        println!(
+            "   ✗ Verificação 01b FALHOU: Pacote duplicado dentro da janela (id={}, ts={}, reading={})\n",
+            payload.id, payload.timestamp, payload.reading
+        );
+        return Ok(());
+    }
+
+    // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 02: Assinatura Digital RSA-2048
     // ──────────────────────────────────────────────────
     let pub_key = match key_store.get(&payload.id) {
@@ -271,7 +296,8 @@ fn process_packet(
 
     // Recalcular o hash SHA-256 da concatenação: id + timestamp + reading
     // (mesmo formato usado pelo ESP32: sprintf "%s%llu%llu")
-    let data_to_hash = format!("{}{}{}", payload.id, payload.timestamp, payload.reading);
+    // Delimitador '|' previne ambiguidade: id="A1"+ts="23" ≠ id="A"+ts="123"
+    let data_to_hash = format!("{}|{}|{}", payload.id, payload.timestamp, payload.reading);
     let hash = {
         let mut hasher = <Sha256 as Digest>::new();
         hasher.update(data_to_hash.as_bytes());
@@ -329,6 +355,10 @@ fn process_packet(
     // ════════════════════════════════════════════════════
     // FIM DA MEDIÇÃO — PACOTE ACEITO
     // ════════════════════════════════════════════════════
+
+    // Registrar no cache intra-replay (apenas pacotes que passaram nas 3 etapas)
+    replay_seen.insert(replay_key);
+
     let elapsed = t_start.elapsed();
     stats.accepted += 1;
     stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
@@ -434,6 +464,15 @@ impl ReassemblyBuffer {
         self.check_timeout(stats);
         self.last_activity = Instant::now();
 
+        // Limite anti-flood: descartar fragmento se o buffer já está cheio com outros pacotes
+        if !self.packets.contains_key(&packet_id) && self.packets.len() >= MAX_CONCURRENT_PACKETS {
+            println!(
+                "⚠️ [Reassembly] Limite de {} pacotes simultâneos atingido. Fragmento ID={} descartado (possível flood).",
+                MAX_CONCURRENT_PACKETS, packet_id
+            );
+            return None;
+        }
+
         let entry = self
             .packets
             .entry(packet_id)
@@ -496,7 +535,9 @@ fn main() -> Result<()> {
     // --- 3. Inicializar monitor de sistema e estatísticas ---
     let mut sys = System::new();
     let stats_arc = Arc::new(Mutex::new(SessionStats::default()));
-    let mut last_readings = HashMap::new();
+    let mut last_readings: HashMap<String, u64> = HashMap::new();
+    // Cache de (id, timestamp, reading) vistos — descarta replays dentro da janela Δt
+    let mut replay_seen: HashSet<(String, u64, u64)> = HashSet::new();
 
     // --- 4. Configurar handler para Ctrl+C (relatório final) ---
     let running = Arc::new(AtomicBool::new(true));
@@ -586,6 +627,7 @@ fn main() -> Result<()> {
                                     &mut sys,
                                     &mut stats,
                                     &mut last_readings,
+                                    &mut replay_seen,
                                 ) {
                                     eprintln!("❌ Erro ao processar pacote CBOR: {:#}", e);
                                 }
@@ -615,6 +657,10 @@ fn main() -> Result<()> {
                 // Verificar timeouts de pacotes fragmentados mesmo se a serial estiver ociosa
                 let mut stats = stats_arc.lock().unwrap();
                 reassembly.check_timeout(&mut stats);
+            }
+            Err(ref e) if e.kind() == std::io::ErrorKind::Interrupted => {
+                // EINTR causado pelo Ctrl+C — o handler de sinal já trata o encerramento,
+                // apenas saímos do loop sem imprimir erro para não corromper o resumo final.
             }
             Err(e) => {
                 eprintln!("❌ Erro de leitura serial: {:?}", e);
