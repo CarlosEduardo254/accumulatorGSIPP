@@ -13,7 +13,6 @@
  */
 
 #include <WiFi.h>
-#include <HTTPClient.h>
 #include <time.h>
 // mbedTLS — já incluído no ESP32 Arduino Core (via ESP-IDF)
 #include "mbedtls/ctr_drbg.h"
@@ -26,21 +25,20 @@
 // CONFIGURAÇÕES DE REDE
 // ============================================
 
-const char *WIFI_SSID = "Planeta Solar";
-const char *WIFI_PASSWORD = "sede10204";
+const char *WIFI_SSID = "mandacas";
+const char *WIFI_PASSWORD = "senhasecreta";
 // SERVER_IP e SERVER_PORT removidos (agora via rádio)
 const char *SENSOR_ID = "ESP-42";
-const uint32_t SEND_INTERVAL_MS = 10000; // 10s para não congestionar o ar (2.4kbps)
+const uint32_t SEND_INTERVAL_MS = 4000; // 4s de teste
 
 // ============================================
 // CONFIGURAÇÕES DO RÁDIO EBYTE E49-400T20D
 // ============================================
 
-const int PIN_RX = 16;  // Ligado no TXD do módulo
-const int PIN_TX = 17;  // Ligado no RXD do módulo
-const int PIN_AUX = 15; // Ligado no AUX do módulo
+const int PIN_RX = 16;     // Ligado no TXD do módulo
+const int PIN_TX = 17;     // Ligado no RXD do módulo
+const int PIN_AUX = 15;    // Ligado no AUX do módulo
 const int FRAG_SIZE = 200; // Tamanho máximo de payload por fragmento
-
 
 // ============================================
 // CONFIGURAÇÕES NTP
@@ -87,10 +85,10 @@ const char *PRIVATE_KEY_PEM =
     "-----END PRIVATE KEY-----\n";
 
 // ============================================
-// MEMBERSHIP PROOF — Placeholder (Witness + PoE)
+// MEMBERSHIP PROOF — Witness + PoE (gerada pelo setup)
 // ============================================
-// ⚠️ Cole aqui os bytes reais da Witness + PoE gerados pelo acumulador.
-// O array abaixo é um placeholder de 1064 bytes zerados.
+// Bytes reais da Witness + PoE gerados por 'cargo run --bin setup'.
+// Corresponde à prova de pertencimento do ESP-42 no acumulador.
 
 uint8_t MEMBERSHIP_PROOF[1064] = {
     0xA2, 0x67, 0x77, 0x69, 0x74, 0x6E, 0x65, 0x73, 0x73, 0xA2, 0x67, 0x70,
@@ -190,6 +188,14 @@ const size_t PROOF_SIZE = sizeof(MEMBERSHIP_PROOF);
 
 uint64_t packetCounter = 0;
 
+// Contextos criptográficos globais (mbedTLS)
+// Inicializados uma vez no setup() — evita re-parse da chave PEM
+// e re-seed do DRBG a cada pacote (~200ms de economia).
+mbedtls_pk_context g_pk;
+mbedtls_entropy_context g_entropy;
+mbedtls_ctr_drbg_context g_ctr_drbg;
+bool g_crypto_ready = false;
+
 // ============================================
 // CLASSE SimpleCBOR — Serialização manual
 // ============================================
@@ -268,11 +274,54 @@ public:
 };
 
 // ============================================
+// INICIALIZAÇÃO CRIPTOGRÁFICA (executada uma vez no setup)
+// ============================================
+
+/**
+ * Inicializa os contextos mbedTLS globais: chave privada, entropia e DRBG.
+ * Chamada uma vez no setup(). Evita re-parse do PEM a cada pacote.
+ */
+void initCrypto() {
+  char errorBuf[128];
+  int ret;
+
+  mbedtls_pk_init(&g_pk);
+  mbedtls_entropy_init(&g_entropy);
+  mbedtls_ctr_drbg_init(&g_ctr_drbg);
+
+  // Seed do gerador de números aleatórios
+  const char *pers = "esp32_sensor_sign";
+  ret = mbedtls_ctr_drbg_seed(&g_ctr_drbg, mbedtls_entropy_func, &g_entropy,
+                               (const unsigned char *)pers, strlen(pers));
+  if (ret != 0) {
+    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
+    Serial.printf("❌ Erro DRBG seed: %s\n", errorBuf);
+    return;
+  }
+
+  // Parsear a chave privada PEM (uma única vez)
+  ret = mbedtls_pk_parse_key(&g_pk, (const unsigned char *)PRIVATE_KEY_PEM,
+                              strlen(PRIVATE_KEY_PEM) + 1,
+                              NULL, 0, mbedtls_ctr_drbg_random, &g_ctr_drbg);
+  if (ret != 0) {
+    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
+    Serial.printf("❌ Erro ao parsear chave PEM: %s (code: -0x%04X)\n",
+                  errorBuf, -ret);
+    return;
+  }
+
+  g_crypto_ready = true;
+  Serial.println("🔐 Contexto criptográfico inicializado (RSA-2048)");
+}
+
+// ============================================
 // ASSINATURA DIGITAL — RSA-2048 via mbedTLS
 // ============================================
 
 /**
  * Assina os dados do sensor usando RSA-2048 (PKCS#1 v1.5 + SHA-256).
+ * Usa os contextos criptográficos globais (g_pk, g_ctr_drbg)
+ * inicializados no setup() via initCrypto().
  *
  * Concatenação para o hash: sensor_id + timestamp_str + sensor_data_str
  * Exemplo: "ESP-42" + "1723742400" + "42" → SHA-256 → RSA Sign
@@ -286,6 +335,10 @@ public:
  */
 bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
               uint8_t *signatureOut, size_t *signatureLen) {
+  if (!g_crypto_ready) {
+    Serial.println("❌ Contexto criptográfico não inicializado!");
+    return false;
+  }
 
   int ret;
   char errorBuf[128];
@@ -306,57 +359,18 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
     return false;
   }
 
-  // --- 3. Inicializar contextos mbedTLS ---
-  mbedtls_pk_context pk;
-  mbedtls_entropy_context entropy;
-  mbedtls_ctr_drbg_context ctr_drbg;
-
-  mbedtls_pk_init(&pk);
-  mbedtls_entropy_init(&entropy);
-  mbedtls_ctr_drbg_init(&ctr_drbg);
-
-  // Seed do gerador de números aleatórios
-  const char *pers = "esp32_sensor_sign";
-  ret = mbedtls_ctr_drbg_seed(&ctr_drbg, mbedtls_entropy_func, &entropy,
-                              (const unsigned char *)pers, strlen(pers));
+  // --- 3. Assinar com a chave pré-carregada (global) ---
+  size_t sigLen = 0;
+  ret = mbedtls_pk_sign(&g_pk, MBEDTLS_MD_SHA256, hash, 32, signatureOut, 256,
+                         &sigLen, mbedtls_ctr_drbg_random, &g_ctr_drbg);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro DRBG seed: %s\n", errorBuf);
-    goto cleanup;
+    Serial.printf("❌ Erro ao assinar: %s\n", errorBuf);
+    return false;
   }
 
-  // --- 4. Parsear a chave privada PEM ---
-  ret = mbedtls_pk_parse_key(&pk, (const unsigned char *)PRIVATE_KEY_PEM,
-                             strlen(PRIVATE_KEY_PEM) +
-                                 1, // +1 para o null terminator
-                             NULL, 0, mbedtls_ctr_drbg_random, &ctr_drbg);
-  if (ret != 0) {
-    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro ao parsear chave PEM: %s (code: -0x%04X)\n",
-                  errorBuf, -ret);
-    goto cleanup;
-  }
-
-  // --- 5. Assinar o hash com RSA (PKCS#1 v1.5 + SHA-256) ---
-  {
-    size_t sigLen = 0;
-    ret = mbedtls_pk_sign(&pk, MBEDTLS_MD_SHA256, hash, 32, signatureOut, 256,
-                          &sigLen, mbedtls_ctr_drbg_random, &ctr_drbg);
-    if (ret != 0) {
-      mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-      Serial.printf("❌ Erro ao assinar: %s\n", errorBuf);
-      goto cleanup;
-    }
-
-    *signatureLen = sigLen; // Deve ser 256 bytes para RSA-2048
-  }
-
-cleanup:
-  mbedtls_pk_free(&pk);
-  mbedtls_entropy_free(&entropy);
-  mbedtls_ctr_drbg_free(&ctr_drbg);
-
-  return (ret == 0);
+  *signatureLen = sigLen; // Deve ser 256 bytes para RSA-2048
+  return true;
 }
 
 // ============================================
@@ -488,7 +502,8 @@ void sendPacket() {
   uint8_t packet_id = (uint8_t)(packetCounter % 256);
   uint8_t total_frags = (cborSize + FRAG_SIZE - 1) / FRAG_SIZE;
 
-  Serial.printf("   Preparando envio Rádio: %d bytes em %d fragmentos...\n", cborSize, total_frags);
+  Serial.printf("   Preparando envio Rádio: %d bytes em %d fragmentos...\n",
+                cborSize, total_frags);
 
   // Wake-up preamble (4 bytes de lixo para acordar o rádio)
   uint8_t preamble[4] = {0xFF, 0xFF, 0xFF, 0xFF};
@@ -499,7 +514,8 @@ void sendPacket() {
   for (uint8_t i = 0; i < total_frags; i++) {
     size_t offset = i * FRAG_SIZE;
     size_t len = cborSize - offset;
-    if (len > FRAG_SIZE) len = FRAG_SIZE;
+    if (len > FRAG_SIZE)
+      len = FRAG_SIZE;
 
     // Aguardar rádio estar totalmente livre (AUX HIGH por 10ms contínuos)
     // Isso evita falsos positivos caso o rádio dê um pulso HIGH rápido
@@ -516,26 +532,30 @@ void sendPacket() {
 
     // Cabecalho: 0xAA 0xBB [ID] [Total] [Indice] [Tamanho_Payload]
     uint8_t header[6] = {0xAA, 0xBB, packet_id, total_frags, i, (uint8_t)len};
-    
+
     Serial2.write(header, 6);
     Serial2.write(&cborBuffer[offset], len);
     Serial2.flush(); // Aguarda bytes saírem do ESP32 para o módulo
 
-    // Dá um tempo curto para o módulo puxar o AUX pra LOW se começar a transmitir
-    delay(15);
+    // Dá um tempo para o módulo puxar o AUX pra LOW antes do próximo fragmento
+    delay(25);
   }
 
   // --- 4. Imprimir métricas ---
   Serial.println("────────────────────────────────────────");
-  Serial.printf("✅ Pacote #%llu enviado com sucesso via rádio\n", (unsigned long long)sensorData);
+  Serial.printf("✅ Pacote #%llu enviado com sucesso via rádio\n",
+                (unsigned long long)sensorData);
   Serial.printf("   Sensor ID:    %s\n", SENSOR_ID);
-  Serial.printf("   Timestamp:    %llu (UNIX)\n", (unsigned long long)timestamp);
+  Serial.printf("   Timestamp:    %llu (UNIX)\n",
+                (unsigned long long)timestamp);
   Serial.printf("   Sensor Data:  %llu\n", (unsigned long long)sensorData);
   Serial.printf("   Assinatura:   %d bytes (RSA-2048)\n", signatureLen);
   Serial.printf("   Proof:        %d bytes\n", PROOF_SIZE);
   Serial.println("────────────────────────────────────────");
   Serial.printf("Tempo de processamento (ms): %lu\n", t_end - t_start);
   Serial.printf("Tamanho total (CBOR bytes):  %d\n", cborSize);
+  Serial.printf("Total de pacotes enviados:   %llu\n",
+                (unsigned long long)packetCounter);
   Serial.println("────────────────────────────────────────\n");
 }
 
@@ -552,28 +572,36 @@ void setup() {
   Serial.println("═══════════════════════════════════════");
   Serial.printf(" Sensor ID:        %s\n", SENSOR_ID);
   Serial.printf(" Proof:            %d bytes\n", PROOF_SIZE);
+  Serial.printf(" Intervalo:        %lu ms\n", (unsigned long)SEND_INTERVAL_MS);
   Serial.printf(" Rádio:            Serial2 (TX=%d, RX=%d)\n", PIN_TX, PIN_RX);
   Serial.println("═══════════════════════════════════════\n");
 
   pinMode(PIN_AUX, INPUT);
   Serial2.begin(115200, SERIAL_8N1, PIN_RX, PIN_TX);
 
-  // 1. Conectar Wi-Fi
-  connectWiFi();
+  // 1. Inicializar contexto criptográfico (uma vez)
+  initCrypto();
+  if (!g_crypto_ready) {
+    Serial.println("❌ ERRO FATAL: Contexto criptográfico falhou!");
+    while (1)
+      delay(1000);
+  }
 
+  // 2. Conectar Wi-Fi (apenas para NTP)
+  connectWiFi();
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("❌ ERRO: WiFi não conectado!");
     while (1)
       delay(1000);
   }
-  // --- Teste de diagnóstico: internet real atrás do hotspot? ---
-  HTTPClient http;
-  http.begin("http://example.com");
-  int code = http.GET();
-  Serial.printf("Teste HTTP: código %d\n", code);
-  http.end();
-  // 2. Sincronizar relógio via NTP
+
+  // 3. Sincronizar relógio via NTP
   syncNTP();
+
+  // 4. Desconectar WiFi — não é mais necessário após NTP
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+  Serial.println("📡 WiFi desconectado (não é mais necessário)");
 
   Serial.println("\n✅ Pronto! Enviando pacotes...\n");
   delay(1000);
@@ -584,14 +612,6 @@ void setup() {
 // ============================================
 
 void loop() {
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("⚠️ WiFi desconectado!");
-    connectWiFi();
-  }
-
-  if (WiFi.status() == WL_CONNECTED) {
-    sendPacket();
-  }
-
+  sendPacket();
   delay(SEND_INTERVAL_MS);
 }

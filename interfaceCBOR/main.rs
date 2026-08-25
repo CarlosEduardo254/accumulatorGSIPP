@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// UDP Controller — Servidor de Verificação para ITS (Arquitetura TCC)
+// Controller — Servidor de Verificação para ITS (Arquitetura TCC GSIPP)
 // ═══════════════════════════════════════════════════════════════════════
 //
 // Fluxo de 3 verificações para cada pacote recebido de um sensor ESP32:
@@ -7,9 +7,11 @@
 //   2. Assinatura RSA-2048: SHA-256 + PKCS#1 v1.5
 //   3. Acumulador criptográfico: verify_membership (Witness + PoE)
 //
-// Métricas de desempenho:
+// Métricas de desempenho e resiliência:
 //   - Tempo de verificação no controlador (ms)
 //   - RAM consumida pelo processo (MB)
+//   - Rastreamento de gaps de sequência e perdas de fragmentos
+//   - Estatísticas de sessão em tempo real e no encerramento (Ctrl+C)
 //
 // Executar: cargo run --bin udp_controller --release
 
@@ -21,6 +23,8 @@ use rsa::{Pkcs1v15Sign, RsaPublicKey};
 use serde::Deserialize;
 use sha2::Digest;
 use std::collections::HashMap;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use sysinfo::System;
 
@@ -32,6 +36,8 @@ const SERIAL_PORT: &str = "/dev/serial0";
 const BAUD_RATE: u32 = 115200;
 /// Tolerância máxima de timestamp (em segundos) para proteção anti-replay
 const REPLAY_WINDOW_SECS: u64 = 5;
+/// Timeout de inatividade para descarte de fragmentos incompletos (em segundos)
+const REASSEMBLY_TIMEOUT_SECS: u64 = 10;
 
 // ============================================
 // CHAVE PÚBLICA RSA-2048 DE TESTE
@@ -78,6 +84,58 @@ struct Payload {
 }
 
 // ============================================
+// ESTATÍSTICAS DE SESSÃO
+// ============================================
+
+#[derive(Default, Debug)]
+struct SessionStats {
+    total_reconstructed: u64,
+    accepted: u64,
+    rejected_replay: u64,
+    rejected_unknown_sensor: u64,
+    rejected_invalid_sig: u64,
+    rejected_invalid_proof: u64,
+    corrupted_cbor: u64,
+    reassembly_timeouts: u64,
+    sequence_gaps: u64,
+    total_verification_time_ms: f64,
+    verification_count: u64,
+}
+
+impl SessionStats {
+    fn print_summary(&self) {
+        println!("\n═══════════════════════════════════════════════════════");
+        println!("             📊 RESUMO DA SESSÃO — ITS GSIPP           ");
+        println!("═══════════════════════════════════════════════════════");
+        println!(" Total de pacotes remontados:      {}", self.total_reconstructed);
+        println!(
+            " ✅ Aceitos (3 etapas validadas):  {} ({:.1}%)",
+            self.accepted,
+            if self.total_reconstructed > 0 {
+                (self.accepted as f64 / self.total_reconstructed as f64) * 100.0
+            } else {
+                0.0
+            }
+        );
+        println!(" ❌ Rejeitados por Anti-Replay:    {}", self.rejected_replay);
+        println!(" ❌ Rejeitados por Sensor Descon.: {}", self.rejected_unknown_sensor);
+        println!(" ❌ Rejeitados por Assinatura RSA: {}", self.rejected_invalid_sig);
+        println!(" ❌ Rejeitados por Prova Acumul.:  {}", self.rejected_invalid_proof);
+        println!(" ❌ CBOR Corrompido / Inválido:    {}", self.corrupted_cbor);
+        println!(" ⚠️ Pacotes incompletos (timeout): {}", self.reassembly_timeouts);
+        println!(" ⚠️ Gaps de sequência detectados:  {}", self.sequence_gaps);
+
+        let avg_time = if self.verification_count > 0 {
+            self.total_verification_time_ms / self.verification_count as f64
+        } else {
+            0.0
+        };
+        println!(" ⏱️ Tempo médio verificação:       {:.3} ms", avg_time);
+        println!("═══════════════════════════════════════════════════════\n");
+    }
+}
+
+// ============================================
 // DICIONÁRIO DE CHAVES PÚBLICAS — O(1)
 // ============================================
 
@@ -107,10 +165,20 @@ fn process_packet(
     key_store: &HashMap<String, RsaPublicKey>,
     acc: &Accumulator<Rsa2048, String>,
     sys: &mut System,
+    stats: &mut SessionStats,
+    last_readings: &mut HashMap<String, u64>,
 ) -> Result<()> {
+    stats.total_reconstructed += 1;
+
     // --- Desserializar CBOR ---
-    let payload: Payload =
-        serde_cbor::from_slice(raw).context("Falha ao desserializar payload CBOR")?;
+    let payload: Payload = match serde_cbor::from_slice(raw) {
+        Ok(p) => p,
+        Err(e) => {
+            stats.corrupted_cbor += 1;
+            println!("❌ Erro ao desserializar CBOR: {:#}", e);
+            return Ok(());
+        }
+    };
 
     println!("\n════════════════════════════════════════════════════");
     println!("📦 Pacote recebido de: {}", payload.id);
@@ -118,6 +186,26 @@ fn process_packet(
     println!("   Reading:    {}", payload.reading);
     println!("   Assinatura: {} bytes", payload.signature.len());
     println!("   Proof:      {} bytes", payload.membership_proof.len());
+
+    // ──────────────────────────────────────────────────
+    // DETECÇÃO DE GAP DE SEQUÊNCIA
+    // ──────────────────────────────────────────────────
+    if let Some(&prev_reading) = last_readings.get(&payload.id) {
+        if payload.reading > prev_reading + 1 {
+            let lost = payload.reading - prev_reading - 1;
+            stats.sequence_gaps += lost;
+            println!(
+                "   ⚠️ ALERTA DE GAP: Sequência saltou de #{} para #{} ({} pacote(s) perdido(s) no rádio)",
+                prev_reading, payload.reading, lost
+            );
+        } else if payload.reading <= prev_reading {
+            println!(
+                "   ⚠️ ALERTA DE SEQUÊNCIA: Leitura não-crescente (anterior: #{}, atual: #{})",
+                prev_reading, payload.reading
+            );
+        }
+    }
+    last_readings.insert(payload.id.clone(), payload.reading);
     println!("════════════════════════════════════════════════════");
 
     // ════════════════════════════════════════════════════
@@ -141,7 +229,11 @@ fn process_packet(
 
     if time_diff > REPLAY_WINDOW_SECS {
         let elapsed = t_start.elapsed();
-        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys);
+        stats.rejected_replay += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+
+        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys, stats);
         println!(
             "   ✗ Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
             time_diff, REPLAY_WINDOW_SECS
@@ -164,7 +256,11 @@ fn process_packet(
         Some(key) => key,
         None => {
             let elapsed = t_start.elapsed();
-            print_metrics("REJEITADO (Sensor Desconhecido)", elapsed, raw.len(), sys);
+            stats.rejected_unknown_sensor += 1;
+            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+            stats.verification_count += 1;
+
+            print_metrics("REJEITADO (Sensor Desconhecido)", elapsed, raw.len(), sys, stats);
             println!(
                 "   ✗ Verificação 02 FALHOU: Chave pública não encontrada para '{}'\n",
                 payload.id
@@ -190,7 +286,11 @@ fn process_packet(
         }
         Err(e) => {
             let elapsed = t_start.elapsed();
-            print_metrics("REJEITADO (Assinatura Inválida)", elapsed, raw.len(), sys);
+            stats.rejected_invalid_sig += 1;
+            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+            stats.verification_count += 1;
+
+            print_metrics("REJEITADO (Assinatura Inválida)", elapsed, raw.len(), sys, stats);
             println!("   ✗ Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
             return Ok(());
         }
@@ -199,14 +299,26 @@ fn process_packet(
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 03: Acumulador Criptográfico
     // ──────────────────────────────────────────────────
-    let proof: MembershipProof<Rsa2048, String> = serde_cbor::from_slice(&payload.membership_proof)
-        .context("Falha ao desserializar MembershipProof (Witness + PoE)")?;
+    let proof: MembershipProof<Rsa2048, String> = match serde_cbor::from_slice(&payload.membership_proof) {
+        Ok(p) => p,
+        Err(e) => {
+            let elapsed = t_start.elapsed();
+            stats.corrupted_cbor += 1;
+            print_metrics("REJEITADO (Proof Inválida)", elapsed, raw.len(), sys, stats);
+            println!("   ✗ Verificação 03 FALHOU ao desserializar MembershipProof: {:#}\n", e);
+            return Ok(());
+        }
+    };
 
     if acc.verify_membership(&payload.id, &proof) {
         println!("   ✓ Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
     } else {
         let elapsed = t_start.elapsed();
-        print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys);
+        stats.rejected_invalid_proof += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+
+        print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys, stats);
         println!(
             "   ✗ Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
             payload.id
@@ -218,7 +330,11 @@ fn process_packet(
     // FIM DA MEDIÇÃO — PACOTE ACEITO
     // ════════════════════════════════════════════════════
     let elapsed = t_start.elapsed();
-    print_metrics("ACEITO ✓", elapsed, raw.len(), sys);
+    stats.accepted += 1;
+    stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+    stats.verification_count += 1;
+
+    print_metrics("ACEITO ✓", elapsed, raw.len(), sys, stats);
     println!();
 
     Ok(())
@@ -228,7 +344,13 @@ fn process_packet(
 // MÉTRICAS DE DESEMPENHO
 // ============================================
 
-fn print_metrics(status: &str, elapsed: std::time::Duration, packet_size: usize, sys: &mut System) {
+fn print_metrics(
+    status: &str,
+    elapsed: std::time::Duration,
+    packet_size: usize,
+    sys: &mut System,
+    stats: &SessionStats,
+) {
     // Atualizar informações de memória do processo
     sys.refresh_memory();
     sys.refresh_processes();
@@ -251,6 +373,16 @@ fn print_metrics(status: &str, elapsed: std::time::Duration, packet_size: usize,
         packet_size
     );
     println!("   RAM consumida pelo processo (MB): {:.2}", ram_mb);
+    println!(
+        "   📈 Sessão: {} aceitos | {} rejeitados | {} perdidos",
+        stats.accepted,
+        stats.rejected_replay
+            + stats.rejected_unknown_sensor
+            + stats.rejected_invalid_sig
+            + stats.rejected_invalid_proof
+            + stats.corrupted_cbor,
+        stats.reassembly_timeouts + stats.sequence_gaps
+    );
     println!("────────────────────────────────────────────────────");
 }
 
@@ -272,6 +404,24 @@ impl ReassemblyBuffer {
         }
     }
 
+    /// Limpa pacotes incompletos após timeout de inatividade e loga detalhes do descarte.
+    fn check_timeout(&mut self, stats: &mut SessionStats) {
+        if self.last_activity.elapsed().as_secs() >= REASSEMBLY_TIMEOUT_SECS && !self.packets.is_empty() {
+            for (packet_id, (total_frags, received_count, frags_map)) in self.packets.drain() {
+                stats.reassembly_timeouts += 1;
+                let missing_indices: Vec<u8> = (0..total_frags)
+                    .filter(|i| !frags_map.contains_key(i))
+                    .map(|i| i + 1) // 1-indexed para log legível
+                    .collect();
+
+                println!(
+                    "⚠️ [Reassembly Timeout] Pacote ID {} descartado após {}s de inatividade! Recebidos: {}/{} (Faltaram fragmentos: {:?})",
+                    packet_id, REASSEMBLY_TIMEOUT_SECS, received_count, total_frags, missing_indices
+                );
+            }
+        }
+    }
+
     // Adiciona fragmento e retorna Some(payload_completo) se terminar
     fn add_fragment(
         &mut self,
@@ -279,11 +429,9 @@ impl ReassemblyBuffer {
         total_frags: u8,
         frag_idx: u8,
         payload: Vec<u8>,
+        stats: &mut SessionStats,
     ) -> Option<Vec<u8>> {
-        // Limpar pacotes não terminados após 20 segundos de inatividade
-        if self.last_activity.elapsed().as_secs() > 20 {
-            self.packets.clear();
-        }
+        self.check_timeout(stats);
         self.last_activity = Instant::now();
 
         let entry = self
@@ -298,7 +446,7 @@ impl ReassemblyBuffer {
         }
 
         if entry.1 == entry.0 {
-            // Remontar payload completo
+            // Remontar payload completo ordenadamente
             let mut full_payload = Vec::new();
             for i in 0..entry.0 {
                 if let Some(frag) = entry.2.get(&i) {
@@ -322,7 +470,9 @@ fn main() -> Result<()> {
     println!("  Controller — ITS (Arquitetura TCC GSIPP) via Rádio");
     println!("═══════════════════════════════════════════════════════");
     println!("  Verificações: Timestamp + RSA-2048 + Acumulador");
-    println!("  Rádio UART: {} a {} bps", SERIAL_PORT, BAUD_RATE);
+    println!("  Rádio UART:   {} a {} bps", SERIAL_PORT, BAUD_RATE);
+    println!("  Anti-Replay:  Janela de {}s", REPLAY_WINDOW_SECS);
+    println!("  Reassembly:   Timeout de {}s", REASSEMBLY_TIMEOUT_SECS);
     println!("═══════════════════════════════════════════════════════\n");
 
     // --- 1. Construir dicionário de chaves públicas ---
@@ -343,10 +493,28 @@ fn main() -> Result<()> {
         serde_cbor::from_slice(&acc_bytes).context("Falha ao desserializar accumulator.dat")?;
     println!("\n🔐 Acumulador carregado com sucesso do disco.");
 
-    // --- 3. Inicializar monitor de sistema ---
+    // --- 3. Inicializar monitor de sistema e estatísticas ---
     let mut sys = System::new();
+    let stats_arc = Arc::new(Mutex::new(SessionStats::default()));
+    let mut last_readings = HashMap::new();
 
-    // --- 4. Abrir porta serial ---
+    // --- 4. Configurar handler para Ctrl+C (relatório final) ---
+    let running = Arc::new(AtomicBool::new(true));
+    {
+        let r = running.clone();
+        let stats_clone = stats_arc.clone();
+        ctrlc::set_handler(move || {
+            println!("\n🛑 Interrupção recebida (Ctrl+C)... Encerrando controlador.");
+            if let Ok(st) = stats_clone.lock() {
+                st.print_summary();
+            }
+            r.store(false, Ordering::SeqCst);
+            std::process::exit(0);
+        })
+        .expect("Erro ao configurar handler de Ctrl+C");
+    }
+
+    // --- 5. Abrir porta serial ---
     let mut port = serialport::new(SERIAL_PORT, BAUD_RATE)
         .timeout(Duration::from_millis(100))
         .open()
@@ -358,61 +526,102 @@ fn main() -> Result<()> {
     let mut buf = [0u8; 1024];
     let mut stream_buffer = Vec::new();
 
-    loop {
+    while running.load(Ordering::SeqCst) {
         match port.read(&mut buf) {
             Ok(t) if t > 0 => {
                 stream_buffer.extend_from_slice(&buf[..t]);
 
-                // Parse stream contínuo
-                while stream_buffer.len() >= 6 {
-                    // Marcadores de sincronismo (0xAA, 0xBB)
+                // Parse stream contínuo com detecção otimizada de sincronismo
+                loop {
+                    if stream_buffer.len() < 6 {
+                        break;
+                    }
+
+                    // Procurar cabeçalho 0xAA 0xBB
                     if stream_buffer[0] == 0xAA && stream_buffer[1] == 0xBB {
                         let packet_id = stream_buffer[2];
                         let total_frags = stream_buffer[3];
                         let frag_idx = stream_buffer[4];
                         let payload_len = stream_buffer[5] as usize;
 
+                        // Validação de sanidade do cabeçalho
+                        if total_frags == 0 || frag_idx >= total_frags || payload_len == 0 || payload_len > 250 {
+                            println!(
+                                "⚠️ [Radio] Cabeçalho corrompido descartado: ID={}, Total={}, Frag={}, Len={}",
+                                packet_id, total_frags, frag_idx, payload_len
+                            );
+                            stream_buffer.drain(..2);
+                            continue;
+                        }
+
                         if stream_buffer.len() >= 6 + payload_len {
-                            // Payload inteiro disponível
+                            // Fragmento completo disponível
                             let payload = stream_buffer[6..6 + payload_len].to_vec();
                             stream_buffer.drain(..6 + payload_len);
 
                             println!(
-                                "   [Radio] RX: Fragmento {}/{} (Pacote ID: {})",
+                                "   [Radio] RX: Fragmento {}/{} (Pacote ID: {}) — {} bytes",
                                 frag_idx + 1,
                                 total_frags,
-                                packet_id
+                                packet_id,
+                                payload_len
                             );
 
-                            if let Some(full_cb_raw) =
-                                reassembly.add_fragment(packet_id, total_frags, frag_idx, payload)
-                            {
+                            let mut stats = stats_arc.lock().unwrap();
+                            if let Some(full_cb_raw) = reassembly.add_fragment(
+                                packet_id,
+                                total_frags,
+                                frag_idx,
+                                payload,
+                                &mut stats,
+                            ) {
                                 println!(
                                     "──── Pacote Completo Reconstruído ({} bytes) ────",
                                     full_cb_raw.len()
                                 );
-                                if let Err(e) =
-                                    process_packet(&full_cb_raw, &key_store, &acc, &mut sys)
-                                {
+                                if let Err(e) = process_packet(
+                                    &full_cb_raw,
+                                    &key_store,
+                                    &acc,
+                                    &mut sys,
+                                    &mut stats,
+                                    &mut last_readings,
+                                ) {
                                     eprintln!("❌ Erro ao processar pacote CBOR: {:#}", e);
                                 }
                             }
                         } else {
-                            // Esperar mais dados do rádio
+                            // Esperar mais bytes para completar o fragmento
                             break;
                         }
                     } else {
-                        // Fora de sincronismo, consome 1 byte e tenta de novo
-                        stream_buffer.remove(0);
+                        // Sincronismo não encontrado no início; procurar o próximo 0xAA 0xBB
+                        if let Some(pos) = stream_buffer.windows(2).position(|w| w == [0xAA, 0xBB]) {
+                            stream_buffer.drain(..pos);
+                        } else {
+                            // Se o último byte for 0xAA, mantê-lo caso o próximo seja 0xBB
+                            if stream_buffer.last() == Some(&0xAA) {
+                                stream_buffer.drain(..stream_buffer.len() - 1);
+                            } else {
+                                stream_buffer.clear();
+                            }
+                            break;
+                        }
                     }
                 }
             }
             Ok(_) => {}
-            Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut => {}
+            Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut => {
+                // Verificar timeouts de pacotes fragmentados mesmo se a serial estiver ociosa
+                let mut stats = stats_arc.lock().unwrap();
+                reassembly.check_timeout(&mut stats);
+            }
             Err(e) => {
                 eprintln!("❌ Erro de leitura serial: {:?}", e);
-                std::thread::sleep(Duration::from_secs(1));
+                std::thread::sleep(Duration::from_millis(500));
             }
         }
     }
+
+    Ok(())
 }
