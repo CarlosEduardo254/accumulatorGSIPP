@@ -1,15 +1,18 @@
 // ═══════════════════════════════════════════════════════════════════════
-// UDP Controller — Servidor de Verificação para ITS (Arquitetura TCC)
+// UDP Controller — Servidor de Verificação para ITS (Arquitetura TCC GSIPP)
 // ═══════════════════════════════════════════════════════════════════════
 //
-// Fluxo de 3 verificações para cada pacote recebido de um sensor ESP32:
+// Fluxo de 3 verificações para cada pacote recebido de um sensor ESP32 via UDP:
 //   1. Timestamp (anti-replay): diferença máxima de 5s
-//   2. Assinatura RSA-2048: SHA-256 + PKCS#1 v1.5
+//      1b. Anti-replay intra-janela (deduplicação dentro do Δt)
+//   2. Assinatura RSA-2048: SHA-256 (com delimitador) + PKCS#1 v1.5
 //   3. Acumulador criptográfico: verify_membership (Witness + PoE)
 //
-// Métricas de desempenho:
+// Métricas de desempenho e resiliência:
 //   - Tempo de verificação no controlador (ms)
 //   - RAM consumida pelo processo (MB)
+//   - Rastreamento de gaps de sequência (pacotes UDP perdidos na rede)
+//   - Estatísticas de sessão em tempo real e no encerramento (Ctrl+C)
 //
 // Executar: cargo run --bin udp_controller --release
 
@@ -20,8 +23,10 @@ use rsa::sha2::Sha256;
 use rsa::{Pkcs1v15Sign, RsaPublicKey};
 use serde::Deserialize;
 use sha2::Digest;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::net::UdpSocket;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 use sysinfo::System;
 
@@ -79,6 +84,65 @@ struct Payload {
 }
 
 // ============================================
+// ESTATÍSTICAS DE SESSÃO
+// ============================================
+
+#[derive(Default, Debug)]
+struct SessionStats {
+    total_received: u64,
+    accepted: u64,
+    rejected_replay: u64,
+    rejected_unknown_sensor: u64,
+    rejected_invalid_sig: u64,
+    rejected_invalid_proof: u64,
+    corrupted_cbor: u64,
+    sequence_gaps: u64,
+    total_verification_time_ms: f64,
+    verification_count: u64,
+}
+
+impl SessionStats {
+    fn print_summary(&self) {
+        println!("\n═══════════════════════════════════════════════════════");
+        println!("              RESUMO DA SESSÃO — ITS GSIPP (UDP)      ");
+        println!("═══════════════════════════════════════════════════════");
+        println!(" Total de pacotes recebidos:       {}", self.total_received);
+        println!(
+            "  Aceitos (3 etapas validadas):  {} ({:.1}%)",
+            self.accepted,
+            if self.total_received > 0 {
+                (self.accepted as f64 / self.total_received as f64) * 100.0
+            } else {
+                0.0
+            }
+        );
+        println!("  Rejeitados por Anti-Replay:    {}", self.rejected_replay);
+        println!(
+            "  Rejeitados por Sensor Descon.: {}",
+            self.rejected_unknown_sensor
+        );
+        println!(
+            "  Rejeitados por Assinatura RSA: {}",
+            self.rejected_invalid_sig
+        );
+        println!(
+            "  Rejeitados por Prova Acumul.:  {}",
+            self.rejected_invalid_proof
+        );
+        println!("  CBOR Corrompido / Inválido:    {}", self.corrupted_cbor);
+        println!("  Gaps de sequência detectados:  {}", self.sequence_gaps);
+
+        let avg_time = if self.verification_count > 0 {
+            self.total_verification_time_ms / self.verification_count as f64
+        } else {
+            0.0
+        };
+        println!("  Tempo médio verificação:       {:.3} ms", avg_time);
+        println!("═══════════════════════════════════════════════════════\n");
+    }
+}
+
+// ============================================
 // DICIONÁRIO DE CHAVES PÚBLICAS — O(1)
 // ============================================
 
@@ -93,7 +157,7 @@ fn build_key_store() -> HashMap<String, RsaPublicKey> {
 
     store.insert("ESP-42".to_string(), pub_key);
 
-    // ⚠️ Adicione mais sensores aqui conforme necessário:
+    // Adicione mais sensores aqui conforme necessário:
     // store.insert("ESP-43".to_string(), outra_chave);
 
     store
@@ -108,17 +172,48 @@ fn process_packet(
     key_store: &HashMap<String, RsaPublicKey>,
     acc: &Accumulator<Rsa2048, String>,
     sys: &mut System,
+    stats: &mut SessionStats,
+    last_readings: &mut HashMap<String, u64>,
+    replay_seen: &mut HashSet<(String, u64, u64)>,
 ) -> Result<()> {
+    stats.total_received += 1;
+
     // --- Desserializar CBOR ---
-    let payload: Payload =
-        serde_cbor::from_slice(raw).context("Falha ao desserializar payload CBOR")?;
+    let payload: Payload = match serde_cbor::from_slice(raw) {
+        Ok(p) => p,
+        Err(e) => {
+            stats.corrupted_cbor += 1;
+            println!(" Erro ao desserializar CBOR: {:#}", e);
+            return Ok(());
+        }
+    };
 
     println!("\n════════════════════════════════════════════════════");
-    println!("📦 Pacote recebido de: {}", payload.id);
+    println!(" Pacote recebido de: {}", payload.id);
     println!("   Timestamp:  {}", payload.timestamp);
     println!("   Reading:    {}", payload.reading);
     println!("   Assinatura: {} bytes", payload.signature.len());
     println!("   Proof:      {} bytes", payload.membership_proof.len());
+
+    // ──────────────────────────────────────────────────
+    // DETECÇÃO DE GAP DE SEQUÊNCIA
+    // ──────────────────────────────────────────────────
+    if let Some(&prev_reading) = last_readings.get(&payload.id) {
+        if payload.reading > prev_reading + 1 {
+            let lost = payload.reading - prev_reading - 1;
+            stats.sequence_gaps += lost;
+            println!(
+                "    ALERTA DE GAP: Sequência saltou de #{} para #{} ({} pacote(s) perdido(s) na rede UDP)",
+                prev_reading, payload.reading, lost
+            );
+        } else if payload.reading <= prev_reading {
+            println!(
+                "    ALERTA DE SEQUÊNCIA: Leitura não-crescente (anterior: #{}, atual: #{})",
+                prev_reading, payload.reading
+            );
+        }
+    }
+    last_readings.insert(payload.id.clone(), payload.reading);
     println!("════════════════════════════════════════════════════");
 
     // ════════════════════════════════════════════════════
@@ -142,18 +237,51 @@ fn process_packet(
 
     if time_diff > REPLAY_WINDOW_SECS {
         let elapsed = t_start.elapsed();
-        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys);
+        stats.rejected_replay += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+
+        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys, stats);
         println!(
-            "   ✗ Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
+            "    Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
             time_diff, REPLAY_WINDOW_SECS
         );
         println!(
-            "   ✗ Pacote do sensor {} descartado como possível ataque de repetição.\n",
+            "    Pacote do sensor {} descartado como possível ataque de repetição.\n",
             payload.id
         );
         return Ok(());
     }
-    println!("   ✓ Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)", time_diff, REPLAY_WINDOW_SECS);
+    println!(
+        "    Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)",
+        time_diff, REPLAY_WINDOW_SECS
+    );
+
+    // ──────────────────────────────────────────────────
+    // VERIFICAÇÃO 01b: Anti-Replay Intra-Janela
+    // Rejeita pacote com (id, timestamp, reading) já visto dentro do Δt.
+    // ──────────────────────────────────────────────────
+    replay_seen.retain(|(_, ts, _)| now_unix.saturating_sub(*ts) <= REPLAY_WINDOW_SECS);
+
+    let replay_key = (payload.id.clone(), payload.timestamp, payload.reading);
+    if replay_seen.contains(&replay_key) {
+        let elapsed = t_start.elapsed();
+        stats.rejected_replay += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+        print_metrics(
+            "REJEITADO (Replay Intra-Janela)",
+            elapsed,
+            raw.len(),
+            sys,
+            stats,
+        );
+        println!(
+            "    Verificação 01b FALHOU: Pacote duplicado dentro da janela (id={}, ts={}, reading={})\n",
+            payload.id, payload.timestamp, payload.reading
+        );
+        return Ok(());
+    }
 
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 02: Assinatura Digital RSA-2048
@@ -162,18 +290,28 @@ fn process_packet(
         Some(key) => key,
         None => {
             let elapsed = t_start.elapsed();
-            print_metrics("REJEITADO (Sensor Desconhecido)", elapsed, raw.len(), sys);
+            stats.rejected_unknown_sensor += 1;
+            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+            stats.verification_count += 1;
+
+            print_metrics(
+                "REJEITADO (Sensor Desconhecido)",
+                elapsed,
+                raw.len(),
+                sys,
+                stats,
+            );
             println!(
-                "   ✗ Verificação 02 FALHOU: Chave pública não encontrada para '{}'\n",
+                "    Verificação 02 FALHOU: Chave pública não encontrada para '{}'\n",
                 payload.id
             );
             return Ok(());
         }
     };
 
-    // Recalcular o hash SHA-256 da concatenação: id + timestamp + reading
-    // (mesmo formato usado pelo ESP32: sprintf "%s%llu%llu")
-    let data_to_hash = format!("{}{}{}", payload.id, payload.timestamp, payload.reading);
+    // Recalcular o hash SHA-256 da concatenação delimitada: id | timestamp | reading
+    // Delimitador '|' previne ambiguidade de colisão.
+    let data_to_hash = format!("{}|{}|{}", payload.id, payload.timestamp, payload.reading);
     let hash = {
         let mut hasher = <Sha256 as Digest>::new();
         hasher.update(data_to_hash.as_bytes());
@@ -184,12 +322,22 @@ fn process_packet(
     let verification_scheme = Pkcs1v15Sign::new::<Sha256>();
     match pub_key.verify(verification_scheme, &hash, &payload.signature) {
         Ok(_) => {
-            println!("   ✓ Verificação 02: Assinatura RSA-2048 VÁLIDA");
+            println!("    Verificação 02: Assinatura RSA-2048 VÁLIDA");
         }
         Err(e) => {
             let elapsed = t_start.elapsed();
-            print_metrics("REJEITADO (Assinatura Inválida)", elapsed, raw.len(), sys);
-            println!("   ✗ Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
+            stats.rejected_invalid_sig += 1;
+            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+            stats.verification_count += 1;
+
+            print_metrics(
+                "REJEITADO (Assinatura Inválida)",
+                elapsed,
+                raw.len(),
+                sys,
+                stats,
+            );
+            println!("    Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
             return Ok(());
         }
     }
@@ -198,16 +346,31 @@ fn process_packet(
     // VERIFICAÇÃO 03: Acumulador Criptográfico
     // ──────────────────────────────────────────────────
     let proof: MembershipProof<Rsa2048, String> =
-        serde_cbor::from_slice(&payload.membership_proof)
-            .context("Falha ao desserializar MembershipProof (Witness + PoE)")?;
+        match serde_cbor::from_slice(&payload.membership_proof) {
+            Ok(p) => p,
+            Err(e) => {
+                let elapsed = t_start.elapsed();
+                stats.corrupted_cbor += 1;
+                print_metrics("REJEITADO (Proof Inválida)", elapsed, raw.len(), sys, stats);
+                println!(
+                    "    Verificação 03 FALHOU ao desserializar MembershipProof: {:#}\n",
+                    e
+                );
+                return Ok(());
+            }
+        };
 
     if acc.verify_membership(&payload.id, &proof) {
-        println!("   ✓ Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
+        println!("    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
     } else {
         let elapsed = t_start.elapsed();
-        print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys);
+        stats.rejected_invalid_proof += 1;
+        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+        stats.verification_count += 1;
+
+        print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys, stats);
         println!(
-            "   ✗ Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
+            "    Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
             payload.id
         );
         return Ok(());
@@ -216,8 +379,14 @@ fn process_packet(
     // ════════════════════════════════════════════════════
     // FIM DA MEDIÇÃO — PACOTE ACEITO
     // ════════════════════════════════════════════════════
+    replay_seen.insert(replay_key);
+
     let elapsed = t_start.elapsed();
-    print_metrics("ACEITO ✓", elapsed, raw.len(), sys);
+    stats.accepted += 1;
+    stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
+    stats.verification_count += 1;
+
+    print_metrics("ACEITO ", elapsed, raw.len(), sys, stats);
     println!();
 
     Ok(())
@@ -232,6 +401,7 @@ fn print_metrics(
     elapsed: std::time::Duration,
     packet_size: usize,
     sys: &mut System,
+    stats: &SessionStats,
 ) {
     // Atualizar informações de memória do processo
     sys.refresh_memory();
@@ -245,7 +415,7 @@ fn print_metrics(
         .unwrap_or(0.0);
 
     println!("────────────────────────────────────────────────────");
-    println!("📊 Status: {}", status);
+    println!(" Status: {}", status);
     println!(
         "   Tempo de verificação no controlador (ms): {:.3}",
         elapsed.as_secs_f64() * 1000.0
@@ -255,6 +425,16 @@ fn print_metrics(
         packet_size
     );
     println!("   RAM consumida pelo processo (MB): {:.2}", ram_mb);
+    println!(
+        "    Sessão: {} aceitos | {} rejeitados | {} perdidos",
+        stats.accepted,
+        stats.rejected_replay
+            + stats.rejected_unknown_sensor
+            + stats.rejected_invalid_sig
+            + stats.rejected_invalid_proof
+            + stats.corrupted_cbor,
+        stats.sequence_gaps
+    );
     println!("────────────────────────────────────────────────────");
 }
 
@@ -267,13 +447,14 @@ fn main() -> Result<()> {
     println!("  UDP Controller — ITS (Arquitetura TCC GSIPP)");
     println!("═══════════════════════════════════════════════════════");
     println!("  Verificações: Timestamp + RSA-2048 + Acumulador");
-    println!("  Porta: {}", BIND_ADDR);
+    println!("  Porta UDP:    {}", BIND_ADDR);
+    println!("  Anti-Replay:  Janela de {}s", REPLAY_WINDOW_SECS);
     println!("═══════════════════════════════════════════════════════\n");
 
     // --- 1. Construir dicionário de chaves públicas ---
     let key_store = build_key_store();
     println!(
-        "🔑 Chaves públicas carregadas: {} sensor(es)",
+        " Chaves públicas carregadas: {} sensor(es)",
         key_store.len()
     );
     for sensor_id in key_store.keys() {
@@ -281,35 +462,63 @@ fn main() -> Result<()> {
     }
 
     // --- 2. Carregar acumulador serializado do disco ---
-    // Este arquivo foi gerado pelo `setup.rs` e contém o estado do acumulador
-    // após adicionar todos os sensores autorizados (ex: ESP-42).
     let acc_bytes = std::fs::read("accumulator.dat").expect(
-        "❌ Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro."
+        " Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro.",
     );
-    let acc: Accumulator<Rsa2048, String> = serde_cbor::from_slice(&acc_bytes)
-        .context("Falha ao desserializar accumulator.dat")?;
-    println!("\n🔐 Acumulador carregado com sucesso do disco.");
+    let acc: Accumulator<Rsa2048, String> =
+        serde_cbor::from_slice(&acc_bytes).context("Falha ao desserializar accumulator.dat")?;
+    println!("\n Acumulador carregado com sucesso do disco.");
 
-    // --- 3. Inicializar monitor de sistema ---
+    // --- 3. Inicializar monitor de sistema e estatísticas ---
     let mut sys = System::new();
+    let stats_arc = Arc::new(Mutex::new(SessionStats::default()));
+    let mut last_readings = HashMap::new();
+    let mut replay_seen = HashSet::new();
 
-    // --- 4. Abrir socket UDP ---
+    // --- 4. Configurar handler para Ctrl+C (relatório final) ---
+    let running = Arc::new(AtomicBool::new(true));
+    {
+        let r = running.clone();
+        let stats_clone = stats_arc.clone();
+        ctrlc::set_handler(move || {
+            println!("\n Interrupção recebida (Ctrl+C)... Encerrando servidor UDP.");
+            if let Ok(st) = stats_clone.lock() {
+                st.print_summary();
+            }
+            r.store(false, Ordering::SeqCst);
+            std::process::exit(0);
+        })
+        .expect("Erro ao configurar handler de Ctrl+C");
+    }
+
+    // --- 5. Abrir socket UDP ---
     let socket = UdpSocket::bind(BIND_ADDR).context("Falha ao fazer bind no socket UDP")?;
-    println!("\n📡 Aguardando pacotes em {}...\n", BIND_ADDR);
+    println!("\n📡 Aguardando pacotes UDP em {}...\n", BIND_ADDR);
 
     let mut buf = [0u8; MAX_PACKET_SIZE];
 
-    loop {
+    while running.load(Ordering::SeqCst) {
         match socket.recv_from(&mut buf) {
             Ok((size, src)) => {
                 println!("──── Pacote de {} ({} bytes) ────", src, size);
-                if let Err(e) = process_packet(&buf[..size], &key_store, &acc, &mut sys) {
-                    eprintln!("❌ Erro ao processar pacote: {:#}", e);
+                let mut stats = stats_arc.lock().unwrap();
+                if let Err(e) = process_packet(
+                    &buf[..size],
+                    &key_store,
+                    &acc,
+                    &mut sys,
+                    &mut stats,
+                    &mut last_readings,
+                    &mut replay_seen,
+                ) {
+                    eprintln!(" Erro ao processar pacote: {:#}", e);
                 }
             }
             Err(e) => {
-                eprintln!("❌ Erro ao receber UDP: {}", e);
+                eprintln!(" Erro ao receber UDP: {}", e);
             }
         }
     }
+
+    Ok(())
 }

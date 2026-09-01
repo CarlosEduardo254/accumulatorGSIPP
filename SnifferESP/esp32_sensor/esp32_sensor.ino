@@ -29,7 +29,7 @@
 
 const char *WIFI_SSID = "Planeta Solar";
 const char *WIFI_PASSWORD = "sede10204";
-const char *SERVER_IP = "172.16.0.55"; // AJUSTE SEU IP
+const char *SERVER_IP = "172.16.0.72"; // AJUSTE O IP
 const uint16_t SERVER_PORT = 4242;
 const char *SENSOR_ID = "ESP-42";
 const uint32_t SEND_INTERVAL_MS = 3000;
@@ -43,10 +43,9 @@ const long GMT_OFFSET_SEC = -10800; // UTC-3 (Brasília)
 const int DAYLIGHT_OFFSET_SEC = 0;
 
 // ============================================
-// CHAVE PRIVADA RSA-2048 (TESTE)
+// CHAVE PRIVADA RSA-2048
 // ============================================
 // Gerada com: openssl genrsa 2048
-// ⚠️ Substitua pela chave definitiva do seu sistema.
 
 const char *PRIVATE_KEY_PEM =
     "-----BEGIN PRIVATE KEY-----\n"
@@ -81,8 +80,7 @@ const char *PRIVATE_KEY_PEM =
 // ============================================
 // MEMBERSHIP PROOF — Placeholder (Witness + PoE)
 // ============================================
-// ⚠️ Cole aqui os bytes reais da Witness + PoE gerados pelo acumulador.
-// O array abaixo é um placeholder de 1064 bytes zerados.
+//  Cole aqui os bytes reais da Witness + PoE gerados pelo acumulador.
 
 uint8_t MEMBERSHIP_PROOF[1064] = {
     0xA2, 0x67, 0x77, 0x69, 0x74, 0x6E, 0x65, 0x73, 0x73, 0xA2, 0x67, 0x70,
@@ -183,6 +181,14 @@ const size_t PROOF_SIZE = sizeof(MEMBERSHIP_PROOF);
 WiFiUDP udp;
 uint64_t packetCounter = 0;
 
+// Contextos criptográficos globais (mbedTLS)
+// Inicializados uma vez no setup() — evita re-parse da chave PEM
+// e re-seed do DRBG a cada pacote (~200ms de economia).
+mbedtls_pk_context g_pk;
+mbedtls_entropy_context g_entropy;
+mbedtls_ctr_drbg_context g_ctr_drbg;
+bool g_crypto_ready = false;
+
 // ============================================
 // CLASSE SimpleCBOR — Serialização manual
 // ============================================
@@ -192,21 +198,43 @@ private:
   uint8_t *buffer;
   size_t pos;
   size_t maxSize;
+  bool overflow; // true se algum write ultrapassou o buffer
+
+  // Verifica se há 'needed' bytes disponíveis; marca overflow e retorna false
+  // se não.
+  bool hasSpace(size_t needed) {
+    if (pos + needed > maxSize) {
+      overflow = true;
+      return false;
+    }
+    return true;
+  }
 
 public:
-  SimpleCBOR(uint8_t *buf, size_t size) : buffer(buf), pos(0), maxSize(size) {}
+  SimpleCBOR(uint8_t *buf, size_t size)
+      : buffer(buf), pos(0), maxSize(size), overflow(false) {}
+
+  // Retorna true se alguma escrita não coube no buffer
+  bool hasOverflow() const { return overflow; }
 
   // Escreve cabeçalho de mapa CBOR (até 23 pares)
-  void writeMap(uint8_t numPairs) { buffer[pos++] = 0xA0 | numPairs; }
+  void writeMap(uint8_t numPairs) {
+    if (!hasSpace(1))
+      return;
+    buffer[pos++] = 0xA0 | numPairs;
+  }
 
   // Escreve text string CBOR (Major type 3)
   void writeString(const char *str) {
     size_t len = strlen(str);
+    size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
+    if (!hasSpace(headerSz + len))
+      return;
     if (len < 24) {
       buffer[pos++] = 0x60 | len;
     } else if (len <= 0xFF) {
       buffer[pos++] = 0x78;
-      buffer[pos++] = len;
+      buffer[pos++] = (uint8_t)len;
     } else {
       buffer[pos++] = 0x79;
       buffer[pos++] = (len >> 8) & 0xFF;
@@ -218,11 +246,18 @@ public:
 
   // Escreve unsigned integer CBOR (Major type 0)
   void writeUint64(uint64_t value) {
+    size_t needed = (value < 24)            ? 1
+                    : (value <= 0xFF)       ? 2
+                    : (value <= 0xFFFF)     ? 3
+                    : (value <= 0xFFFFFFFF) ? 5
+                                            : 9;
+    if (!hasSpace(needed))
+      return;
     if (value < 24) {
-      buffer[pos++] = value;
+      buffer[pos++] = (uint8_t)value;
     } else if (value <= 0xFF) {
       buffer[pos++] = 0x18;
-      buffer[pos++] = value;
+      buffer[pos++] = (uint8_t)value;
     } else if (value <= 0xFFFF) {
       buffer[pos++] = 0x19;
       buffer[pos++] = (value >> 8) & 0xFF;
@@ -243,11 +278,14 @@ public:
 
   // Escreve byte string CBOR (Major type 2)
   void writeBytes(const uint8_t *data, size_t len) {
+    size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
+    if (!hasSpace(headerSz + len))
+      return;
     if (len < 24) {
       buffer[pos++] = 0x40 | len;
     } else if (len <= 0xFF) {
       buffer[pos++] = 0x58;
-      buffer[pos++] = len;
+      buffer[pos++] = (uint8_t)len;
     } else {
       buffer[pos++] = 0x59;
       buffer[pos++] = (len >> 8) & 0xFF;
@@ -257,8 +295,49 @@ public:
     pos += len;
   }
 
-  size_t getSize() { return pos; }
+  size_t getSize() const { return pos; }
 };
+
+// ============================================
+// INICIALIZAÇÃO CRIPTOGRÁFICA (executada uma vez no setup)
+// ============================================
+
+/**
+ * Inicializa os contextos mbedTLS globais: chave privada, entropia e DRBG.
+ * Chamada uma vez no setup(). Evita re-parse do PEM a cada pacote.
+ */
+void initCrypto() {
+  char errorBuf[128];
+  int ret;
+
+  mbedtls_pk_init(&g_pk);
+  mbedtls_entropy_init(&g_entropy);
+  mbedtls_ctr_drbg_init(&g_ctr_drbg);
+
+  // Seed do gerador de números aleatórios
+  const char *pers = "esp32_sensor_sign";
+  ret = mbedtls_ctr_drbg_seed(&g_ctr_drbg, mbedtls_entropy_func, &g_entropy,
+                              (const unsigned char *)pers, strlen(pers));
+  if (ret != 0) {
+    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
+    Serial.printf(" Erro DRBG seed: %s\n", errorBuf);
+    return;
+  }
+
+  // Parsear a chave privada PEM (uma única vez)
+  ret = mbedtls_pk_parse_key(&g_pk, (const unsigned char *)PRIVATE_KEY_PEM,
+                             strlen(PRIVATE_KEY_PEM) + 1, NULL, 0,
+                             mbedtls_ctr_drbg_random, &g_ctr_drbg);
+  if (ret != 0) {
+    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
+    Serial.printf(" Erro ao parsear chave PEM: %s (code: -0x%04X)\n", errorBuf,
+                  -ret);
+    return;
+  }
+
+  g_crypto_ready = true;
+  Serial.println(" Contexto criptográfico inicializado (RSA-2048)");
+}
 
 // ============================================
 // ASSINATURA DIGITAL — RSA-2048 via mbedTLS
@@ -266,9 +345,11 @@ public:
 
 /**
  * Assina os dados do sensor usando RSA-2048 (PKCS#1 v1.5 + SHA-256).
+ * Usa os contextos criptográficos globais (g_pk, g_ctr_drbg)
+ * inicializados no setup() via initCrypto().
  *
  * Concatenação para o hash: sensor_id + timestamp_str + sensor_data_str
- * Exemplo: "ESP-42" + "1723742400" + "42" → SHA-256 → RSA Sign
+ * Delimitador '|' evita ambiguidade de concatenação.
  *
  * @param sensorId     ID do sensor (string C)
  * @param timestamp    UNIX timestamp em segundos
@@ -279,14 +360,18 @@ public:
  */
 bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
               uint8_t *signatureOut, size_t *signatureLen) {
+  if (!g_crypto_ready) {
+    Serial.println(" Contexto criptográfico não inicializado!");
+    return false;
+  }
 
   int ret;
   char errorBuf[128];
 
   // --- 1. Montar o buffer de dados para hash ---
-  // Concatenação estrita: sensor_id + timestamp + sensor_data (como strings)
+  // Concatenação delimitada: sensor_id | timestamp | sensor_data
   char dataBuffer[256];
-  snprintf(dataBuffer, sizeof(dataBuffer), "%s%llu%llu", sensorId,
+  snprintf(dataBuffer, sizeof(dataBuffer), "%s|%llu|%llu", sensorId,
            (unsigned long long)timestamp, (unsigned long long)sensorData);
 
   // --- 2. Calcular SHA-256 do buffer concatenado ---
@@ -295,61 +380,22 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
                        hash, 0);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro SHA-256: %s\n", errorBuf);
+    Serial.printf(" Erro SHA-256: %s\n", errorBuf);
     return false;
   }
 
-  // --- 3. Inicializar contextos mbedTLS ---
-  mbedtls_pk_context pk;
-  mbedtls_entropy_context entropy;
-  mbedtls_ctr_drbg_context ctr_drbg;
-
-  mbedtls_pk_init(&pk);
-  mbedtls_entropy_init(&entropy);
-  mbedtls_ctr_drbg_init(&ctr_drbg);
-
-  // Seed do gerador de números aleatórios
-  const char *pers = "esp32_sensor_sign";
-  ret = mbedtls_ctr_drbg_seed(&ctr_drbg, mbedtls_entropy_func, &entropy,
-                              (const unsigned char *)pers, strlen(pers));
+  // --- 3. Assinar com a chave pré-carregada (global) ---
+  size_t sigLen = 0;
+  ret = mbedtls_pk_sign(&g_pk, MBEDTLS_MD_SHA256, hash, 32, signatureOut, 256,
+                        &sigLen, mbedtls_ctr_drbg_random, &g_ctr_drbg);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro DRBG seed: %s\n", errorBuf);
-    goto cleanup;
+    Serial.printf(" Erro ao assinar: %s\n", errorBuf);
+    return false;
   }
 
-  // --- 4. Parsear a chave privada PEM ---
-  ret = mbedtls_pk_parse_key(&pk, (const unsigned char *)PRIVATE_KEY_PEM,
-                             strlen(PRIVATE_KEY_PEM) +
-                                 1, // +1 para o null terminator
-                             NULL, 0, mbedtls_ctr_drbg_random, &ctr_drbg);
-  if (ret != 0) {
-    mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro ao parsear chave PEM: %s (code: -0x%04X)\n",
-                  errorBuf, -ret);
-    goto cleanup;
-  }
-
-  // --- 5. Assinar o hash com RSA (PKCS#1 v1.5 + SHA-256) ---
-  {
-    size_t sigLen = 0;
-    ret = mbedtls_pk_sign(&pk, MBEDTLS_MD_SHA256, hash, 32, signatureOut, 256,
-                          &sigLen, mbedtls_ctr_drbg_random, &ctr_drbg);
-    if (ret != 0) {
-      mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-      Serial.printf("❌ Erro ao assinar: %s\n", errorBuf);
-      goto cleanup;
-    }
-
-    *signatureLen = sigLen; // Deve ser 256 bytes para RSA-2048
-  }
-
-cleanup:
-  mbedtls_pk_free(&pk);
-  mbedtls_entropy_free(&entropy);
-  mbedtls_ctr_drbg_free(&ctr_drbg);
-
-  return (ret == 0);
+  *signatureLen = sigLen; // Deve ser 256 bytes para RSA-2048
+  return true;
 }
 
 // ============================================
@@ -357,7 +403,7 @@ cleanup:
 // ============================================
 
 void connectWiFi() {
-  Serial.println("\n📡 Conectando ao WiFi...");
+  Serial.println("\n Conectando ao WiFi...");
   Serial.printf("   SSID: %s\n", WIFI_SSID);
 
   WiFi.mode(WIFI_STA);
@@ -371,11 +417,11 @@ void connectWiFi() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ WiFi conectado!");
+    Serial.println("\n WiFi conectado!");
     Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
     Serial.printf("   Servidor: %s:%d\n", SERVER_IP, SERVER_PORT);
   } else {
-    Serial.println("\n❌ Falha WiFi!");
+    Serial.println("\n Falha WiFi!");
   }
 }
 
@@ -388,7 +434,7 @@ void connectWiFi() {
  * Bloqueia até obter um timestamp válido (> ano 2020).
  */
 void syncNTP() {
-  Serial.println("🕐 Sincronizando relógio via NTP...");
+  Serial.println(" Sincronizando relógio via NTP...");
   configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
 
   // Aguardar até obter um timestamp válido
@@ -405,13 +451,13 @@ void syncNTP() {
   if (now >= 1609459200) {
     struct tm timeinfo;
     localtime_r(&now, &timeinfo);
-    Serial.printf(
-        "\n✅ NTP sincronizado! Hora: %04d-%02d-%02d %02d:%02d:%02d\n",
-        timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday,
-        timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+    Serial.printf("\n NTP sincronizado! Hora: %04d-%02d-%02d %02d:%02d:%02d\n",
+                  timeinfo.tm_year + 1900, timeinfo.tm_mon + 1,
+                  timeinfo.tm_mday, timeinfo.tm_hour, timeinfo.tm_min,
+                  timeinfo.tm_sec);
     Serial.printf("   UNIX Timestamp: %llu\n", (unsigned long long)now);
   } else {
-    Serial.println("\n⚠️ Falha na sincronização NTP! Usando tempo interno.");
+    Serial.println("\n Falha na sincronização NTP! Usando tempo interno.");
   }
 }
 
@@ -442,7 +488,7 @@ void sendPacket() {
       signData(SENSOR_ID, timestamp, sensorData, signature, &signatureLen);
 
   if (!signOk) {
-    Serial.println("❌ Falha na assinatura! Pacote descartado.");
+    Serial.println(" Falha na assinatura! Pacote descartado.");
     return;
   }
 
@@ -474,6 +520,14 @@ void sendPacket() {
 
   size_t cborSize = cbor.getSize();
 
+  // Verificar se houve overflow no buffer CBOR
+  if (cbor.hasOverflow()) {
+    Serial.printf(" CBOR overflow! Payload (%d bytes) excede buffer (2048). "
+                  "Pacote descartado.\n",
+                  cborSize);
+    return;
+  }
+
   // ════════════════════════════════════════════
   // FIM DA MEDIÇÃO DE DESEMPENHO
   // ════════════════════════════════════════════
@@ -490,7 +544,7 @@ void sendPacket() {
   // --- 4. Imprimir métricas ---
   if (success && sent == cborSize) {
     Serial.println("────────────────────────────────────────");
-    Serial.printf("✅ Pacote #%llu enviado com sucesso\n",
+    Serial.printf(" Pacote #%llu enviado com sucesso via UDP\n",
                   (unsigned long long)sensorData);
     Serial.printf("   Sensor ID:    %s\n", SENSOR_ID);
     Serial.printf("   Timestamp:    %llu (UNIX)\n",
@@ -499,13 +553,14 @@ void sendPacket() {
     Serial.printf("   Assinatura:   %d bytes (RSA-2048)\n", signatureLen);
     Serial.printf("   Proof:        %d bytes\n", PROOF_SIZE);
     Serial.println("────────────────────────────────────────");
-    Serial.printf("Tempo de processamento no nó sensor (ms): %lu\n",
-                  t_end - t_start);
+    Serial.printf("Tempo de processamento (ms): %lu\n", t_end - t_start);
     Serial.printf("Overhead de rede e tamanho do pacote (bytes): %d\n",
                   cborSize);
+    Serial.printf("Total de pacotes enviados:   %llu\n",
+                  (unsigned long long)packetCounter);
     Serial.println("────────────────────────────────────────\n");
   } else {
-    Serial.printf("❌ Erro no envio (%d/%d bytes)\n", sent, cborSize);
+    Serial.printf(" Erro no envio UDP (%d/%d bytes)\n", sent, cborSize);
   }
 }
 
@@ -521,24 +576,31 @@ void setup() {
   Serial.println("  ESP32 Sensor — Arquitetura TCC GSIPP");
   Serial.println("═══════════════════════════════════════");
   Serial.printf(" Sensor ID:        %s\n", SENSOR_ID);
-  Serial.printf(" Proof (placeholder): %d bytes\n", PROOF_SIZE);
-  Serial.printf(" Assinatura:       RSA-2048 (mbedTLS)\n");
-  Serial.printf(" Timestamp:        NTP (UNIX epoch)\n");
+  Serial.printf(" Proof:            %d bytes\n", PROOF_SIZE);
+  Serial.printf(" Intervalo:        %lu ms\n", (unsigned long)SEND_INTERVAL_MS);
+  Serial.printf(" Destino UDP:      %s:%d\n", SERVER_IP, SERVER_PORT);
   Serial.println("═══════════════════════════════════════\n");
 
-  // 1. Conectar Wi-Fi
-  connectWiFi();
-
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("❌ ERRO: WiFi não conectado!");
+  // 1. Inicializar contexto criptográfico (uma vez)
+  initCrypto();
+  if (!g_crypto_ready) {
+    Serial.println(" ERRO FATAL: Contexto criptográfico falhou!");
     while (1)
       delay(1000);
   }
 
-  // 2. Sincronizar relógio via NTP
+  // 2. Conectar Wi-Fi
+  connectWiFi();
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println(" ERRO: WiFi não conectado!");
+    while (1)
+      delay(1000);
+  }
+
+  // 3. Sincronizar relógio via NTP
   syncNTP();
 
-  Serial.println("\n✅ Pronto! Enviando pacotes...\n");
+  Serial.println("\n Pronto! Enviando pacotes via UDP...\n");
   delay(1000);
 }
 
@@ -548,7 +610,7 @@ void setup() {
 
 void loop() {
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("⚠️ WiFi desconectado!");
+    Serial.println(" WiFi desconectado!");
     connectWiFi();
   }
 
