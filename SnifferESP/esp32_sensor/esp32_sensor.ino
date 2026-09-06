@@ -25,8 +25,8 @@
 // CONFIGURAÇÕES DE REDE
 // ============================================
 
-const char *WIFI_SSID = "mandacas";
-const char *WIFI_PASSWORD = "senhasecreta";
+const char *WIFI_SSID = "Planeta Solar";
+const char *WIFI_PASSWORD = "sede10204";
 // SERVER_IP e SERVER_PORT removidos (agora via rádio)
 const char *SENSOR_ID = "ESP-42";
 const uint32_t SEND_INTERVAL_MS = 4000; // 4s de teste
@@ -52,7 +52,7 @@ const int DAYLIGHT_OFFSET_SEC = 0;
 // CHAVE PRIVADA RSA-2048 (TESTE)
 // ============================================
 // Gerada com: openssl genrsa 2048
-// ⚠️ Substitua pela chave definitiva do seu sistema.
+// Substitua pela chave definitiva do seu sistema.
 
 const char *PRIVATE_KEY_PEM =
     "-----BEGIN PRIVATE KEY-----\n"
@@ -207,7 +207,8 @@ private:
   size_t maxSize;
   bool overflow; // true se algum write ultrapassou o buffer
 
-  // Verifica se há 'needed' bytes disponíveis; marca overflow e retorna false se não.
+  // Verifica se há 'needed' bytes disponíveis; marca overflow e retorna false
+  // se não.
   bool hasSpace(size_t needed) {
     if (pos + needed > maxSize) {
       overflow = true;
@@ -225,7 +226,8 @@ public:
 
   // Escreve cabeçalho de mapa CBOR (até 23 pares)
   void writeMap(uint8_t numPairs) {
-    if (!hasSpace(1)) return;
+    if (!hasSpace(1))
+      return;
     buffer[pos++] = 0xA0 | numPairs;
   }
 
@@ -233,7 +235,8 @@ public:
   void writeString(const char *str) {
     size_t len = strlen(str);
     size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
-    if (!hasSpace(headerSz + len)) return;
+    if (!hasSpace(headerSz + len))
+      return;
     if (len < 24) {
       buffer[pos++] = 0x60 | len;
     } else if (len <= 0xFF) {
@@ -250,11 +253,13 @@ public:
 
   // Escreve unsigned integer CBOR (Major type 0)
   void writeUint64(uint64_t value) {
-    size_t needed = (value < 24) ? 1
-                  : (value <= 0xFF) ? 2
-                  : (value <= 0xFFFF) ? 3
-                  : (value <= 0xFFFFFFFF) ? 5 : 9;
-    if (!hasSpace(needed)) return;
+    size_t needed = (value < 24)            ? 1
+                    : (value <= 0xFF)       ? 2
+                    : (value <= 0xFFFF)     ? 3
+                    : (value <= 0xFFFFFFFF) ? 5
+                                            : 9;
+    if (!hasSpace(needed))
+      return;
     if (value < 24) {
       buffer[pos++] = (uint8_t)value;
     } else if (value <= 0xFF) {
@@ -281,7 +286,8 @@ public:
   // Escreve byte string CBOR (Major type 2)
   void writeBytes(const uint8_t *data, size_t len) {
     size_t headerSz = (len < 24) ? 1 : (len <= 0xFF) ? 2 : 3;
-    if (!hasSpace(headerSz + len)) return;
+    if (!hasSpace(headerSz + len))
+      return;
     if (len < 24) {
       buffer[pos++] = 0x40 | len;
     } else if (len <= 0xFF) {
@@ -318,26 +324,26 @@ void initCrypto() {
   // Seed do gerador de números aleatórios
   const char *pers = "esp32_sensor_sign";
   ret = mbedtls_ctr_drbg_seed(&g_ctr_drbg, mbedtls_entropy_func, &g_entropy,
-                               (const unsigned char *)pers, strlen(pers));
+                              (const unsigned char *)pers, strlen(pers));
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro DRBG seed: %s\n", errorBuf);
+    Serial.printf("Erro DRBG seed: %s\n", errorBuf);
     return;
   }
 
   // Parsear a chave privada PEM (uma única vez)
   ret = mbedtls_pk_parse_key(&g_pk, (const unsigned char *)PRIVATE_KEY_PEM,
-                              strlen(PRIVATE_KEY_PEM) + 1,
-                              NULL, 0, mbedtls_ctr_drbg_random, &g_ctr_drbg);
+                             strlen(PRIVATE_KEY_PEM) + 1, NULL, 0,
+                             mbedtls_ctr_drbg_random, &g_ctr_drbg);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro ao parsear chave PEM: %s (code: -0x%04X)\n",
-                  errorBuf, -ret);
+    Serial.printf("Erro ao parsear chave PEM: %s (code: -0x%04X)\n", errorBuf,
+                  -ret);
     return;
   }
 
   g_crypto_ready = true;
-  Serial.println("🔐 Contexto criptográfico inicializado (RSA-2048)");
+  Serial.println("Contexto criptográfico inicializado (RSA-2048)");
 }
 
 // ============================================
@@ -362,7 +368,7 @@ void initCrypto() {
 bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
               uint8_t *signatureOut, size_t *signatureLen) {
   if (!g_crypto_ready) {
-    Serial.println("❌ Contexto criptográfico não inicializado!");
+    Serial.println("Contexto criptográfico não inicializado!");
     return false;
   }
 
@@ -372,7 +378,8 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
   // --- 1. Montar o buffer de dados para hash ---
   // Concatenação estrita: sensor_id + timestamp + sensor_data (como strings)
   // Delimitador '|' evita ambiguidade de concatenação:
-  // Ex: id="A1" + ts="23" ≠ id="A" + ts="123" (sem delimitador seriam idênticos)
+  // Ex: id="A1" + ts="23" ≠ id="A" + ts="123" (sem delimitador seriam
+  // idênticos)
   char dataBuffer[256];
   snprintf(dataBuffer, sizeof(dataBuffer), "%s|%llu|%llu", sensorId,
            (unsigned long long)timestamp, (unsigned long long)sensorData);
@@ -383,17 +390,17 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
                        hash, 0);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro SHA-256: %s\n", errorBuf);
+    Serial.printf("Erro SHA-256: %s\n", errorBuf);
     return false;
   }
 
   // --- 3. Assinar com a chave pré-carregada (global) ---
   size_t sigLen = 0;
   ret = mbedtls_pk_sign(&g_pk, MBEDTLS_MD_SHA256, hash, 32, signatureOut, 256,
-                         &sigLen, mbedtls_ctr_drbg_random, &g_ctr_drbg);
+                        &sigLen, mbedtls_ctr_drbg_random, &g_ctr_drbg);
   if (ret != 0) {
     mbedtls_strerror(ret, errorBuf, sizeof(errorBuf));
-    Serial.printf("❌ Erro ao assinar: %s\n", errorBuf);
+    Serial.printf("Erro ao assinar: %s\n", errorBuf);
     return false;
   }
 
@@ -406,7 +413,7 @@ bool signData(const char *sensorId, uint64_t timestamp, uint64_t sensorData,
 // ============================================
 
 void connectWiFi() {
-  Serial.println("\n📡 Conectando ao WiFi...");
+  Serial.println("\nConectando ao WiFi...");
   Serial.printf("   SSID: %s\n", WIFI_SSID);
 
   WiFi.mode(WIFI_STA);
@@ -420,10 +427,10 @@ void connectWiFi() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ WiFi conectado (apenas para NTP)!");
+    Serial.println("\nWiFi conectado (apenas para NTP)!");
     Serial.printf("   IP: %s\n", WiFi.localIP().toString().c_str());
   } else {
-    Serial.println("\n❌ Falha WiFi!");
+    Serial.println("\nFalha WiFi!");
   }
 }
 // ============================================
@@ -435,7 +442,7 @@ void connectWiFi() {
  * Bloqueia até obter um timestamp válido (> ano 2020).
  */
 void syncNTP() {
-  Serial.println("🕐 Sincronizando relógio via NTP...");
+  Serial.println("Sincronizando relógio via NTP...");
   configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
 
   // Aguardar até obter um timestamp válido
@@ -452,10 +459,10 @@ void syncNTP() {
   if (now >= 1609459200) {
     struct tm timeinfo;
     localtime_r(&now, &timeinfo);
-    Serial.printf(
-        "\n✅ NTP sincronizado! Hora: %04d-%02d-%02d %02d:%02d:%02d\n",
-        timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday,
-        timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+    Serial.printf("\nNTP sincronizado! Hora: %04d-%02d-%02d %02d:%02d:%02d\n",
+                  timeinfo.tm_year + 1900, timeinfo.tm_mon + 1,
+                  timeinfo.tm_mday, timeinfo.tm_hour, timeinfo.tm_min,
+                  timeinfo.tm_sec);
     Serial.printf("   UNIX Timestamp: %llu\n", (unsigned long long)now);
   } else {
     Serial.println("\n⚠️ Falha na sincronização NTP! Usando tempo interno.");
@@ -523,7 +530,8 @@ void sendPacket() {
 
   // Verificar se houve overflow no buffer CBOR
   if (cbor.hasOverflow()) {
-    Serial.printf("❌ CBOR overflow! Payload (%d bytes) excede buffer (2048). Pacote descartado.\n",
+    Serial.printf("❌ CBOR overflow! Payload (%d bytes) excede buffer (2048). "
+                  "Pacote descartado.\n",
                   cborSize);
     return;
   }

@@ -107,11 +107,14 @@ struct SessionStats {
 impl SessionStats {
     fn print_summary(&self) {
         println!("\n═══════════════════════════════════════════════════════");
-        println!("             📊 RESUMO DA SESSÃO — ITS GSIPP           ");
+        println!("             RESUMO DA SESSÃO — ITS GSIPP           ");
         println!("═══════════════════════════════════════════════════════");
-        println!(" Total de pacotes remontados:      {}", self.total_reconstructed);
         println!(
-            " ✅ Aceitos (3 etapas validadas):  {} ({:.1}%)",
+            " Total de pacotes remontados:      {}",
+            self.total_reconstructed
+        );
+        println!(
+            " Aceitos (3 etapas validadas):  {} ({:.1}%)",
             self.accepted,
             if self.total_reconstructed > 0 {
                 (self.accepted as f64 / self.total_reconstructed as f64) * 100.0
@@ -119,20 +122,32 @@ impl SessionStats {
                 0.0
             }
         );
-        println!(" ❌ Rejeitados por Anti-Replay:    {}", self.rejected_replay);
-        println!(" ❌ Rejeitados por Sensor Descon.: {}", self.rejected_unknown_sensor);
-        println!(" ❌ Rejeitados por Assinatura RSA: {}", self.rejected_invalid_sig);
-        println!(" ❌ Rejeitados por Prova Acumul.:  {}", self.rejected_invalid_proof);
-        println!(" ❌ CBOR Corrompido / Inválido:    {}", self.corrupted_cbor);
-        println!(" ⚠️ Pacotes incompletos (timeout): {}", self.reassembly_timeouts);
-        println!(" ⚠️ Gaps de sequência detectados:  {}", self.sequence_gaps);
+        println!("Rejeitados por Anti-Replay:    {}", self.rejected_replay);
+        println!(
+            "Rejeitados por Sensor Descon.: {}",
+            self.rejected_unknown_sensor
+        );
+        println!(
+            "Rejeitados por Assinatura RSA: {}",
+            self.rejected_invalid_sig
+        );
+        println!(
+            "Rejeitados por Prova Acumul.:  {}",
+            self.rejected_invalid_proof
+        );
+        println!("CBOR Corrompido / Inválido:    {}", self.corrupted_cbor);
+        println!(
+            "Pacotes incompletos (timeout): {}",
+            self.reassembly_timeouts
+        );
+        println!("Gaps de sequência detectados:  {}", self.sequence_gaps);
 
         let avg_time = if self.verification_count > 0 {
             self.total_verification_time_ms / self.verification_count as f64
         } else {
             0.0
         };
-        println!(" ⏱️ Tempo médio verificação:       {:.3} ms", avg_time);
+        println!(" Tempo médio verificação:       {:.3} ms", avg_time);
         println!("═══════════════════════════════════════════════════════\n");
     }
 }
@@ -152,7 +167,7 @@ fn build_key_store() -> HashMap<String, RsaPublicKey> {
 
     store.insert("ESP-42".to_string(), pub_key);
 
-    // ⚠️ Adicione mais sensores aqui conforme necessário:
+    // Adicione mais sensores aqui conforme necessário:
     // store.insert("ESP-43".to_string(), outra_chave);
 
     store
@@ -178,13 +193,13 @@ fn process_packet(
         Ok(p) => p,
         Err(e) => {
             stats.corrupted_cbor += 1;
-            println!("❌ Erro ao desserializar CBOR: {:#}", e);
+            println!("Erro ao desserializar CBOR: {:#}", e);
             return Ok(());
         }
     };
 
     println!("\n════════════════════════════════════════════════════");
-    println!("📦 Pacote recebido de: {}", payload.id);
+    println!("Pacote recebido de: {}", payload.id);
     println!("   Timestamp:  {}", payload.timestamp);
     println!("   Reading:    {}", payload.reading);
     println!("   Assinatura: {} bytes", payload.signature.len());
@@ -198,12 +213,12 @@ fn process_packet(
             let lost = payload.reading - prev_reading - 1;
             stats.sequence_gaps += lost;
             println!(
-                "   ⚠️ ALERTA DE GAP: Sequência saltou de #{} para #{} ({} pacote(s) perdido(s) no rádio)",
+                "   ALERTA DE GAP: Sequência saltou de #{} para #{} ({} pacote(s) perdido(s) no rádio)",
                 prev_reading, payload.reading, lost
             );
         } else if payload.reading <= prev_reading {
             println!(
-                "   ⚠️ ALERTA DE SEQUÊNCIA: Leitura não-crescente (anterior: #{}, atual: #{})",
+                "   ALERTA DE SEQUÊNCIA: Leitura não-crescente (anterior: #{}, atual: #{})",
                 prev_reading, payload.reading
             );
         }
@@ -238,17 +253,17 @@ fn process_packet(
 
         print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys, stats);
         println!(
-            "   ✗ Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
+            "   Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
             time_diff, REPLAY_WINDOW_SECS
         );
         println!(
-            "   ✗ Pacote do sensor {} descartado como possível ataque de repetição.\n",
+            "   Pacote do sensor {} descartado como possível ataque de repetição.\n",
             payload.id
         );
         return Ok(());
     }
     println!(
-        "   ✓ Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)",
+        "   Verificação 01: Timestamp OK (Δ = {}s ≤ {}s)",
         time_diff, REPLAY_WINDOW_SECS
     );
 
@@ -266,9 +281,15 @@ fn process_packet(
         stats.rejected_replay += 1;
         stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
         stats.verification_count += 1;
-        print_metrics("REJEITADO (Replay Intra-Janela)", elapsed, raw.len(), sys, stats);
+        print_metrics(
+            "REJEITADO (Replay Intra-Janela)",
+            elapsed,
+            raw.len(),
+            sys,
+            stats,
+        );
         println!(
-            "   ✗ Verificação 01b FALHOU: Pacote duplicado dentro da janela (id={}, ts={}, reading={})\n",
+            "   Verificação 01b FALHOU: Pacote duplicado dentro da janela (id={}, ts={}, reading={})\n",
             payload.id, payload.timestamp, payload.reading
         );
         return Ok(());
@@ -285,9 +306,15 @@ fn process_packet(
             stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
             stats.verification_count += 1;
 
-            print_metrics("REJEITADO (Sensor Desconhecido)", elapsed, raw.len(), sys, stats);
+            print_metrics(
+                "REJEITADO (Sensor Desconhecido)",
+                elapsed,
+                raw.len(),
+                sys,
+                stats,
+            );
             println!(
-                "   ✗ Verificação 02 FALHOU: Chave pública não encontrada para '{}'\n",
+                "   Verificação 02 FALHOU: Chave pública não encontrada para '{}'\n",
                 payload.id
             );
             return Ok(());
@@ -308,7 +335,7 @@ fn process_packet(
     let verification_scheme = Pkcs1v15Sign::new::<Sha256>();
     match pub_key.verify(verification_scheme, &hash, &payload.signature) {
         Ok(_) => {
-            println!("   ✓ Verificação 02: Assinatura RSA-2048 VÁLIDA");
+            println!("   Verificação 02: Assinatura RSA-2048 VÁLIDA");
         }
         Err(e) => {
             let elapsed = t_start.elapsed();
@@ -316,8 +343,14 @@ fn process_packet(
             stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
             stats.verification_count += 1;
 
-            print_metrics("REJEITADO (Assinatura Inválida)", elapsed, raw.len(), sys, stats);
-            println!("   ✗ Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
+            print_metrics(
+                "REJEITADO (Assinatura Inválida)",
+                elapsed,
+                raw.len(),
+                sys,
+                stats,
+            );
+            println!("   Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
             return Ok(());
         }
     }
@@ -325,19 +358,23 @@ fn process_packet(
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 03: Acumulador Criptográfico
     // ──────────────────────────────────────────────────
-    let proof: MembershipProof<Rsa2048, String> = match serde_cbor::from_slice(&payload.membership_proof) {
-        Ok(p) => p,
-        Err(e) => {
-            let elapsed = t_start.elapsed();
-            stats.corrupted_cbor += 1;
-            print_metrics("REJEITADO (Proof Inválida)", elapsed, raw.len(), sys, stats);
-            println!("   ✗ Verificação 03 FALHOU ao desserializar MembershipProof: {:#}\n", e);
-            return Ok(());
-        }
-    };
+    let proof: MembershipProof<Rsa2048, String> =
+        match serde_cbor::from_slice(&payload.membership_proof) {
+            Ok(p) => p,
+            Err(e) => {
+                let elapsed = t_start.elapsed();
+                stats.corrupted_cbor += 1;
+                print_metrics("REJEITADO (Proof Inválida)", elapsed, raw.len(), sys, stats);
+                println!(
+                    "  Verificação 03 FALHOU ao desserializar MembershipProof: {:#}\n",
+                    e
+                );
+                return Ok(());
+            }
+        };
 
     if acc.verify_membership(&payload.id, &proof) {
-        println!("   ✓ Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
+        println!("   Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
     } else {
         let elapsed = t_start.elapsed();
         stats.rejected_invalid_proof += 1;
@@ -346,7 +383,7 @@ fn process_packet(
 
         print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys, stats);
         println!(
-            "   ✗ Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
+            "   Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
             payload.id
         );
         return Ok(());
@@ -364,7 +401,7 @@ fn process_packet(
     stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
     stats.verification_count += 1;
 
-    print_metrics("ACEITO ✓", elapsed, raw.len(), sys, stats);
+    print_metrics("ACEITO", elapsed, raw.len(), sys, stats);
     println!();
 
     Ok(())
@@ -393,7 +430,7 @@ fn print_metrics(
         .unwrap_or(0.0);
 
     println!("────────────────────────────────────────────────────");
-    println!("📊 Status: {}", status);
+    println!("Status: {}", status);
     println!(
         "   Tempo de verificação no controlador (ms): {:.3}",
         elapsed.as_secs_f64() * 1000.0
@@ -404,7 +441,7 @@ fn print_metrics(
     );
     println!("   RAM consumida pelo processo (MB): {:.2}", ram_mb);
     println!(
-        "   📈 Sessão: {} aceitos | {} rejeitados | {} perdidos",
+        "   Sessão: {} aceitos | {} rejeitados | {} perdidos",
         stats.accepted,
         stats.rejected_replay
             + stats.rejected_unknown_sensor
@@ -420,33 +457,47 @@ fn print_metrics(
 // ESTRUTURAS DE REASSEMBLY
 // ============================================
 
+struct IncompletePacket {
+    total_frags: u8,
+    created_at: Instant,
+    fragments: HashMap<u8, Vec<u8>>,
+}
+
 struct ReassemblyBuffer {
-    // packet_id -> (total_fragments, received_count, fragments_map)
-    packets: HashMap<u8, (u8, u8, HashMap<u8, Vec<u8>>)>,
-    last_activity: Instant,
+    packets: HashMap<u8, IncompletePacket>,
 }
 
 impl ReassemblyBuffer {
     fn new() -> Self {
         Self {
             packets: HashMap::new(),
-            last_activity: Instant::now(),
         }
     }
 
-    /// Limpa pacotes incompletos após timeout de inatividade e loga detalhes do descarte.
+    /// Limpa pacotes incompletos cujo timeout individual expirou e loga detalhes do descarte.
     fn check_timeout(&mut self, stats: &mut SessionStats) {
-        if self.last_activity.elapsed().as_secs() >= REASSEMBLY_TIMEOUT_SECS && !self.packets.is_empty() {
-            for (packet_id, (total_frags, received_count, frags_map)) in self.packets.drain() {
+        let now = Instant::now();
+        let timeout = Duration::from_secs(REASSEMBLY_TIMEOUT_SECS);
+
+        // Identificar pacotes que já ultrapassaram o tempo limite de espera
+        let expired_ids: Vec<u8> = self
+            .packets
+            .iter()
+            .filter(|(_, pkt)| now.duration_since(pkt.created_at) >= timeout)
+            .map(|(&id, _)| id)
+            .collect();
+
+        for id in expired_ids {
+            if let Some(pkt) = self.packets.remove(&id) {
                 stats.reassembly_timeouts += 1;
-                let missing_indices: Vec<u8> = (0..total_frags)
-                    .filter(|i| !frags_map.contains_key(i))
+                let missing_indices: Vec<u8> = (0..pkt.total_frags)
+                    .filter(|i| !pkt.fragments.contains_key(i))
                     .map(|i| i + 1) // 1-indexed para log legível
                     .collect();
 
                 println!(
                     "⚠️ [Reassembly Timeout] Pacote ID {} descartado após {}s de inatividade! Recebidos: {}/{} (Faltaram fragmentos: {:?})",
-                    packet_id, REASSEMBLY_TIMEOUT_SECS, received_count, total_frags, missing_indices
+                    id, REASSEMBLY_TIMEOUT_SECS, pkt.fragments.len(), pkt.total_frags, missing_indices
                 );
             }
         }
@@ -461,10 +512,10 @@ impl ReassemblyBuffer {
         payload: Vec<u8>,
         stats: &mut SessionStats,
     ) -> Option<Vec<u8>> {
+        // 1. Limpar pacotes expirados individualmente antes de processar novo fragmento
         self.check_timeout(stats);
-        self.last_activity = Instant::now();
 
-        // Limite anti-flood: descartar fragmento se o buffer já está cheio com outros pacotes
+        // 2. Limite anti-flood: descartar NOVO pacote se o buffer já está cheio de pacotes recentes
         if !self.packets.contains_key(&packet_id) && self.packets.len() >= MAX_CONCURRENT_PACKETS {
             println!(
                 "⚠️ [Reassembly] Limite de {} pacotes simultâneos atingido. Fragmento ID={} descartado (possível flood).",
@@ -476,19 +527,20 @@ impl ReassemblyBuffer {
         let entry = self
             .packets
             .entry(packet_id)
-            .or_insert_with(|| (total_frags, 0, HashMap::new()));
+            .or_insert_with(|| IncompletePacket {
+                total_frags,
+                created_at: Instant::now(),
+                fragments: HashMap::new(),
+            });
 
         // Evitar duplicatas
-        if !entry.2.contains_key(&frag_idx) {
-            entry.2.insert(frag_idx, payload);
-            entry.1 += 1;
-        }
+        entry.fragments.entry(frag_idx).or_insert(payload);
 
-        if entry.1 == entry.0 {
+        if entry.fragments.len() == entry.total_frags as usize {
             // Remontar payload completo ordenadamente
             let mut full_payload = Vec::new();
-            for i in 0..entry.0 {
-                if let Some(frag) = entry.2.get(&i) {
+            for i in 0..entry.total_frags {
+                if let Some(frag) = entry.fragments.get(&i) {
                     full_payload.extend_from_slice(frag);
                 }
             }
@@ -516,21 +568,18 @@ fn main() -> Result<()> {
 
     // --- 1. Construir dicionário de chaves públicas ---
     let key_store = build_key_store();
-    println!(
-        "🔑 Chaves públicas carregadas: {} sensor(es)",
-        key_store.len()
-    );
+    println!("Chaves públicas carregadas: {} sensor(es)", key_store.len());
     for sensor_id in key_store.keys() {
         println!("   - {}", sensor_id);
     }
 
     // --- 2. Carregar acumulador serializado do disco ---
     let acc_bytes = std::fs::read("accumulator.dat").expect(
-        "❌ Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro.",
+        "Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro.",
     );
     let acc: Accumulator<Rsa2048, String> =
         serde_cbor::from_slice(&acc_bytes).context("Falha ao desserializar accumulator.dat")?;
-    println!("\n🔐 Acumulador carregado com sucesso do disco.");
+    println!("\nAcumulador carregado com sucesso do disco.");
 
     // --- 3. Inicializar monitor de sistema e estatísticas ---
     let mut sys = System::new();
@@ -545,7 +594,7 @@ fn main() -> Result<()> {
         let r = running.clone();
         let stats_clone = stats_arc.clone();
         ctrlc::set_handler(move || {
-            println!("\n🛑 Interrupção recebida (Ctrl+C)... Encerrando controlador.");
+            println!("\nInterrupção recebida (Ctrl+C)... Encerrando controlador.");
             if let Ok(st) = stats_clone.lock() {
                 st.print_summary();
             }
@@ -561,7 +610,7 @@ fn main() -> Result<()> {
         .open()
         .context(format!("Falha ao abrir porta serial {}", SERIAL_PORT))?;
 
-    println!("\n📡 Aguardando dados de rádio em {}...\n", SERIAL_PORT);
+    println!("\nAguardando dados de rádio em {}...\n", SERIAL_PORT);
 
     let mut reassembly = ReassemblyBuffer::new();
     let mut buf = [0u8; 1024];
@@ -586,9 +635,13 @@ fn main() -> Result<()> {
                         let payload_len = stream_buffer[5] as usize;
 
                         // Validação de sanidade do cabeçalho
-                        if total_frags == 0 || frag_idx >= total_frags || payload_len == 0 || payload_len > 250 {
+                        if total_frags == 0
+                            || frag_idx >= total_frags
+                            || payload_len == 0
+                            || payload_len > 250
+                        {
                             println!(
-                                "⚠️ [Radio] Cabeçalho corrompido descartado: ID={}, Total={}, Frag={}, Len={}",
+                                "[Radio] Cabeçalho corrompido descartado: ID={}, Total={}, Frag={}, Len={}",
                                 packet_id, total_frags, frag_idx, payload_len
                             );
                             stream_buffer.drain(..2);
@@ -629,7 +682,7 @@ fn main() -> Result<()> {
                                     &mut last_readings,
                                     &mut replay_seen,
                                 ) {
-                                    eprintln!("❌ Erro ao processar pacote CBOR: {:#}", e);
+                                    eprintln!("Erro ao processar pacote CBOR: {:#}", e);
                                 }
                             }
                         } else {
@@ -638,7 +691,8 @@ fn main() -> Result<()> {
                         }
                     } else {
                         // Sincronismo não encontrado no início; procurar o próximo 0xAA 0xBB
-                        if let Some(pos) = stream_buffer.windows(2).position(|w| w == [0xAA, 0xBB]) {
+                        if let Some(pos) = stream_buffer.windows(2).position(|w| w == [0xAA, 0xBB])
+                        {
                             stream_buffer.drain(..pos);
                         } else {
                             // Se o último byte for 0xAA, mantê-lo caso o próximo seja 0xBB
@@ -663,7 +717,7 @@ fn main() -> Result<()> {
                 // apenas saímos do loop sem imprimir erro para não corromper o resumo final.
             }
             Err(e) => {
-                eprintln!("❌ Erro de leitura serial: {:?}", e);
+                eprintln!("Erro de leitura serial: {:?}", e);
                 std::thread::sleep(Duration::from_millis(500));
             }
         }
