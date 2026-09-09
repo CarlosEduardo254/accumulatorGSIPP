@@ -1,47 +1,77 @@
 #!/usr/bin/env python3
 """
 ═══════════════════════════════════════════════════════════════════
-  Script de Testes de Ataque — Validação de Segurança TCC GSIPP
+  attack_tests.py — Avaliação Automatizada de Segurança
+  TCC: Autenticação para ITS com Acumuladores Criptográficos RSA
 ═══════════════════════════════════════════════════════════════════
 
-Simula 7 cenários de ataque contra o controlador UDP (Raspberry Pi).
-Cada teste verifica se uma das 3 verificações rejeita o pacote corretamente.
+Metodologia (conforme artigo):
+  A avaliação de segurança testa a resiliência contra dois modelos
+  de ameaça — Spoofing e Replay Attack — simulados em lotes de 10
+  repetições para quantificar a taxa de rejeição.
 
-Pré-requisitos:
-  - Python 3.8+ com cbor2 e cryptography instalados
-  - O controlador UDP rodando no Raspberry Pi (./udp_controller)
-  - Estar na mesma rede local
+Testes implementados:
+  SPOOFING (4 variantes, 10 repetições cada):
+    S1: Proof forjada  — bytes aleatórios no lugar da witness + PoE
+    S2: Proof nula      — campo membershipproof vazio (0 bytes)
+    S3: Proof corrompida — proof legítima com 16 bytes invertidos
+    S4: Chave do atacante — ID clonado, assinatura com chave RSA própria
+
+  REPLAY (2 variantes, 10 repetições cada):
+    R1: Timestamp expirado — pacote válido com ts 30s no passado (fora de Δt)
+    R2: Pacote duplicado   — reenvio idêntico dentro da janela Δt
+
+  BASELINE (controle):
+    B1: Pacote legítimo — 10 pacotes válidos como referência de aceitação
+
+Métricas coletadas:
+  - Latência de construção + envio por pacote (ms)
+  - Taxa de rejeição esperada por variante (verificada no controlador)
+  - Tamanho do pacote por variante (bytes)
 
 Uso:
-  python3 attack_tests.py --target <IP_RASPBERRY> [--port 4242] [--test <N>]
+  python3 attack_tests.py --target <IP_RASPBERRY> [--port 4242] [--test all]
+  python3 attack_tests.py --target <IP_RASPBERRY> --test spoofing
+  python3 attack_tests.py --target <IP_RASPBERRY> --test replay
+  python3 attack_tests.py --target <IP_RASPBERRY> --test baseline
 
-  --test all     → roda todos os testes
-  --test 2       → roda apenas A2
-  --test 2,3,6   → roda A2, A3 e A6
-
-Autoria: Script de validação para TCC - Arquitetura GSIPP
+Pré-requisitos:
+  - Python 3.8+ com cbor2 e cryptography
+  - Controlador UDP rodando no Raspberry Pi (./udp_controller)
+  - Ambos na mesma rede Wi-Fi
 """
 
 import argparse
 import hashlib
+import json
 import os
 import socket
-import struct
+import statistics
 import sys
 import time
+from dataclasses import dataclass, field
+from typing import Callable, List, Optional, Tuple
 
 import cbor2
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa, utils
 
+
 # ═══════════════════════════════════════════════════════════════
-# CONFIGURAÇÕES
+# CONSTANTES DE CONFIGURAÇÃO
 # ═══════════════════════════════════════════════════════════════
 
 DEFAULT_PORT = 4242
-SENSOR_ID = "ESP-42"  # ID legítimo do sensor provisionado
+SENSOR_ID = "ESP-42"
+BATCH_SIZE = 100
+REPLAY_WINDOW_SECS = 5
 
-# Chave privada LEGÍTIMA do ESP-42 (extraída do firmware — apenas para testes)
+# ═══════════════════════════════════════════════════════════════
+# MATERIAL CRIPTOGRÁFICO — Chave privada legítima do ESP-42
+# ═══════════════════════════════════════════════════════════════
+# Extraída do firmware para possibilitar a construção de pacotes
+# válidos (baseline) e ataques que exigem assinatura correta (S3, R1, R2).
+
 ESP42_PRIVATE_KEY_PEM = b"""-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDg8/gBUdLHnfPi
 fpt4K/HH64ks9hTBgJrW0GP+6rMU3ndEzgr3tbKQEq9yhtQHO0iVTHmFKTHWkwdv
@@ -72,7 +102,12 @@ dbhl6UebIeL+HnjKQ7xODw0=
 -----END PRIVATE KEY-----
 """
 
-# Proof legítima do ESP-42 (1064 bytes, do firmware)
+# ═══════════════════════════════════════════════════════════════
+# MEMBERSHIP PROOF LEGÍTIMA DO ESP-42 (1064 bytes)
+# ═══════════════════════════════════════════════════════════════
+# Contém a witness w_i e a Proof of Exponentiation (PoE) geradas
+# pelo setup do acumulador (cargo run --bin setup).
+
 ESP42_PROOF_BYTES = bytes([
     0xA2, 0x67, 0x77, 0x69, 0x74, 0x6E, 0x65, 0x73, 0x73, 0xA2, 0x67, 0x70,
     0x68, 0x61, 0x6E, 0x74, 0x6F, 0x6D, 0xF6, 0x65, 0x76, 0x61, 0x6C, 0x75,
@@ -167,434 +202,565 @@ ESP42_PROOF_BYTES = bytes([
 
 
 # ═══════════════════════════════════════════════════════════════
-# FUNÇÕES AUXILIARES
+# ESTRUTURAS DE DADOS PARA MÉTRICAS
+# ═══════════════════════════════════════════════════════════════
+
+@dataclass
+class PacketResult:
+    """Resultado de um único envio de pacote."""
+    iteration: int
+    packet_size: int
+    latency_ms: float
+    sent: bool
+
+
+@dataclass
+class BatchResult:
+    """Resultado agregado de um lote de N repetições."""
+    test_id: str
+    test_name: str
+    category: str           # "Spoofing", "Replay" ou "Baseline"
+    expected_result: str    # "REJEITADO" ou "ACEITO"
+    blocked_by: str         # Qual verificação deve bloquear (ex: "Verificação 03")
+    results: List[PacketResult] = field(default_factory=list)
+
+    @property
+    def total_sent(self) -> int:
+        return sum(1 for r in self.results if r.sent)
+
+    @property
+    def latencies(self) -> List[float]:
+        return [r.latency_ms for r in self.results if r.sent]
+
+    @property
+    def avg_latency(self) -> float:
+        return statistics.mean(self.latencies) if self.latencies else 0.0
+
+    @property
+    def min_latency(self) -> float:
+        return min(self.latencies) if self.latencies else 0.0
+
+    @property
+    def max_latency(self) -> float:
+        return max(self.latencies) if self.latencies else 0.0
+
+    @property
+    def stdev_latency(self) -> float:
+        return statistics.stdev(self.latencies) if len(self.latencies) > 1 else 0.0
+
+    @property
+    def avg_size(self) -> float:
+        sizes = [r.packet_size for r in self.results if r.sent]
+        return statistics.mean(sizes) if sizes else 0.0
+
+
+# ═══════════════════════════════════════════════════════════════
+# FUNÇÕES AUXILIARES — Criptografia e Rede
 # ═══════════════════════════════════════════════════════════════
 
 def load_esp42_private_key():
-    """Carrega a chave privada legítima do ESP-42."""
+    """Carrega a chave privada RSA-2048 legítima do ESP-42."""
     return serialization.load_pem_private_key(ESP42_PRIVATE_KEY_PEM, password=None)
 
 
 def generate_attacker_key():
-    """Gera um par de chaves RSA-2048 do atacante (diferente do ESP-42)."""
+    """Gera um par RSA-2048 exclusivo do atacante."""
     return rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
 
 def sign_data(private_key, sensor_id: str, timestamp: int, reading: int) -> bytes:
     """
-    Assina os dados exatamente como o ESP32 faz:
-    SHA-256(sensor_id|timestamp|reading) + PKCS#1 v1.5
+    Assina os dados exatamente como o ESP32:
+    SHA-256("sensor_id|timestamp|reading") → PKCS#1 v1.5 (prehashed).
     """
     data_str = f"{sensor_id}|{timestamp}|{reading}"
-    # Calcular hash SHA-256 manualmente (para ser compatível com mbedtls_pk_sign)
     digest = hashlib.sha256(data_str.encode("utf-8")).digest()
-    # Assinar o hash com PKCS#1 v1.5 (prehashed)
-    signature = private_key.sign(
+    return private_key.sign(
         digest,
         padding.PKCS1v15(),
         utils.Prehashed(hashes.SHA256()),
     )
-    return signature
 
 
-def build_cbor_packet(
-    sensor_id: str,
-    timestamp: int,
-    reading: int,
-    signature: bytes,
-    proof: bytes,
-) -> bytes:
+def build_cbor_packet(sensor_id, timestamp, reading, signature, proof) -> bytes:
     """
-    Constrói o payload CBOR com 5 campos, idêntico ao formato do ESP32:
-      "1" → sensor_id (string)
-      "2" → timestamp (uint)
-      "3" → reading   (uint)
-      "4" → signature (bytes)
-      "5" → proof     (bytes)
+    Monta o payload CBOR com 5 campos (formato idêntico ao ESP32):
+      "1" → sensor_id, "2" → timestamp, "3" → reading,
+      "4" → signature, "5" → membershipproof
     """
-    payload = {
+    return cbor2.dumps({
         "1": sensor_id,
         "2": timestamp,
         "3": reading,
         "4": signature,
         "5": proof,
-    }
-    return cbor2.dumps(payload)
+    })
 
 
-def send_udp(target_ip: str, target_port: int, data: bytes, label: str = ""):
-    """Envia um pacote UDP e imprime o status."""
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(data, (target_ip, target_port))
-    sock.close()
-    if label:
-        print(f"   📤 Enviado: {label} ({len(data)} bytes)")
-
-
-def build_legitimate_packet(reading: int = 9999) -> bytes:
-    """Constrói um pacote 100% legítimo do ESP-42 (para uso nos testes de replay)."""
-    key = load_esp42_private_key()
-    ts = int(time.time())
-    sig = sign_data(key, SENSOR_ID, ts, reading)
-    return build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES), ts, reading
-
-
-def separator(title: str):
-    print(f"\n{'═' * 60}")
-    print(f"  {title}")
-    print(f"{'═' * 60}")
+def send_udp(target_ip: str, port: int, data: bytes) -> Tuple[bool, float]:
+    """Envia pacote UDP e retorna (sucesso, latência_ms)."""
+    t0 = time.perf_counter()
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.sendto(data, (target_ip, port))
+        sock.close()
+        return True, (time.perf_counter() - t0) * 1000
+    except Exception:
+        return False, (time.perf_counter() - t0) * 1000
 
 
 # ═══════════════════════════════════════════════════════════════
-# TESTES DE ATAQUE
+# CLASSE PRINCIPAL — Suite de Testes de Segurança
 # ═══════════════════════════════════════════════════════════════
 
-
-def test_a2_cloned_id_wrong_key(target_ip: str, port: int):
-    """
-    A2 — Spoofing: ID clonado + chave própria do atacante
-
-    O atacante sabe o ID do sensor legítimo (ESP-42) e capturou sua
-    membership proof. Mas NÃO tem a chave privada do ESP-42.
-    Usa sua própria chave RSA para assinar.
-
-    Resultado esperado: REJEITADO na Verificação 02 (Assinatura Inválida)
-    Motivo: o controlador verifica com a chave pública do ESP-42,
-            que não corresponde à chave do atacante.
-    """
-    separator("A2 — Spoofing: ID Clonado + Chave do Atacante")
-
-    print("   Cenário: Atacante se passa por ESP-42 usando sua própria chave RSA")
-    print("   Resultado esperado: REJEITADO (Verificação 02 — Assinatura Inválida)")
-    print()
-
-    # Gerar chave RSA-2048 do atacante
-    attacker_key = generate_attacker_key()
-    print("   🔑 Chave RSA-2048 do atacante gerada")
-
-    ts = int(time.time())
-    reading = 7777  # Dado falso
-
-    # Assinar com a chave do ATACANTE (não do ESP-42)
-    sig = sign_data(attacker_key, SENSOR_ID, ts, reading)
-    print(f"   ✍️  Dados assinados com chave do ATACANTE: {SENSOR_ID}|{ts}|{reading}")
-
-    # Usar a proof legítima do ESP-42 (capturada do ar)
-    pkt = build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES)
-    print(f"   📦 Pacote CBOR montado: {len(pkt)} bytes")
-
-    send_udp(target_ip, port, pkt, "Pacote A2 (ID clonado + chave errada)")
-    print("   ⏳ Verifique no terminal do Raspberry Pi...")
-
-
-def test_a3_wrong_proof(target_ip: str, port: int):
-    """
-    A3 — Spoofing: Assinatura correta + proof corrompida/trocada
-
-    O atacante de alguma forma tem a chave privada legítima do ESP-42
-    (cenário: acesso ao firmware). Assina corretamente, mas a membership
-    proof está corrompida (simulando troca por proof de outro sensor).
-
-    Resultado esperado: REJEITADO na Verificação 03 (Prova Inválida)
-    Motivo: witness^hash("ESP-42") ≠ accumulator (proof corrompida)
-    """
-    separator("A3 — Spoofing: Assinatura OK + Proof Corrompida")
-
-    print("   Cenário: Assinatura RSA válida, mas proof de pertencimento corrompida")
-    print("   Resultado esperado: REJEITADO (Verificação 03 — Prova Inválida)")
-    print()
-
-    key = load_esp42_private_key()
-    ts = int(time.time())
-    reading = 8888
-
-    # Assinar corretamente com a chave legítima
-    sig = sign_data(key, SENSOR_ID, ts, reading)
-    print(f"   ✍️  Dados assinados com chave LEGÍTIMA do ESP-42")
-
-    # Corromper a proof: inverter 16 bytes no meio da witness
-    corrupted_proof = bytearray(ESP42_PROOF_BYTES)
-    for i in range(50, 66):
-        corrupted_proof[i] ^= 0xFF  # Flip de bits
-    corrupted_proof = bytes(corrupted_proof)
-    print(f"   💥 Proof corrompida: 16 bytes invertidos na posição 50-65")
-
-    pkt = build_cbor_packet(SENSOR_ID, ts, reading, sig, corrupted_proof)
-    print(f"   📦 Pacote CBOR montado: {len(pkt)} bytes")
-
-    send_udp(target_ip, port, pkt, "Pacote A3 (proof corrompida)")
-    print("   ⏳ Verifique no terminal do Raspberry Pi...")
-
-
-def test_a4_replay_outside_window(target_ip: str, port: int):
-    """
-    A4 — Replay Attack: fora da janela de 5 segundos
-
-    O atacante captura um pacote legítimo e o reenvia após 7 segundos.
-
-    Resultado esperado: REJEITADO na Verificação 01 (Replay Attack)
-    Motivo: |now - timestamp| > 5s
-    """
-    separator("A4 — Replay Attack: Fora da Janela (>5s)")
-
-    print("   Cenário: Capturar pacote legítimo, esperar 7s, reenviar")
-    print("   Resultado esperado: REJEITADO (Verificação 01 — Replay Attack)")
-    print()
-
-    # 1. Construir pacote legítimo com timestamp ATUAL
-    pkt, ts, reading = build_legitimate_packet(reading=4444)
-    print(f"   📦 Pacote legítimo capturado (ts={ts}, reading={reading})")
-
-    # 2. Esperar 7 segundos (para o timestamp expirar)
-    wait_secs = 7
-    print(f"   ⏱️  Aguardando {wait_secs} segundos para o timestamp expirar...")
-    for i in range(wait_secs, 0, -1):
-        print(f"       {i}...", end="\r")
-        time.sleep(1)
-    print(f"       0 — Reenviando agora!                    ")
-
-    # 3. Reenviar o pacote capturado (sem modificação)
-    send_udp(target_ip, port, pkt, "Pacote A4 (replay fora da janela)")
-    print("   ⏳ Verifique no terminal do Raspberry Pi...")
-
-
-def test_a5_replay_inside_window(target_ip: str, port: int):
-    """
-    A5 — Replay Attack: dentro da janela de 5 segundos
-
-    O atacante captura um pacote legítimo e o reenvia imediatamente
-    (dentro da janela de Δt = 5s).
-
-    Resultado esperado:
-      - 1º envio: ACEITO (pacote legítimo)
-      - 2º envio: REJEITADO na Verificação 01b (Replay Intra-Janela)
-    Motivo: (id, timestamp, reading) já está no cache replay_seen
-    """
-    separator("A5 — Replay Attack: Dentro da Janela (<5s)")
-
-    print("   Cenário: Enviar pacote legítimo, reenviar imediatamente (replay)")
-    print("   Resultado esperado: 1º ACEITO, 2º REJEITADO (Verif. 01b — Intra-Janela)")
-    print()
-
-    # 1. Construir e enviar pacote legítimo
-    pkt, ts, reading = build_legitimate_packet(reading=5555)
-    print(f"   📦 Pacote legítimo construído (ts={ts}, reading={reading})")
-
-    send_udp(target_ip, port, pkt, "1º envio (legítimo) — deve ser ACEITO")
-    print("   ⏱️  Aguardando 1 segundo...")
-    time.sleep(1)
-
-    # 2. Reenviar o MESMO pacote (replay)
-    send_udp(target_ip, port, pkt, "2º envio (replay) — deve ser REJEITADO")
-    print("   ⏳ Verifique no terminal do Raspberry Pi: 1 aceito + 1 rejeitado")
-
-
-def test_a6_data_tampering(target_ip: str, port: int):
-    """
-    A6 — Tampering: interceptação e alteração de dados
-
-    O atacante captura um pacote legítimo no ar e altera o campo
-    'reading' (ex: muda de 42 para 9999). A assinatura original
-    não cobre o novo valor.
-
-    Resultado esperado: REJEITADO na Verificação 02 (Assinatura Inválida)
-    Motivo: SHA-256("ESP-42|ts|9999") ≠ SHA-256("ESP-42|ts|6666")
-    """
-    separator("A6 — Tampering: Alteração de Dados no Pacote")
-
-    print("   Cenário: Capturar pacote, alterar reading, reenviar")
-    print("   Resultado esperado: REJEITADO (Verificação 02 — Assinatura Inválida)")
-    print()
-
-    # 1. Construir pacote legítimo (assinado para reading=6666)
-    key = load_esp42_private_key()
-    ts = int(time.time())
-    original_reading = 6666
-    sig = sign_data(key, SENSOR_ID, ts, original_reading)
-    print(f"   ✍️  Pacote original assinado: {SENSOR_ID}|{ts}|{original_reading}")
-
-    # 2. O atacante altera o reading para 9999 (mas mantém a assinatura original)
-    tampered_reading = 9999
-    pkt = build_cbor_packet(SENSOR_ID, ts, tampered_reading, sig, ESP42_PROOF_BYTES)
-    print(f"   💥 Dado alterado pelo atacante: reading {original_reading} → {tampered_reading}")
-    print(f"   📦 Pacote CBOR montado com dado adulterado: {len(pkt)} bytes")
-
-    send_udp(target_ip, port, pkt, "Pacote A6 (dado adulterado)")
-    print("   ⏳ Verifique no terminal do Raspberry Pi...")
-
-
-def test_a7_malformed_cbor(target_ip: str, port: int):
-    """
-    A7 — Fuzzing: pacotes CBOR malformados
-
-    Envia dados completamente inválidos para testar se o controlador
-    trata entradas maliciosas sem crash/panic.
-
-    Resultado esperado: Pacote descartado (CBOR inválido / corrupted_cbor++)
-    """
-    separator("A7 — Fuzzing: CBOR Malformado")
-
-    print("   Cenário: Enviar bytes aleatórios, CBOR truncado e payload gigante")
-    print("   Resultado esperado: Todos descartados (erro de desserialização CBOR)")
-    print()
-
-    # Sub-teste 1: Bytes totalmente aleatórios
-    garbage = os.urandom(256)
-    send_udp(target_ip, port, garbage, "7a: 256 bytes aleatórios")
-    time.sleep(0.3)
-
-    # Sub-teste 2: CBOR válido mas com campos errados (string em vez de int)
-    bad_payload = cbor2.dumps({"1": "ESP-42", "2": "not_a_number", "3": 42})
-    send_udp(target_ip, port, bad_payload, "7b: CBOR com tipos errados (sem campo 4 e 5)")
-    time.sleep(0.3)
-
-    # Sub-teste 3: CBOR truncado (cortado pela metade)
-    key = load_esp42_private_key()
-    ts = int(time.time())
-    sig = sign_data(key, SENSOR_ID, ts, 1111)
-    valid_pkt = build_cbor_packet(SENSOR_ID, ts, 1111, sig, ESP42_PROOF_BYTES)
-    truncated = valid_pkt[: len(valid_pkt) // 2]
-    send_udp(target_ip, port, truncated, f"7c: CBOR truncado ({len(truncated)} de {len(valid_pkt)} bytes)")
-    time.sleep(0.3)
-
-    # Sub-teste 4: Pacote vazio
-    send_udp(target_ip, port, b"", "7d: Pacote vazio (0 bytes)")
-
-    print("   ⏳ Verifique que o controlador NÃO crashou e logou 4 erros de CBOR")
-
-
-def test_a8_dos_flood(target_ip: str, port: int):
-    """
-    A8 — DoS: flood de pacotes inválidos
-
-    Envia 100 pacotes inválidos em rajada para medir o impacto
-    no processamento do controlador.
-
-    Resultado esperado: Todos descartados, controlador continua operando
-    """
-    separator("A8 — DoS: Flood de Pacotes Inválidos")
-
-    num_packets = 100
-    print(f"   Cenário: Enviar {num_packets} pacotes inválidos em rajada")
-    print("   Resultado esperado: Todos descartados, controlador estável")
-    print()
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    t_start = time.time()
-    for i in range(num_packets):
-        garbage = os.urandom(128)
-        sock.sendto(garbage, (target_ip, port))
-
-    elapsed = time.time() - t_start
-    sock.close()
-
-    print(f"   📤 {num_packets} pacotes enviados em {elapsed:.3f}s ({num_packets/elapsed:.0f} pkt/s)")
-    print("   ⏳ Verifique que o controlador continua funcional (envie um pacote legítimo depois)")
-
-
-# ═══════════════════════════════════════════════════════════════
-# PACOTE LEGÍTIMO DE CONTROLE
-# ═══════════════════════════════════════════════════════════════
-
-def test_legitimate(target_ip: str, port: int):
-    """
-    Pacote de controle: envia um pacote 100% legítimo para confirmar
-    que o controlador está operando e aceita pacotes válidos.
-    """
-    separator("CONTROLE — Pacote Legítimo (deve ser ACEITO)")
-
-    print("   Cenário: Pacote totalmente válido do ESP-42")
-    print("   Resultado esperado: ACEITO (todas as 3 verificações passam)")
-    print()
-
-    pkt, ts, reading = build_legitimate_packet(reading=1234)
-    print(f"   📦 Pacote legítimo: id={SENSOR_ID}, ts={ts}, reading={reading}")
-
-    send_udp(target_ip, port, pkt, "Pacote legítimo de controle")
-    print("   ⏳ Verifique no terminal do Raspberry Pi: deve aparecer ACEITO ✓")
+class SecurityTestSuite:
+    """Orquestra os testes de spoofing e replay conforme a metodologia do artigo."""
+
+    def __init__(self, target_ip: str, port: int = DEFAULT_PORT):
+        self.target_ip = target_ip
+        self.port = port
+        self.esp42_key = load_esp42_private_key()
+        self.attacker_key = generate_attacker_key()
+        self.all_batches: List[BatchResult] = []
+        self._next_reading = 1  # Contador sequencial global (1, 2, 3, ...)
+
+    def _get_reading(self) -> int:
+        """Retorna o próximo reading sequencial."""
+        r = self._next_reading
+        self._next_reading += 1
+        return r
+
+    # ──────────────────────────────────────────────────────
+    # RUNNER GENÉRICO — executa N repetições de um builder
+    # ──────────────────────────────────────────────────────
+
+    def _run_batch(
+        self,
+        test_id: str,
+        test_name: str,
+        category: str,
+        expected: str,
+        blocked_by: str,
+        packet_builder: Callable[[int], bytes],
+        reps: int = BATCH_SIZE,
+    ) -> BatchResult:
+        """Executa `reps` repetições de `packet_builder`, mede latência e coleta resultados."""
+        batch = BatchResult(test_id, test_name, category, expected, blocked_by)
+        self._print_header(batch, reps)
+
+        for i in range(reps):
+            # Medir tempo total: construção + envio
+            t0 = time.perf_counter()
+            pkt = packet_builder(i)
+            sent, _ = send_udp(self.target_ip, self.port, pkt)
+            latency = (time.perf_counter() - t0) * 1000
+
+            result = PacketResult(i + 1, len(pkt), latency, sent)
+            batch.results.append(result)
+            self._print_row(result)
+
+            time.sleep(0.2)  # 200ms entre pacotes para o controlador processar
+
+        self._print_footer(batch)
+        self.all_batches.append(batch)
+        return batch
+
+    # ──────────────────────────────────────────────────────
+    # SPOOFING — 4 variantes (Teste 1 do artigo)
+    # ──────────────────────────────────────────────────────
+
+    def spoofing_forged_proof(self) -> BatchResult:
+        """
+        S1 — Proof forjada: bytes aleatórios no campo membershipproof.
+        Assinatura RSA válida (passa na Verif. 02), mas witness+PoE são lixo.
+        Esperado: REJEITADO pela Verificação 03 (deserialização ou verify_membership).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            fake_proof = os.urandom(len(ESP42_PROOF_BYTES))
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, fake_proof)
+
+        return self._run_batch(
+            "S1", "Proof Forjada (bytes aleatórios)", "Spoofing",
+            "REJEITADO", "Verificação 03", builder,
+        )
+
+    def spoofing_null_proof(self) -> BatchResult:
+        """
+        S2 — Proof nula: campo membershipproof com 0 bytes.
+        Assinatura RSA válida. Simula nó espúrio sem witness provisionada.
+        Esperado: REJEITADO pela Verificação 03 (proof vazia não desserializa).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, b"")
+
+        return self._run_batch(
+            "S2", "Proof Nula (0 bytes)", "Spoofing",
+            "REJEITADO", "Verificação 03", builder,
+        )
+
+    def spoofing_corrupted_proof(self) -> BatchResult:
+        """
+        S3 — Proof corrompida: proof legítima com 16 bytes invertidos (bit flip).
+        Assinatura RSA válida. Simula adulteração da witness em trânsito.
+        Esperado: REJEITADO pela Verificação 03 (witness^hash(id) ≠ acumulador).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            corrupted = bytearray(ESP42_PROOF_BYTES)
+            for j in range(50, 66):
+                corrupted[j] ^= 0xFF
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, bytes(corrupted))
+
+        return self._run_batch(
+            "S3", "Proof Corrompida (bit flip)", "Spoofing",
+            "REJEITADO", "Verificação 03", builder,
+        )
+
+    def spoofing_wrong_key(self) -> BatchResult:
+        """
+        S4 — Chave do atacante: ID legítimo (ESP-42) mas assinado com chave RSA
+        própria do atacante. Proof legítima (capturada do ar).
+        Esperado: REJEITADO pela Verificação 02 (assinatura não bate com pub key).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.attacker_key, SENSOR_ID, ts, reading)
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES)
+
+        return self._run_batch(
+            "S4", "Chave do Atacante (ID clonado)", "Spoofing",
+            "REJEITADO", "Verificação 02", builder,
+        )
+
+    # ──────────────────────────────────────────────────────
+    # REPLAY — 2 variantes (Teste 2 do artigo)
+    # ──────────────────────────────────────────────────────
+
+    def replay_stale_timestamp(self) -> BatchResult:
+        """
+        R1 — Timestamp expirado: pacote com assinatura e proof válidas,
+        mas timestamp 30s no passado (fora da janela Δt = 5s).
+        Simula reenvio de pacote capturado após a janela expirar.
+        Esperado: REJEITADO pela Verificação 01 (|now - ts| > 5s).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time()) - 30  # 30 segundos no passado
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES)
+
+        return self._run_batch(
+            "R1", "Timestamp Expirado (Δt > 5s)", "Replay",
+            "REJEITADO", "Verificação 01", builder,
+        )
+
+    def replay_duplicate(self) -> BatchResult:
+        """
+        R2 — Pacote duplicado: envia pacote legítimo e imediatamente reenvia
+        o mesmo pacote (replay dentro da janela Δt).
+        Para cada iteração: 1 legítimo (aceito) + 1 réplica (rejeitada).
+        Esperado: Réplica REJEITADA pela Verificação 01b (cache de deduplicação).
+        """
+        batch = BatchResult(
+            "R2", "Pacote Duplicado (replay intra-janela)", "Replay",
+            "REJEITADO", "Verificação 01b",
+        )
+        self._print_header(batch, BATCH_SIZE)
+        print("  ℹ  Cada iteração: 1 pacote legítimo (aceito) + 1 réplica (medida)\n")
+
+        for i in range(BATCH_SIZE):
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            pkt = build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES)
+
+            # 1. Enviar pacote legítimo (deve ser ACEITO pelo controlador)
+            send_udp(self.target_ip, self.port, pkt)
+            time.sleep(0.1)  # 100ms para o controlador processar e cachear
+
+            # 2. Reenviar o MESMO pacote (deve ser REJEITADO — replay)
+            t0 = time.perf_counter()
+            sent, _ = send_udp(self.target_ip, self.port, pkt)
+            latency = (time.perf_counter() - t0) * 1000
+
+            result = PacketResult(i + 1, len(pkt), latency, sent)
+            batch.results.append(result)
+            self._print_row(result)
+            time.sleep(0.2)  # 200ms entre iterações
+
+        self._print_footer(batch)
+        self.all_batches.append(batch)
+        return batch
+
+    # ──────────────────────────────────────────────────────
+    # BASELINE — pacotes legítimos para referência
+    # ──────────────────────────────────────────────────────
+
+    def baseline_legitimate(self) -> BatchResult:
+        """
+        B1 — Pacote legítimo: 10 pacotes 100% válidos como grupo de controle.
+        Assinatura, timestamp e proof corretos.
+        Esperado: ACEITO (todas as 3 verificações passam).
+        """
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, ESP42_PROOF_BYTES)
+
+        return self._run_batch(
+            "B1", "Pacote Legítimo (controle)", "Baseline",
+            "ACEITO", "Todas passam", builder,
+        )
+
+    # ──────────────────────────────────────────────────────
+    # FORMATAÇÃO DO OUTPUT
+    # ──────────────────────────────────────────────────────
+
+    @staticmethod
+    def _print_header(batch: BatchResult, reps: int):
+        print(f"\n{'═' * 70}")
+        print(f"  [{batch.test_id}] {batch.test_name}")
+        print(f"  Categoria: {batch.category} | Repetições: {reps}")
+        print(f"  Esperado: {batch.expected_result} — {batch.blocked_by}")
+        print(f"{'═' * 70}")
+        print(f"  {'#':>3} │ {'Tamanho':>9} │ {'Latência':>12} │ {'Status'}")
+        print(f"  {'─' * 3}─┼─{'─' * 9}─┼─{'─' * 12}─┼─{'─' * 12}")
+
+    @staticmethod
+    def _print_row(r: PacketResult):
+        status = "✓ Enviado" if r.sent else "✗ Falha"
+        print(f"  {r.iteration:>3} │ {r.packet_size:>7} B │ {r.latency_ms:>9.3f} ms │ {status}")
+
+    @staticmethod
+    def _print_footer(batch: BatchResult):
+        n = len(batch.results)
+        print(f"  {'─' * 3}─┴─{'─' * 9}─┴─{'─' * 12}─┴─{'─' * 12}")
+        print(f"  Pacotes enviados:  {batch.total_sent}/{n}")
+        if batch.total_sent > 0:
+            print(f"  Tamanho médio:     {batch.avg_size:.0f} bytes")
+            print(f"  Latência média:    {batch.avg_latency:.3f} ms")
+            print(f"  Latência min/máx:  {batch.min_latency:.3f} / {batch.max_latency:.3f} ms")
+            if batch.stdev_latency > 0:
+                print(f"  Desvio padrão:     {batch.stdev_latency:.3f} ms")
+        print(f"  Resultado esperado: {batch.expected_result} ({batch.blocked_by})")
+
+    # ──────────────────────────────────────────────────────
+    # RELATÓRIO FINAL CONSOLIDADO
+    # ──────────────────────────────────────────────────────
+
+    def print_final_report(self):
+        """Imprime tabela consolidada com todas as baterias executadas."""
+        W = 86  # largura total da tabela
+
+        print(f"\n\n{'═' * W}")
+        print(f"{'RELATÓRIO CONSOLIDADO — Avaliação de Segurança':^{W}}")
+        print(f"{'═' * W}")
+
+        # Cabeçalho da tabela
+        print(
+            f"  {'Categoria':<10} │ {'ID':>3} │ {'Variante':<35} │ "
+            f"{'Enviados':>8} │ {'Esperado':>10} │ {'Lat.(ms)':>9}"
+        )
+        print(
+            f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 35}─┼─"
+            f"{'─' * 8}─┼─{'─' * 10}─┼─{'─' * 9}"
+        )
+
+        # Linhas de dados
+        prev_cat = None
+        for b in self.all_batches:
+            if prev_cat and b.category != prev_cat:
+                print(
+                    f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 35}─┼─"
+                    f"{'─' * 8}─┼─{'─' * 10}─┼─{'─' * 9}"
+                )
+            prev_cat = b.category
+
+            n = len(b.results)
+            print(
+                f"  {b.category:<10} │ {b.test_id:>3} │ {b.test_name:<35} │ "
+                f"{b.total_sent:>4}/{n:<3} │ {b.expected_result:>10} │ "
+                f"{b.avg_latency:>6.3f} ms"
+            )
+
+        print(f"  {'═' * 10}═╧═{'═' * 3}═╧═{'═' * 35}═╧═{'═' * 8}═╧═{'═' * 10}═╧═{'═' * 9}")
+
+        # Resumo numérico
+        attack_batches = [b for b in self.all_batches if b.expected_result == "REJEITADO"]
+        baseline_batches = [b for b in self.all_batches if b.expected_result == "ACEITO"]
+
+        total_attack = sum(b.total_sent for b in attack_batches)
+        total_baseline = sum(b.total_sent for b in baseline_batches)
+        all_latencies = []
+        for b in attack_batches:
+            all_latencies.extend(b.latencies)
+
+        print(f"\n  Pacotes de ataque transmitidos:    {total_attack}")
+        print(f"  Pacotes legítimos transmitidos:    {total_baseline}")
+        print(f"  Taxa de rejeição esperada:         100% ({total_attack}/{total_attack})")
+        if all_latencies:
+            print(f"  Latência média dos ataques:        {statistics.mean(all_latencies):.3f} ms")
+        print()
+        print(f"  ℹ  Confirme a taxa de rejeição real no terminal do controlador.")
+        print(f"     Use Ctrl+C no controlador para exibir o resumo da sessão.")
+        print(f"{'═' * W}\n")
+
+    def export_json(self, filepath: str = "resultados_teste.json"):
+        """Exporta todos os resultados em JSON estruturado para análise posterior."""
+        from datetime import datetime
+
+        attack_batches = [b for b in self.all_batches if b.expected_result == "REJEITADO"]
+        baseline_batches = [b for b in self.all_batches if b.expected_result == "ACEITO"]
+        total_attack = sum(b.total_sent for b in attack_batches)
+        total_baseline = sum(b.total_sent for b in baseline_batches)
+
+        all_attack_latencies = []
+        for b in attack_batches:
+            all_attack_latencies.extend(b.latencies)
+
+        report = {
+            "metadata": {
+                "timestamp": datetime.now().isoformat(),
+                "target": self.target_ip,
+                "port": self.port,
+                "batch_size": BATCH_SIZE,
+                "replay_window_secs": REPLAY_WINDOW_SECS,
+                "inter_packet_delay_ms": 200,
+            },
+            "summary": {
+                "total_attack_packets": total_attack,
+                "total_baseline_packets": total_baseline,
+                "expected_rejection_rate": "100%",
+                "avg_attack_latency_ms": round(statistics.mean(all_attack_latencies), 3) if all_attack_latencies else 0,
+            },
+            "tests": [],
+        }
+
+        for b in self.all_batches:
+            test_data = {
+                "id": b.test_id,
+                "name": b.test_name,
+                "category": b.category,
+                "expected_result": b.expected_result,
+                "blocked_by": b.blocked_by,
+                "packets_sent": b.total_sent,
+                "packets_total": len(b.results),
+                "latency": {
+                    "avg_ms": round(b.avg_latency, 3),
+                    "min_ms": round(b.min_latency, 3),
+                    "max_ms": round(b.max_latency, 3),
+                    "stdev_ms": round(b.stdev_latency, 3),
+                },
+                "avg_packet_size_bytes": round(b.avg_size),
+                "per_packet": [
+                    {
+                        "iteration": r.iteration,
+                        "size_bytes": r.packet_size,
+                        "latency_ms": round(r.latency_ms, 3),
+                        "sent": r.sent,
+                    }
+                    for r in b.results
+                ],
+            }
+            report["tests"].append(test_data)
+
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2, ensure_ascii=False)
+
+        print(f"\n  📄 Resultados exportados para: {filepath}")
 
 
 # ═══════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════
 
-TESTS = {
-    "0": ("Pacote Legítimo (controle)", test_legitimate),
-    "2": ("A2 — ID Clonado + Chave Errada", test_a2_cloned_id_wrong_key),
-    "3": ("A3 — Proof Corrompida", test_a3_wrong_proof),
-    "4": ("A4 — Replay Fora da Janela", test_a4_replay_outside_window),
-    "5": ("A5 — Replay Dentro da Janela", test_a5_replay_inside_window),
-    "6": ("A6 — Tampering de Dados", test_a6_data_tampering),
-    "7": ("A7 — CBOR Malformado", test_a7_malformed_cbor),
-    "8": ("A8 — DoS Flood", test_a8_dos_flood),
-}
-
-
 def main():
     parser = argparse.ArgumentParser(
-        description="Script de Testes de Ataque — TCC GSIPP",
+        description="Avaliação Automatizada de Segurança — TCC GSIPP",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Exemplos:
-  python3 attack_tests.py --target 10.5.18.72 --test all
-  python3 attack_tests.py --target 10.5.18.72 --test 2
-  python3 attack_tests.py --target 10.5.18.72 --test 2,3,6
-  python3 attack_tests.py --target 10.5.18.72 --test 0    (pacote legítimo de controle)
+  python3 attack_tests.py --target 172.16.0.72 --test all
+  python3 attack_tests.py --target 172.16.0.72 --test spoofing
+  python3 attack_tests.py --target 172.16.0.72 --test replay
+  python3 attack_tests.py --target 172.16.0.72 --test baseline
         """,
     )
-    parser.add_argument("--target", required=True, help="IP do Raspberry Pi (controlador)")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Porta UDP (default: {DEFAULT_PORT})")
     parser.add_argument(
-        "--test",
-        default="all",
-        help="Testes a executar: 'all' ou números separados por vírgula (ex: 2,3,6)",
+        "--target", required=True,
+        help="IP do Raspberry Pi (controlador)",
+    )
+    parser.add_argument(
+        "--port", type=int, default=DEFAULT_PORT,
+        help=f"Porta UDP (default: {DEFAULT_PORT})",
+    )
+    parser.add_argument(
+        "--test", default="all",
+        choices=["all", "spoofing", "replay", "baseline"],
+        help="Bateria de testes: all, spoofing, replay ou baseline (default: all)",
+    )
+    parser.add_argument(
+        "--no-pause", action="store_true",
+        help="Não aguardar ENTER entre testes diferentes",
     )
 
     args = parser.parse_args()
+    suite = SecurityTestSuite(args.target, args.port)
 
-    print()
-    print("═" * 60)
-    print("  🔒 Script de Testes de Ataque — TCC GSIPP")
-    print("═" * 60)
-    print(f"  Alvo:  {args.target}:{args.port}")
-    print(f"  Testes: {args.test}")
-    print("═" * 60)
+    # Cabeçalho
+    print(f"\n{'═' * 70}")
+    print(f"  🔒 Avaliação Automatizada de Segurança — TCC GSIPP")
+    print(f"{'═' * 70}")
+    print(f"  Alvo:        {args.target}:{args.port}")
+    print(f"  Bateria:     {args.test}")
+    print(f"  Repetições:  {BATCH_SIZE} por variante")
+    print(f"  Janela Δt:   {REPLAY_WINDOW_SECS}s")
+    print(f"{'═' * 70}")
 
-    # Determinar quais testes rodar
-    if args.test == "all":
-        selected = sorted(TESTS.keys())
-    else:
-        selected = [t.strip() for t in args.test.split(",")]
-        for t in selected:
-            if t not in TESTS:
-                print(f"\n❌ Teste '{t}' não existe. Opções: {', '.join(sorted(TESTS.keys()))}")
-                sys.exit(1)
+    # ── Montar lista de testes a executar ──
+    tests_to_run = []
 
-    # Menu
-    print("\n   Testes selecionados:")
-    for t in selected:
-        name, _ = TESTS[t]
-        print(f"     [{t}] {name}")
+    if args.test in ("all", "baseline"):
+        tests_to_run.append(suite.baseline_legitimate)
 
-    input("\n   Pressione ENTER para iniciar (certifique-se que o controlador está rodando)...")
+    if args.test in ("all", "spoofing"):
+        tests_to_run.extend([
+            suite.spoofing_forged_proof,
+            suite.spoofing_null_proof,
+            suite.spoofing_corrupted_proof,
+            suite.spoofing_wrong_key,
+        ])
 
-    # Executar testes
-    for t in selected:
-        name, func = TESTS[t]
-        try:
-            func(args.target, args.port)
-        except Exception as e:
-            print(f"\n   ❌ Erro no teste {t}: {e}")
+    if args.test in ("all", "replay"):
+        tests_to_run.extend([
+            suite.replay_stale_timestamp,
+            suite.replay_duplicate,
+        ])
 
-        if t != selected[-1]:
-            print()
-            input("   Pressione ENTER para o próximo teste...")
+    # ── Executar testes com pausa entre diferentes baterias ──
+    total_tests = len(tests_to_run)
+    for i, test_func in enumerate(tests_to_run, 1):
+        test_func()
+        if i < total_tests and not args.no_pause:
+            try:
+                input("\n⏸  Pressione [ENTER] para ir para o próximo teste...")
+            except (KeyboardInterrupt, EOFError):
+                print("\n\nExecução interrompida pelo usuário.")
+                break
 
-    # Resumo
-    separator("TODOS OS TESTES CONCLUÍDOS")
-    print("   Verifique o terminal do Raspberry Pi para os resultados.")
-    print("   Use Ctrl+C no controlador para ver o resumo da sessão.\n")
+    # ── Relatório consolidado e exportação ──
+    suite.print_final_report()
+    suite.export_json()
 
 
 if __name__ == "__main__":
