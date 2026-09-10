@@ -31,6 +31,7 @@ sha2 = "0.10"
 sysinfo = "0.30"
 serialport = "4.3.0"
 ctrlc = "3.4"
+cobs = "0.2"
 
 [dev-dependencies]
 criterion = "0.2.11"

@@ -27,6 +27,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use sysinfo::System;
+use cobs::decode_vec;
 
 // ============================================
 // CONFIGURAÇÕES
@@ -464,7 +465,7 @@ struct IncompletePacket {
 }
 
 struct ReassemblyBuffer {
-    packets: HashMap<u8, IncompletePacket>,
+    packets: HashMap<(u8, u8), IncompletePacket>,
 }
 
 impl ReassemblyBuffer {
@@ -480,7 +481,7 @@ impl ReassemblyBuffer {
         let timeout = Duration::from_secs(REASSEMBLY_TIMEOUT_SECS);
 
         // Identificar pacotes que já ultrapassaram o tempo limite de espera
-        let expired_ids: Vec<u8> = self
+        let expired_ids: Vec<(u8, u8)> = self
             .packets
             .iter()
             .filter(|(_, pkt)| now.duration_since(pkt.created_at) >= timeout)
@@ -496,8 +497,8 @@ impl ReassemblyBuffer {
                     .collect();
 
                 println!(
-                    "⚠️ [Reassembly Timeout] Pacote ID {} descartado após {}s de inatividade! Recebidos: {}/{} (Faltaram fragmentos: {:?})",
-                    id, REASSEMBLY_TIMEOUT_SECS, pkt.fragments.len(), pkt.total_frags, missing_indices
+                    "⚠️ [Reassembly Timeout] Pacote Sensor_ID={} ID={} descartado após {}s de inatividade! Recebidos: {}/{} (Faltaram fragmentos: {:?})",
+                    id.0, id.1, REASSEMBLY_TIMEOUT_SECS, pkt.fragments.len(), pkt.total_frags, missing_indices
                 );
             }
         }
@@ -506,6 +507,7 @@ impl ReassemblyBuffer {
     // Adiciona fragmento e retorna Some(payload_completo) se terminar
     fn add_fragment(
         &mut self,
+        sensor_id: u8,
         packet_id: u8,
         total_frags: u8,
         frag_idx: u8,
@@ -516,17 +518,18 @@ impl ReassemblyBuffer {
         self.check_timeout(stats);
 
         // 2. Limite anti-flood: descartar NOVO pacote se o buffer já está cheio de pacotes recentes
-        if !self.packets.contains_key(&packet_id) && self.packets.len() >= MAX_CONCURRENT_PACKETS {
+        let key = (sensor_id, packet_id);
+        if !self.packets.contains_key(&key) && self.packets.len() >= MAX_CONCURRENT_PACKETS {
             println!(
-                "⚠️ [Reassembly] Limite de {} pacotes simultâneos atingido. Fragmento ID={} descartado (possível flood).",
-                MAX_CONCURRENT_PACKETS, packet_id
+                "⚠️ [Reassembly] Limite de {} pacotes simultâneos atingido. Fragmento Sensor={} ID={} descartado (possível flood).",
+                MAX_CONCURRENT_PACKETS, sensor_id, packet_id
             );
             return None;
         }
 
         let entry = self
             .packets
-            .entry(packet_id)
+            .entry(key)
             .or_insert_with(|| IncompletePacket {
                 total_frags,
                 created_at: Instant::now(),
@@ -544,7 +547,7 @@ impl ReassemblyBuffer {
                     full_payload.extend_from_slice(frag);
                 }
             }
-            self.packets.remove(&packet_id);
+            self.packets.remove(&key);
             Some(full_payload)
         } else {
             None
@@ -621,48 +624,56 @@ fn main() -> Result<()> {
             Ok(t) if t > 0 => {
                 stream_buffer.extend_from_slice(&buf[..t]);
 
-                // Parse stream contínuo com detecção otimizada de sincronismo
-                loop {
-                    if stream_buffer.len() < 6 {
-                        break;
+                // Parse stream contínuo procurando delimitador 0x00
+                while let Some(pos) = stream_buffer.iter().position(|&b| b == 0x00) {
+                    let frame = stream_buffer.drain(..=pos).collect::<Vec<u8>>();
+                    
+                    if frame.len() <= 6 {
+                        // Muito pequeno para ser um frame válido (precisa ter header 5 bytes + dados + 0x00 overhead)
+                        continue;
                     }
-
-                    // Procurar cabeçalho 0xAA 0xBB
-                    if stream_buffer[0] == 0xAA && stream_buffer[1] == 0xBB {
-                        let packet_id = stream_buffer[2];
-                        let total_frags = stream_buffer[3];
-                        let frag_idx = stream_buffer[4];
-                        let payload_len = stream_buffer[5] as usize;
-
-                        // Validação de sanidade do cabeçalho
-                        if total_frags == 0
-                            || frag_idx >= total_frags
-                            || payload_len == 0
-                            || payload_len > 250
-                        {
+                    
+                    // Decodificar COBS (tirando o 0x00 final)
+                    match decode_vec(&frame[..frame.len() - 1]) {
+                        Ok(decoded) => {
+                            if decoded.len() < 5 {
+                                println!("[Radio] Frame decodificado muito pequeno.");
+                                continue;
+                            }
+                            
+                            let sensor_id = decoded[0];
+                            let packet_id = decoded[1];
+                            let total_frags = decoded[2];
+                            let frag_idx = decoded[3];
+                            let payload_len = decoded[4] as usize;
+                            
+                            if total_frags == 0 || frag_idx >= total_frags || payload_len == 0 {
+                                println!(
+                                    "[Radio] Cabeçalho decodificado corrompido: Sensor={}, ID={}, Total={}, Frag={}, Len={}",
+                                    sensor_id, packet_id, total_frags, frag_idx, payload_len
+                                );
+                                continue;
+                            }
+                            
+                            if decoded.len() < 5 + payload_len {
+                                println!("[Radio] Tamanho real ({}) menor que payload_len ({}).", decoded.len() - 5, payload_len);
+                                continue;
+                            }
+                            
+                            let payload = decoded[5..5 + payload_len].to_vec();
+                            
                             println!(
-                                "[Radio] Cabeçalho corrompido descartado: ID={}, Total={}, Frag={}, Len={}",
-                                packet_id, total_frags, frag_idx, payload_len
-                            );
-                            stream_buffer.drain(..2);
-                            continue;
-                        }
-
-                        if stream_buffer.len() >= 6 + payload_len {
-                            // Fragmento completo disponível
-                            let payload = stream_buffer[6..6 + payload_len].to_vec();
-                            stream_buffer.drain(..6 + payload_len);
-
-                            println!(
-                                "   [Radio] RX: Fragmento {}/{} (Pacote ID: {}) — {} bytes",
+                                "   [Radio] RX: Fragmento {}/{} (Sensor ID: {}, Pacote ID: {}) — {} bytes",
                                 frag_idx + 1,
                                 total_frags,
+                                sensor_id,
                                 packet_id,
                                 payload_len
                             );
 
                             let mut stats = stats_arc.lock().unwrap();
                             if let Some(full_cb_raw) = reassembly.add_fragment(
+                                sensor_id,
                                 packet_id,
                                 total_frags,
                                 frag_idx,
@@ -685,23 +696,9 @@ fn main() -> Result<()> {
                                     eprintln!("Erro ao processar pacote CBOR: {:#}", e);
                                 }
                             }
-                        } else {
-                            // Esperar mais bytes para completar o fragmento
-                            break;
                         }
-                    } else {
-                        // Sincronismo não encontrado no início; procurar o próximo 0xAA 0xBB
-                        if let Some(pos) = stream_buffer.windows(2).position(|w| w == [0xAA, 0xBB])
-                        {
-                            stream_buffer.drain(..pos);
-                        } else {
-                            // Se o último byte for 0xAA, mantê-lo caso o próximo seja 0xBB
-                            if stream_buffer.last() == Some(&0xAA) {
-                                stream_buffer.drain(..stream_buffer.len() - 1);
-                            } else {
-                                stream_buffer.clear();
-                            }
-                            break;
+                        Err(_) => {
+                            println!("[Radio] Erro de decodificação COBS.");
                         }
                     }
                 }

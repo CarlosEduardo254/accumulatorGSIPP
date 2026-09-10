@@ -515,6 +515,55 @@ def test_legitimate(target_ip: str, port: int):
     print("   ⏳ Verifique no terminal do Raspberry Pi: deve aparecer ACEITO ✓")
 
 
+def test_a9_spoofing_valid_cbor_wrong_proof(target_ip: str, port: int):
+    """
+    A9 — Spoofing: Proof estruturalmente válida, mas de OUTRO sensor
+
+    Atendendo à ressalva de que S1-S3 poderiam estar sendo rejeitados
+    apenas na camada de desserialização (CBOR parser), este teste envia
+    um pacote 100% válido sintaticamente:
+    - ID = ESP-42
+    - Timestamp válido
+    - Assinatura RSA legítima de ESP-42
+    - MAS a MembershipProof injetada pertence ao ESP-02 (valida em CBOR).
+
+    Resultado esperado: REJEITADO na Verificação 03 (Prova Inválida)
+    Motivo: witness(ESP-02)^hash("ESP-42") != accumulator.
+    A rejeição ocorre puramente pela matemática do acumulador RSA.
+    """
+    separator("A9 — Spoofing com Proof de Outro Sensor")
+
+    print("   Cenário: Pacote de ESP-42 com MembershipProof do ESP-02")
+    print("   Resultado esperado: REJEITADO (Verificação 03 — Prova Inválida puramente criptográfica)")
+    print()
+
+    # Carregar a proof de outro sensor (ESP-02)
+    proof_path = "/home/carlos_eduardo/estudos/accumulatorGSIPP/SnifferESP/proofs/ESP_02.proof"
+    if not os.path.exists(proof_path):
+        print(f"   ❌ Arquivo não encontrado: {proof_path}")
+        return
+
+    with open(proof_path, "rb") as f:
+        esp02_proof_bytes = f.read()
+
+    print(f"   📥 Proof do ESP-02 carregada: {len(esp02_proof_bytes)} bytes (CBOR válido)")
+
+    # Construir pacote
+    key = load_esp42_private_key()
+    ts = int(time.time())
+    reading = 1010
+
+    # Assinatura válida para o ESP-42
+    sig = sign_data(key, SENSOR_ID, ts, reading)
+    print(f"   ✍️  Dados assinados com chave LEGÍTIMA do ESP-42")
+
+    # Injetar a proof do ESP-02 (estruturalmente perfeita, criptograficamente incompatível com ESP-42)
+    pkt = build_cbor_packet(SENSOR_ID, ts, reading, sig, esp02_proof_bytes)
+    print(f"   📦 Pacote CBOR montado: {len(pkt)} bytes")
+
+    send_udp(target_ip, port, pkt, "Pacote A9 (Spoofing com Proof de ESP-02)")
+    print("   ⏳ Verifique no terminal do Raspberry Pi (deve rejeitar na Verificação 03)")
+
 # ═══════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════
@@ -528,6 +577,7 @@ TESTS = {
     "6": ("A6 — Tampering de Dados", test_a6_data_tampering),
     "7": ("A7 — CBOR Malformado", test_a7_malformed_cbor),
     "8": ("A8 — DoS Flood", test_a8_dos_flood),
+    "9": ("A9 — Spoofing com Proof Válida de Outro Sensor", test_a9_spoofing_valid_cbor_wrong_proof),
 }
 
 
