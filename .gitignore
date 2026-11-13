@@ -24,3 +24,16 @@ Cargo.lock
 *.pfx
 *.proof
 accumulator.dat
+
+# Credenciais de rede (Wi-Fi / IP do controlador) — usar os templates *.example.h
+SnifferESP/esp32_sensor/wifi_config.h
+wifi_config.h
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# PlatformIO (build do firmware)
+.pio/

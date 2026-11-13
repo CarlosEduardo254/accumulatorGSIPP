@@ -37,13 +37,14 @@ fn main() -> anyhow::Result<()> {
 
         // add_with_proof gera a prova correta: witness = witness_acc (sem o sensor)
         let (_full_acc, proof) = witness_acc.add_with_proof(&[id.clone()]);
-        all_proofs.insert(id.clone(), proof);
-        println!("  ✓ Prova gerada para {}", id);
-        debug_assert!(
+        // Validação matemática contra o acumulador FINAL (roda também em --release)
+        assert!(
             acc.verify_membership(id, &proof),
             "prova inválida gerada para {}",
             id
         );
+        all_proofs.insert(id.clone(), proof);
+        println!("  ✓ Prova gerada e validada para {}", id);
     }
     println!();
 

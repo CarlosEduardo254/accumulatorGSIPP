@@ -538,7 +538,7 @@ def test_a9_spoofing_valid_cbor_wrong_proof(target_ip: str, port: int):
     print()
 
     # Carregar a proof de outro sensor (ESP-02)
-    proof_path = "/home/carlos_eduardo/estudos/accumulatorGSIPP/SnifferESP/proofs/ESP_02.proof"
+    proof_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "SnifferESP", "proofs", "ESP_02.proof")
     if not os.path.exists(proof_path):
         print(f"   ❌ Arquivo não encontrado: {proof_path}")
         return

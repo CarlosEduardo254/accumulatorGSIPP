@@ -42,15 +42,23 @@ pio device monitor
 
 ## ⚙️ Configuração
 
-Edite as configurações no topo do arquivo `esp32_sensor.ino`:
+As credenciais de rede ficam em `wifi_config.h`, que **não é versionado**
+(está no `.gitignore`). Na primeira vez, crie-o a partir do template:
+
+```bash
+cp wifi_config.example.h wifi_config.h   # depois edite SSID, senha e IP
+```
 
 ```cpp
-// WiFi
-const char* WIFI_SSID = "SeuWiFi";
-const char* WIFI_PASSWORD = "SuaSenha";
+// wifi_config.h
+#define WIFI_SSID     "SeuWiFi"
+#define WIFI_PASSWORD "SuaSenha"
+#define SERVER_IP     "192.168.1.100"   // IP do controlador
+```
 
-// Servidor
-const char* SERVER_IP = "192.168.1.100";  // IP do controlador
+As demais configurações continuam no topo do `esp32_sensor.ino`:
+
+```cpp
 const uint16_t SERVER_PORT = 4242;
 
 // Sensor ID (DEVE corresponder ao usado no setup!)
@@ -140,7 +148,7 @@ Para verificar:
    Primeiros bytes: A2 01 58 80 ...
 
 📡 Conectando ao WiFi...
-   SSID: NEIKLOTDRADE 42140
+   SSID: SeuWiFi
 ..........
 ✅ WiFi conectado!
    IP local: 192.168.137.123
