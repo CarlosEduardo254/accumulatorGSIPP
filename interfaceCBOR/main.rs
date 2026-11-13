@@ -46,6 +46,11 @@ const REPLAY_WINDOW_SECS: u64 = 5;
 const REASSEMBLY_TIMEOUT_SECS: u64 = 10;
 /// Máximo de pacotes em reassembly simultâneo — limita alocação em caso de flood
 const MAX_CONCURRENT_PACKETS: usize = 8;
+/// Maior frame válido no fio: cabeçalho (5) + payload (até 255, pois o campo
+/// de tamanho é u8) + overhead COBS (até 2) + delimitador 0x00 (1).
+const MAX_FRAME_LEN: usize = 5 + 255 + 2 + 1;
+/// Bytes exibidos no dump hexadecimal de frames inválidos
+const HEX_DUMP_LEN: usize = 16;
 /// Locais onde o accumulator.dat é procurado (em ordem). O primeiro permite
 /// `cargo run --bin udp_controller` direto da raiz do repositório.
 const ACCUMULATOR_PATHS: [&str; 2] = ["SnifferESP/accumulator.dat", "./accumulator.dat"];
@@ -552,6 +557,20 @@ fn print_metrics(
     println!("────────────────────────────────────────────────────");
 }
 
+/// Primeiros `HEX_DUMP_LEN` bytes de um frame em hexadecimal (para diagnóstico).
+fn hex_prefix(bytes: &[u8]) -> String {
+    let mut s = bytes
+        .iter()
+        .take(HEX_DUMP_LEN)
+        .map(|b| format!("{:02X}", b))
+        .collect::<Vec<_>>()
+        .join(" ");
+    if bytes.len() > HEX_DUMP_LEN {
+        s.push_str(" ...");
+    }
+    s
+}
+
 // ============================================
 // ESTRUTURAS DE REASSEMBLY
 // ============================================
@@ -738,7 +757,20 @@ fn main() -> Result<()> {
                     let frame = stream_buffer.drain(..=pos).collect::<Vec<u8>>();
                     
                     if frame.len() <= 6 {
-                        // Muito pequeno para ser um frame válido (precisa ter header 5 bytes + dados + 0x00 overhead)
+                        // Muito pequeno para ser um frame válido (precisa ter header 5 bytes + dados + 0x00 overhead).
+                        // Inclui o frame vazio gerado pelo delimitador inicial que o ESP envia
+                        // antes de cada fragmento e o preâmbulo de wake-up (FF FF FF FF 00).
+                        continue;
+                    }
+
+                    if frame.len() > MAX_FRAME_LEN {
+                        // Lixo grudado num fragmento (ex.: ruído sem 0x00): não pode ser válido
+                        println!(
+                            "[Radio] Frame de {} bytes excede o máximo ({}) — descartado. Início: {}",
+                            frame.len(),
+                            MAX_FRAME_LEN,
+                            hex_prefix(&frame)
+                        );
                         continue;
                     }
                     
@@ -807,9 +839,25 @@ fn main() -> Result<()> {
                             }
                         }
                         Err(_) => {
-                            println!("[Radio] Erro de decodificação COBS.");
+                            println!(
+                                "[Radio] Erro de decodificação COBS ({} bytes). Início: {}",
+                                frame.len(),
+                                hex_prefix(&frame)
+                            );
                         }
                     }
+                }
+
+                // Sem 0x00 no que sobrou: é o início de um frame ainda em trânsito.
+                // Se já passou do tamanho máximo de um frame válido, é ruído (ex.: outro
+                // transmissor em 433 MHz) — descarta para o buffer não crescer sem limite.
+                if stream_buffer.len() > MAX_FRAME_LEN {
+                    println!(
+                        "[Radio] {} bytes sem delimitador 0x00 — buffer descartado. Início: {}",
+                        stream_buffer.len(),
+                        hex_prefix(&stream_buffer)
+                    );
+                    stream_buffer.clear();
                 }
             }
             Ok(_) => {}

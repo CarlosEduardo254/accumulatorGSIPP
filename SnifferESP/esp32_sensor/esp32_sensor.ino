@@ -601,6 +601,7 @@ void sendPacket() {
   Serial2.flush();
   delay(10);  // Dá um tempo pro rádio acordar
 
+  uint8_t frags_sent = 0;
   for (uint8_t i = 0; i < total_frags; i++) {
     size_t offset = i * FRAG_SIZE;
     size_t len = cborSize - offset;
@@ -639,10 +640,16 @@ void sendPacket() {
     uint8_t encodedFrag[255];
     size_t encodedLen = cobsEncode(rawFrag, 5 + len, encodedFrag);
     
-    // Enviar pacote codificado e finalizar com delimitador 0x00
+    // Enviar pacote codificado entre dois delimitadores 0x00. O delimitador
+    // inicial isola qualquer lixo que chegue antes do fragmento (ex.: bytes do
+    // preâmbulo cujo 0x00 se perdeu no ar, ou ruído do rádio receptor ao
+    // acordar) num frame curto que o receptor descarta, em vez de colar esse
+    // lixo no início do fragmento e quebrar a decodificação COBS.
+    Serial2.write(0x00);
     Serial2.write(encodedFrag, encodedLen);
     Serial2.write(0x00);
     Serial2.flush();  // Aguarda bytes saírem do ESP32 para o módulo
+    frags_sent++;
 
     // Dá um tempo para o módulo puxar o AUX pra LOW antes do próximo fragmento
     delay(50);
@@ -650,8 +657,14 @@ void sendPacket() {
 
   // --- 4. Imprimir métricas ---
   Serial.println("────────────────────────────────────────");
-  Serial.printf("✅ Pacote #%llu enviado com sucesso via rádio\n",
-                (unsigned long long)sensorData);
+  if (frags_sent == total_frags) {
+    Serial.printf("✅ Pacote #%llu enviado com sucesso via rádio\n",
+                  (unsigned long long)sensorData);
+  } else {
+    Serial.printf("❌ Pacote #%llu ABORTADO: %d/%d fragmentos enviados "
+                  "(timeout do AUX)\n",
+                  (unsigned long long)sensorData, frags_sent, total_frags);
+  }
   Serial.printf("   Sensor ID:    %s\n", SENSOR_ID);
   Serial.printf("   Timestamp:    %llu (UNIX)\n",
                 (unsigned long long)timestamp);
