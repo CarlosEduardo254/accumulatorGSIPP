@@ -27,9 +27,18 @@
 // CONFIGURAÇÕES DE REDE
 // ============================================
 
-const char *WIFI_SSID = "Planeta Solar";
-const char *WIFI_PASSWORD = "sede10204";
-const char *SERVER_IP = "172.16.0.72"; // AJUSTE O IP
+// SSID, senha e IP do controlador ficam em wifi_config.h (ignorado no Git).
+// Primeira vez: cp wifi_config.example.h wifi_config.h  e edite os valores.
+#if __has_include("wifi_config.h")
+#include "wifi_config.h"
+#else
+#error "wifi_config.h ausente: copie wifi_config.example.h para wifi_config.h e preencha SSID/senha/IP."
+#endif
+
+#if !defined(WIFI_SSID) || !defined(WIFI_PASSWORD) || !defined(SERVER_IP)
+#error "wifi_config.h deve definir WIFI_SSID, WIFI_PASSWORD e SERVER_IP."
+#endif
+
 const uint16_t SERVER_PORT = 4242;
 const char *SENSOR_ID = "ESP-42";
 const uint32_t SEND_INTERVAL_MS = 3000;
@@ -78,11 +87,13 @@ const char *PRIVATE_KEY_PEM =
     "-----END PRIVATE KEY-----\n";
 
 // ============================================
-// MEMBERSHIP PROOF — Placeholder (Witness + PoE)
+// MEMBERSHIP PROOF — ESP-42 (Witness + PoE de Wesolowski)
 // ============================================
-//  Cole aqui os bytes reais da Witness + PoE gerados pelo acumulador.
+// Gerado por SnifferESP/convert_proof_to_array.py a partir de
+// SnifferESP/proofs/ESP_42.proof (1064 bytes).
+// Deve corresponder ao accumulator.dat carregado pelo controlador.
 
-uint8_t MEMBERSHIP_PROOF[1064] = {
+const uint8_t MEMBERSHIP_PROOF[] = {
     0xA2, 0x67, 0x77, 0x69, 0x74, 0x6E, 0x65, 0x73, 0x73, 0xA2, 0x67, 0x70,
     0x68, 0x61, 0x6E, 0x74, 0x6F, 0x6D, 0xF6, 0x65, 0x76, 0x61, 0x6C, 0x75,
     0x65, 0x79, 0x02, 0x00, 0x35, 0x33, 0x37, 0x66, 0x34, 0x62, 0x35, 0x37,

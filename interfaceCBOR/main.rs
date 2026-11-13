@@ -2,19 +2,23 @@
 // UDP Controller — Servidor de Verificação para ITS (Arquitetura TCC GSIPP)
 // ═══════════════════════════════════════════════════════════════════════
 //
-// Fluxo de 3 verificações para cada pacote recebido de um sensor ESP32 via UDP:
+// Fluxo de verificações para cada pacote recebido de um sensor ESP32 via UDP:
+//   0. Camada 00: desserialização do mapa CBOR externo (descarte de lixo/D1/D2)
 //   1. Timestamp (anti-replay): diferença máxima de 5s
 //      1b. Anti-replay intra-janela (deduplicação dentro do Δt)
 //   2. Assinatura RSA-2048: SHA-256 (com delimitador) + PKCS#1 v1.5
-//   3. Acumulador criptográfico: verify_membership (Witness + PoE)
+//   3. Acumulador criptográfico (Witness + PoE de Wesolowski):
+//      3a. Sintática:  desserialização da MembershipProof (S1, S2, S3)
+//      3b. Aritmética: acc.verify_membership(id, proof) == false (S5)
 //
 // Métricas de desempenho e resiliência:
-//   - Tempo de verificação no controlador (ms)
+//   - Tempo de verificação no controlador (ms), medido a partir do recebimento
+//     do datagrama (inclui o decode CBOR externo; exclui I/O de log)
 //   - RAM consumida pelo processo (MB)
 //   - Rastreamento de gaps de sequência (pacotes UDP perdidos na rede)
 //   - Estatísticas de sessão em tempo real e no encerramento (Ctrl+C)
 //
-// Executar: cargo run --bin udp_controller --release
+// Executar (da raiz do repositório): cargo run --bin udp_controller --release
 
 use accumulator::{group::Rsa2048, Accumulator, MembershipProof};
 use anyhow::{Context, Result};
@@ -27,8 +31,8 @@ use std::collections::{HashMap, HashSet};
 use std::net::UdpSocket;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
-use std::time::{Instant, SystemTime, UNIX_EPOCH};
-use sysinfo::System;
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+use sysinfo::{Pid, System};
 
 // ============================================
 // CONFIGURAÇÕES
@@ -38,6 +42,9 @@ const BIND_ADDR: &str = "0.0.0.0:4242";
 const MAX_PACKET_SIZE: usize = 4096;
 /// Tolerância máxima de timestamp (em segundos) para proteção anti-replay
 const REPLAY_WINDOW_SECS: u64 = 5;
+/// Locais onde o accumulator.dat é procurado (em ordem). O primeiro permite
+/// `cargo run --bin udp_controller` direto da raiz do repositório.
+const ACCUMULATOR_PATHS: [&str; 2] = ["SnifferESP/accumulator.dat", "./accumulator.dat"];
 
 // ============================================
 // CHAVE PÚBLICA RSA-2048 DE TESTE
@@ -87,58 +94,110 @@ struct Payload {
 // ESTATÍSTICAS DE SESSÃO
 // ============================================
 
+/// Contador + tempo acumulado de uma categoria de desfecho.
+#[derive(Default, Debug, Clone, Copy)]
+struct Bucket {
+    count: u64,
+    total_ms: f64,
+}
+
+impl Bucket {
+    fn record(&mut self, elapsed: Duration) {
+        self.count += 1;
+        self.total_ms += elapsed.as_secs_f64() * 1000.0;
+    }
+
+    fn avg_ms(&self) -> f64 {
+        if self.count > 0 {
+            self.total_ms / self.count as f64
+        } else {
+            0.0
+        }
+    }
+}
+
 #[derive(Default, Debug)]
 struct SessionStats {
     total_received: u64,
-    accepted: u64,
-    rejected_replay: u64,
-    rejected_unknown_sensor: u64,
-    rejected_invalid_sig: u64,
-    rejected_invalid_proof: u64,
-    corrupted_cbor: u64,
+    accepted: Bucket,
+    /// Verificação 01 — timestamp fora da janela Δt (R1)
+    rejected_replay: Bucket,
+    /// Verificação 01b — duplicata intra-janela (R2)
+    rejected_replay_duplicate: Bucket,
+    /// Verificação 02 — ID sem chave pública cadastrada
+    rejected_unknown_sensor: Bucket,
+    /// Verificação 02 — assinatura RSA inválida (S4)
+    rejected_invalid_sig: Bucket,
+    /// Verificação 03 sintática — MembershipProof não desserializa (S1, S2, S3)
+    rejected_proof_syntax: Bucket,
+    /// Verificação 03 aritmética — verify_membership == false (S5)
+    rejected_invalid_proof: Bucket,
+    /// Camada 00 — mapa CBOR externo malformado (D1, D2)
+    corrupted_cbor: Bucket,
     sequence_gaps: u64,
-    total_verification_time_ms: f64,
-    verification_count: u64,
 }
 
 impl SessionStats {
+    /// Pacotes cujo CBOR externo foi decodificado e passaram pelas verificações.
+    fn verified_buckets(&self) -> [&Bucket; 7] {
+        [
+            &self.accepted,
+            &self.rejected_replay,
+            &self.rejected_replay_duplicate,
+            &self.rejected_unknown_sensor,
+            &self.rejected_invalid_sig,
+            &self.rejected_proof_syntax,
+            &self.rejected_invalid_proof,
+        ]
+    }
+
+    fn total_rejected(&self) -> u64 {
+        self.verified_buckets().iter().map(|b| b.count).sum::<u64>() - self.accepted.count
+            + self.corrupted_cbor.count
+    }
+
     fn print_summary(&self) {
-        println!("\n═══════════════════════════════════════════════════════");
-        println!("              RESUMO DA SESSÃO — ITS GSIPP (UDP)      ");
-        println!("═══════════════════════════════════════════════════════");
-        println!(" Total de pacotes recebidos:       {}", self.total_received);
-        println!(
-            "  Aceitos (3 etapas validadas):  {} ({:.1}%)",
-            self.accepted,
+        let pct = |n: u64| {
             if self.total_received > 0 {
-                (self.accepted as f64 / self.total_received as f64) * 100.0
+                (n as f64 / self.total_received as f64) * 100.0
             } else {
                 0.0
             }
-        );
-        println!("  Rejeitados por Anti-Replay:    {}", self.rejected_replay);
-        println!(
-            "  Rejeitados por Sensor Descon.: {}",
-            self.rejected_unknown_sensor
-        );
-        println!(
-            "  Rejeitados por Assinatura RSA: {}",
-            self.rejected_invalid_sig
-        );
-        println!(
-            "  Rejeitados por Prova Acumul.:  {}",
-            self.rejected_invalid_proof
-        );
-        println!("  CBOR Corrompido / Inválido:    {}", self.corrupted_cbor);
-        println!("  Gaps de sequência detectados:  {}", self.sequence_gaps);
-
-        let avg_time = if self.verification_count > 0 {
-            self.total_verification_time_ms / self.verification_count as f64
-        } else {
-            0.0
         };
-        println!("  Tempo médio verificação:       {:.3} ms", avg_time);
-        println!("═══════════════════════════════════════════════════════\n");
+        let line = |label: &str, b: &Bucket| {
+            println!(
+                "  {:<34} {:>6} ({:>5.1}%) | média {:>8.3} ms",
+                label,
+                b.count,
+                pct(b.count),
+                b.avg_ms()
+            );
+        };
+
+        println!("\n═══════════════════════════════════════════════════════════════════════");
+        println!("                 RESUMO DA SESSÃO — ITS GSIPP (UDP)");
+        println!("═══════════════════════════════════════════════════════════════════════");
+        println!(" Total de pacotes recebidos:        {}", self.total_received);
+        line("Aceitos (3 etapas validadas):", &self.accepted);
+        line("V01  Anti-Replay (timestamp):", &self.rejected_replay);
+        line("V01b Anti-Replay (duplicata):", &self.rejected_replay_duplicate);
+        line("V02  Sensor desconhecido:", &self.rejected_unknown_sensor);
+        line("V02  Assinatura RSA inválida:", &self.rejected_invalid_sig);
+        line("V03  Proof sintática (CBOR):", &self.rejected_proof_syntax);
+        line("V03  Proof aritmética (PoE):", &self.rejected_invalid_proof);
+        line("C00  CBOR externo malformado:", &self.corrupted_cbor);
+        println!("  Gaps de sequência detectados:      {}", self.sequence_gaps);
+
+        let (n, total_ms) = self
+            .verified_buckets()
+            .iter()
+            .fold((0u64, 0.0f64), |(n, t), b| (n + b.count, t + b.total_ms));
+        let avg_time = if n > 0 { total_ms / n as f64 } else { 0.0 };
+        println!(
+            "  Tempo médio verificação (V01–V03): {:.3} ms (exclui Camada 00)",
+            avg_time
+        );
+        println!("═══════════════════════════════════════════════════════════════════════\n");
     }
 }
 
@@ -164,6 +223,35 @@ fn build_key_store() -> HashMap<String, RsaPublicKey> {
 }
 
 // ============================================
+// MONITOR DE RAM DO PRÓPRIO PROCESSO
+// ============================================
+
+/// Atualiza apenas o processo do controlador (e não todos os processos do
+/// sistema), o que é bem mais barato no Raspberry Pi.
+struct ProcMonitor {
+    sys: System,
+    pid: Pid,
+}
+
+impl ProcMonitor {
+    fn new() -> Self {
+        let pid = sysinfo::get_current_pid().expect("Falha ao obter PID");
+        Self {
+            sys: System::new(),
+            pid,
+        }
+    }
+
+    fn ram_mb(&mut self) -> f64 {
+        self.sys.refresh_process(self.pid);
+        self.sys
+            .process(self.pid)
+            .map(|p| p.memory() as f64 / (1024.0 * 1024.0))
+            .unwrap_or(0.0)
+    }
+}
+
+// ============================================
 // PROCESSAMENTO DO PACOTE — 3 VERIFICAÇÕES
 // ============================================
 
@@ -171,22 +259,44 @@ fn process_packet(
     raw: &[u8],
     key_store: &HashMap<String, RsaPublicKey>,
     acc: &Accumulator<Rsa2048, String>,
-    sys: &mut System,
+    mon: &mut ProcMonitor,
     stats: &mut SessionStats,
     last_readings: &mut HashMap<String, u64>,
     replay_seen: &mut HashSet<(String, u64, u64)>,
 ) -> Result<()> {
     stats.total_received += 1;
 
-    // --- Desserializar CBOR ---
+    // ════════════════════════════════════════════════════
+    // INÍCIO DA MEDIÇÃO — imediatamente após o recv_from
+    // ════════════════════════════════════════════════════
+    let t_recv = Instant::now();
+
+    // ──────────────────────────────────────────────────
+    // CAMADA 00: Desserialização do mapa CBOR externo
+    // ──────────────────────────────────────────────────
     let payload: Payload = match serde_cbor::from_slice(raw) {
         Ok(p) => p,
         Err(e) => {
-            stats.corrupted_cbor += 1;
-            println!(" Erro ao desserializar CBOR: {:#}", e);
+            let elapsed = t_recv.elapsed();
+            stats.corrupted_cbor.record(elapsed);
+            print_metrics(
+                "REJEITADO (CBOR Externo Malformado)",
+                elapsed,
+                raw.len(),
+                mon,
+                stats,
+            );
+            println!(
+                "    Camada 00 FALHOU: mapa CBOR externo inválido ({} bytes) — {:#}\n",
+                raw.len(),
+                e
+            );
             return Ok(());
         }
     };
+    // O tempo do decode externo é somado ao das verificações; o I/O de log
+    // abaixo (cabeçalho + gap) fica fora da medição.
+    let t_decode = t_recv.elapsed();
 
     println!("\n════════════════════════════════════════════════════");
     println!(" Pacote recebido de: {}", payload.id);
@@ -217,9 +327,10 @@ fn process_packet(
     println!("════════════════════════════════════════════════════");
 
     // ════════════════════════════════════════════════════
-    // INÍCIO DA MEDIÇÃO DE DESEMPENHO
+    // RETOMADA DA MEDIÇÃO — verificações V01 a V03
     // ════════════════════════════════════════════════════
     let t_start = Instant::now();
+    let since_recv = move || t_decode + t_start.elapsed();
 
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 01: Timestamp (Anti-Replay)
@@ -236,12 +347,10 @@ fn process_packet(
     };
 
     if time_diff > REPLAY_WINDOW_SECS {
-        let elapsed = t_start.elapsed();
-        stats.rejected_replay += 1;
-        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-        stats.verification_count += 1;
+        let elapsed = since_recv();
+        stats.rejected_replay.record(elapsed);
 
-        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), sys, stats);
+        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), mon, stats);
         println!(
             "    Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
             time_diff, REPLAY_WINDOW_SECS
@@ -265,15 +374,13 @@ fn process_packet(
 
     let replay_key = (payload.id.clone(), payload.timestamp, payload.reading);
     if replay_seen.contains(&replay_key) {
-        let elapsed = t_start.elapsed();
-        stats.rejected_replay += 1;
-        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-        stats.verification_count += 1;
+        let elapsed = since_recv();
+        stats.rejected_replay_duplicate.record(elapsed);
         print_metrics(
             "REJEITADO (Replay Intra-Janela)",
             elapsed,
             raw.len(),
-            sys,
+            mon,
             stats,
         );
         println!(
@@ -289,16 +396,14 @@ fn process_packet(
     let pub_key = match key_store.get(&payload.id) {
         Some(key) => key,
         None => {
-            let elapsed = t_start.elapsed();
-            stats.rejected_unknown_sensor += 1;
-            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-            stats.verification_count += 1;
+            let elapsed = since_recv();
+            stats.rejected_unknown_sensor.record(elapsed);
 
             print_metrics(
                 "REJEITADO (Sensor Desconhecido)",
                 elapsed,
                 raw.len(),
-                sys,
+                mon,
                 stats,
             );
             println!(
@@ -325,16 +430,14 @@ fn process_packet(
             println!("    Verificação 02: Assinatura RSA-2048 VÁLIDA");
         }
         Err(e) => {
-            let elapsed = t_start.elapsed();
-            stats.rejected_invalid_sig += 1;
-            stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-            stats.verification_count += 1;
+            let elapsed = since_recv();
+            stats.rejected_invalid_sig.record(elapsed);
 
             print_metrics(
                 "REJEITADO (Assinatura Inválida)",
                 elapsed,
                 raw.len(),
-                sys,
+                mon,
                 stats,
             );
             println!("    Verificação 02 FALHOU: Assinatura inválida — {}\n", e);
@@ -345,32 +448,47 @@ fn process_packet(
     // ──────────────────────────────────────────────────
     // VERIFICAÇÃO 03: Acumulador Criptográfico
     // ──────────────────────────────────────────────────
+    // 03a — Sintática: a MembershipProof (campo "5") precisa desserializar.
     let proof: MembershipProof<Rsa2048, String> =
         match serde_cbor::from_slice(&payload.membership_proof) {
             Ok(p) => p,
             Err(e) => {
-                let elapsed = t_start.elapsed();
-                stats.corrupted_cbor += 1;
-                print_metrics("REJEITADO (Proof Inválida)", elapsed, raw.len(), sys, stats);
+                let elapsed = since_recv();
+                stats.rejected_proof_syntax.record(elapsed);
+                print_metrics(
+                    "REJEITADO (V03 Sintática — Proof Malformada)",
+                    elapsed,
+                    raw.len(),
+                    mon,
+                    stats,
+                );
                 println!(
-                    "    Verificação 03 FALHOU ao desserializar MembershipProof: {:#}\n",
+                    "    Verificação 03 (sintática) FALHOU em {:.3} ms ao desserializar MembershipProof ({} bytes): {:#}\n",
+                    elapsed.as_secs_f64() * 1000.0,
+                    payload.membership_proof.len(),
                     e
                 );
                 return Ok(());
             }
         };
 
+    // 03b — Aritmética: witness + PoE de Wesolowski contra o acumulador.
     if acc.verify_membership(&payload.id, &proof) {
         println!("    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
     } else {
-        let elapsed = t_start.elapsed();
-        stats.rejected_invalid_proof += 1;
-        stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-        stats.verification_count += 1;
+        let elapsed = since_recv();
+        stats.rejected_invalid_proof.record(elapsed);
 
-        print_metrics("REJEITADO (Prova Inválida)", elapsed, raw.len(), sys, stats);
+        print_metrics(
+            "REJEITADO (V03 Aritmética — Prova Inválida)",
+            elapsed,
+            raw.len(),
+            mon,
+            stats,
+        );
         println!(
-            "    Verificação 03 FALHOU: O sensor '{}' NÃO pertence ao acumulador.\n",
+            "    Verificação 03 (aritmética) FALHOU em {:.3} ms: o sensor '{}' NÃO pertence ao acumulador com esta prova.\n",
+            elapsed.as_secs_f64() * 1000.0,
             payload.id
         );
         return Ok(());
@@ -381,12 +499,10 @@ fn process_packet(
     // ════════════════════════════════════════════════════
     replay_seen.insert(replay_key);
 
-    let elapsed = t_start.elapsed();
-    stats.accepted += 1;
-    stats.total_verification_time_ms += elapsed.as_secs_f64() * 1000.0;
-    stats.verification_count += 1;
+    let elapsed = since_recv();
+    stats.accepted.record(elapsed);
 
-    print_metrics("ACEITO ", elapsed, raw.len(), sys, stats);
+    print_metrics("ACEITO ", elapsed, raw.len(), mon, stats);
     println!();
 
     Ok(())
@@ -400,19 +516,10 @@ fn print_metrics(
     status: &str,
     elapsed: std::time::Duration,
     packet_size: usize,
-    sys: &mut System,
+    mon: &mut ProcMonitor,
     stats: &SessionStats,
 ) {
-    // Atualizar informações de memória do processo
-    sys.refresh_memory();
-    sys.refresh_processes();
-
-    let pid = sysinfo::get_current_pid().expect("Falha ao obter PID");
-
-    let ram_mb = sys
-        .process(pid)
-        .map(|p| p.memory() as f64 / (1024.0 * 1024.0))
-        .unwrap_or(0.0);
+    let ram_mb = mon.ram_mb();
 
     println!("────────────────────────────────────────────────────");
     println!(" Status: {}", status);
@@ -427,12 +534,8 @@ fn print_metrics(
     println!("   RAM consumida pelo processo (MB): {:.2}", ram_mb);
     println!(
         "    Sessão: {} aceitos | {} rejeitados | {} perdidos",
-        stats.accepted,
-        stats.rejected_replay
-            + stats.rejected_unknown_sensor
-            + stats.rejected_invalid_sig
-            + stats.rejected_invalid_proof
-            + stats.corrupted_cbor,
+        stats.accepted.count,
+        stats.total_rejected(),
         stats.sequence_gaps
     );
     println!("────────────────────────────────────────────────────");
@@ -462,15 +565,26 @@ fn main() -> Result<()> {
     }
 
     // --- 2. Carregar acumulador serializado do disco ---
-    let acc_bytes = std::fs::read("accumulator.dat").expect(
-        " Arquivo 'accumulator.dat' não encontrado! Execute 'cargo run --bin setup' primeiro.",
+    let (acc_path, acc_bytes) = ACCUMULATOR_PATHS
+        .iter()
+        .find_map(|p| std::fs::read(p).ok().map(|b| (*p, b)))
+        .with_context(|| {
+            format!(
+                "Arquivo accumulator.dat não encontrado em {:?}. \
+                 Execute 'cd SnifferESP && cargo run --release --bin setup' primeiro.",
+                ACCUMULATOR_PATHS
+            )
+        })?;
+    let acc: Accumulator<Rsa2048, String> = serde_cbor::from_slice(&acc_bytes)
+        .with_context(|| format!("Falha ao desserializar {}", acc_path))?;
+    println!(
+        "\n Acumulador carregado de '{}' ({} bytes).",
+        acc_path,
+        acc_bytes.len()
     );
-    let acc: Accumulator<Rsa2048, String> =
-        serde_cbor::from_slice(&acc_bytes).context("Falha ao desserializar accumulator.dat")?;
-    println!("\n Acumulador carregado com sucesso do disco.");
 
-    // --- 3. Inicializar monitor de sistema e estatísticas ---
-    let mut sys = System::new();
+    // --- 3. Inicializar monitor de processo e estatísticas ---
+    let mut mon = ProcMonitor::new();
     let stats_arc = Arc::new(Mutex::new(SessionStats::default()));
     let mut last_readings = HashMap::new();
     let mut replay_seen = HashSet::new();
@@ -506,7 +620,7 @@ fn main() -> Result<()> {
                     &buf[..size],
                     &key_store,
                     &acc,
-                    &mut sys,
+                    &mut mon,
                     &mut stats,
                     &mut last_readings,
                     &mut replay_seen,

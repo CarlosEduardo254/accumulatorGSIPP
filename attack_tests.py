@@ -5,28 +5,51 @@
   TCC: Autenticação para ITS com Acumuladores Criptográficos RSA
 ═══════════════════════════════════════════════════════════════════
 
-Metodologia (conforme artigo):
+Metodologia (conforme TCC):
   A avaliação de segurança testa a resiliência contra dois modelos
-  de ameaça — Spoofing e Replay Attack — simulados em lotes de 10
-  repetições para quantificar a taxa de rejeição.
+  de ameaça — Spoofing e Replay Attack — simulados em lotes de 100
+  repetições por variante para quantificar a taxa de rejeição.
+  Complementarmente, testes de robustez (D1, D2) verificam que entradas
+  malformadas são descartadas sem panic/crash do controlador.
 
-Testes implementados:
-  SPOOFING (4 variantes, 10 repetições cada):
-    S1: Proof forjada  — bytes aleatórios no lugar da witness + PoE
-    S2: Proof nula      — campo membershipproof vazio (0 bytes)
-    S3: Proof corrompida — proof legítima com 16 bytes invertidos
-    S4: Chave do atacante — ID clonado, assinatura com chave RSA própria
-
-  REPLAY (2 variantes, 10 repetições cada):
-    R1: Timestamp expirado — pacote válido com ts 30s no passado (fora de Δt)
-    R2: Pacote duplicado   — reenvio idêntico dentro da janela Δt
+BATERIA PRINCIPAL — 8 variantes × 100 repetições = 900 pacotes
+(800 medidos + 100 legítimos de apoio enviados antes de cada réplica do R2):
 
   BASELINE (controle):
-    B1: Pacote legítimo — 10 pacotes válidos como referência de aceitação
+    B1: Pacote legítimo       — ACEITO (V01, V01b, V02 e V03 passam)
+
+  SPOOFING (5 variantes):
+    S1: Proof forjada          — bytes aleatórios no campo "5"
+    S2: Proof nula             — campo "5" vazio (0 bytes)
+    S3: Proof corrompida       — proof legítima com 16 bytes invertidos (bit-flip)
+        → S1, S2 e S3: Rejeição Sintática na Camada 03 (a MembershipProof
+          não desserializa no serde_cbor; ~4,68 ms no Raspberry Pi)
+    S4: Chave do atacante      — ID clonado, assinatura com chave RSA própria
+        → Rejeitado na Verificação 02 (assinatura RSA-2048)
+    S5: Proof de outro sensor  — assinatura legítima do ESP-42 + MembershipProof
+        válida e bem formada do ESP-02 (SnifferESP/proofs/ESP_02.proof)
+        → Passa V01, V01b, V02 e a desserialização da V03; Rejeição Aritmética
+          na Verificação 03 (PoE de Wesolowski / verify_membership == false;
+          ~30 ms no Raspberry Pi)
+
+  REPLAY (2 variantes):
+    R1: Timestamp expirado     — pacote válido com ts 30 s no passado (fora de Δt)
+        → Rejeitado na Verificação 01
+    R2: Pacote duplicado       — reenvio idêntico dentro da janela Δt
+        → Rejeitado na Verificação 01b
+
+TESTES EXTRAS DE ROBUSTEZ (descartados na Camada 00 — CBOR externo):
+    D1: Malformed Packets — 4 variantes: bytes aleatórios (256 B), tipos
+        incorretos (29 B), CBOR truncado pela metade (676 B) e pacote vazio (0 B)
+    D2: Packet Burst      — rajada de 100 pacotes aleatórios de 128 B sem delay
+
+Resultado esperado no controlador (bateria completa --test all):
+    200 aceitos (B1 + apoio do R2) | 100 V01 | 100 V01b | 100 V02 (assinatura)
+    300 V03 sintática | 100 V03 aritmética | 104 Camada 00
 
 Métricas coletadas:
   - Latência de construção + envio por pacote (ms)
-  - Taxa de rejeição esperada por variante (verificada no controlador)
+  - Taxa de rejeição esperada por variante (confirmada no controlador)
   - Tamanho do pacote por variante (bytes)
 
 Uso:
@@ -34,11 +57,13 @@ Uso:
   python3 attack_tests.py --target <IP_RASPBERRY> --test spoofing
   python3 attack_tests.py --target <IP_RASPBERRY> --test replay
   python3 attack_tests.py --target <IP_RASPBERRY> --test baseline
+  python3 attack_tests.py --target <IP_RASPBERRY> --test robustness
+  python3 attack_tests.py --target 127.0.0.1 --no-pause --output /tmp/res.json
 
 Pré-requisitos:
-  - Python 3.8+ com cbor2 e cryptography
-  - Controlador UDP rodando no Raspberry Pi (./udp_controller)
-  - Ambos na mesma rede Wi-Fi
+  - Python 3.8+ com cbor2 e cryptography (ex.: .venv local na raiz do repo)
+  - Controlador UDP rodando (cargo run --release --bin udp_controller)
+  - SnifferESP/proofs/ESP_02.proof presente (gerado por `cargo run --bin setup`)
 """
 
 import argparse
@@ -65,6 +90,15 @@ DEFAULT_PORT = 4242
 SENSOR_ID = "ESP-42"
 BATCH_SIZE = 100
 REPLAY_WINDOW_SECS = 5
+INTER_PACKET_DELAY_S = 0.2   # Intervalo padrão entre pacotes da bateria principal
+BURST_SIZE = 100             # D2: pacotes na rajada
+BURST_PACKET_LEN = 128       # D2: tamanho de cada pacote aleatório (bytes)
+
+# Caminhos relativos ao próprio script (funciona de qualquer diretório)
+REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROOFS_DIR = os.path.join(REPO_ROOT, "SnifferESP", "proofs")
+ESP02_PROOF_PATH = os.path.join(PROOFS_DIR, "ESP_02.proof")
+ESP42_PROOF_PATH = os.path.join(PROOFS_DIR, "ESP_42.proof")
 
 # ═══════════════════════════════════════════════════════════════
 # MATERIAL CRIPTOGRÁFICO — Chave privada legítima do ESP-42
@@ -212,6 +246,7 @@ class PacketResult:
     packet_size: int
     latency_ms: float
     sent: bool
+    label: str = ""         # Descrição da sub-variante (usado no D1)
 
 
 @dataclass
@@ -219,9 +254,10 @@ class BatchResult:
     """Resultado agregado de um lote de N repetições."""
     test_id: str
     test_name: str
-    category: str           # "Spoofing", "Replay" ou "Baseline"
+    category: str           # "Baseline", "Spoofing", "Replay" ou "Robustez"
     expected_result: str    # "REJEITADO" ou "ACEITO"
     blocked_by: str         # Qual verificação deve bloquear (ex: "Verificação 03")
+    inter_packet_delay_ms: float = INTER_PACKET_DELAY_S * 1000
     results: List[PacketResult] = field(default_factory=list)
 
     @property
@@ -261,6 +297,29 @@ class BatchResult:
 def load_esp42_private_key():
     """Carrega a chave privada RSA-2048 legítima do ESP-42."""
     return serialization.load_pem_private_key(ESP42_PRIVATE_KEY_PEM, password=None)
+
+
+def load_proof_file(path: str) -> bytes:
+    """Lê uma MembershipProof serializada (CBOR) gerada pelo setup."""
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"Proof não encontrada: {path}\n"
+            f"Gere com: cd SnifferESP && cargo run --release --bin setup"
+        )
+    with open(path, "rb") as f:
+        return f.read()
+
+
+def check_embedded_proof():
+    """Avisa se a proof embutida do ESP-42 divergir do arquivo gerado pelo setup."""
+    if os.path.exists(ESP42_PROOF_PATH):
+        with open(ESP42_PROOF_PATH, "rb") as f:
+            if f.read() != ESP42_PROOF_BYTES:
+                print(
+                    "  ⚠  ESP42_PROOF_BYTES difere de SnifferESP/proofs/ESP_42.proof!\n"
+                    "     Regere o array (SnifferESP/convert_proof_to_array.py) para manter\n"
+                    "     o script, o firmware e o accumulator.dat consistentes."
+                )
 
 
 def generate_attacker_key():
@@ -343,6 +402,7 @@ class SecurityTestSuite:
         blocked_by: str,
         packet_builder: Callable[[int], bytes],
         reps: int = BATCH_SIZE,
+        labels: Optional[List[str]] = None,
     ) -> BatchResult:
         """Executa `reps` repetições de `packet_builder`, mede latência e coleta resultados."""
         batch = BatchResult(test_id, test_name, category, expected, blocked_by)
@@ -355,25 +415,27 @@ class SecurityTestSuite:
             sent, _ = send_udp(self.target_ip, self.port, pkt)
             latency = (time.perf_counter() - t0) * 1000
 
-            result = PacketResult(i + 1, len(pkt), latency, sent)
+            label = labels[i] if labels else ""
+            result = PacketResult(i + 1, len(pkt), latency, sent, label)
             batch.results.append(result)
             self._print_row(result)
 
-            time.sleep(0.2)  # 200ms entre pacotes para o controlador processar
+            time.sleep(INTER_PACKET_DELAY_S)  # 200ms entre pacotes para o controlador processar
 
         self._print_footer(batch)
         self.all_batches.append(batch)
         return batch
 
     # ──────────────────────────────────────────────────────
-    # SPOOFING — 4 variantes (Teste 1 do artigo)
+    # SPOOFING — 5 variantes (Teste 1 do TCC)
     # ──────────────────────────────────────────────────────
 
     def spoofing_forged_proof(self) -> BatchResult:
         """
         S1 — Proof forjada: bytes aleatórios no campo membershipproof.
         Assinatura RSA válida (passa na Verif. 02), mas witness+PoE são lixo.
-        Esperado: REJEITADO pela Verificação 03 (deserialização ou verify_membership).
+        Esperado: REJEITADO na Verificação 03 — Rejeição Sintática (a
+        MembershipProof não desserializa no serde_cbor).
         """
         def builder(i: int) -> bytes:
             ts = int(time.time())
@@ -384,14 +446,15 @@ class SecurityTestSuite:
 
         return self._run_batch(
             "S1", "Proof Forjada (bytes aleatórios)", "Spoofing",
-            "REJEITADO", "Verificação 03", builder,
+            "REJEITADO", "Verificação 03 (sintática)", builder,
         )
 
     def spoofing_null_proof(self) -> BatchResult:
         """
         S2 — Proof nula: campo membershipproof com 0 bytes.
         Assinatura RSA válida. Simula nó espúrio sem witness provisionada.
-        Esperado: REJEITADO pela Verificação 03 (proof vazia não desserializa).
+        Esperado: REJEITADO na Verificação 03 — Rejeição Sintática (proof vazia
+        não desserializa: EOF no serde_cbor).
         """
         def builder(i: int) -> bytes:
             ts = int(time.time())
@@ -401,14 +464,16 @@ class SecurityTestSuite:
 
         return self._run_batch(
             "S2", "Proof Nula (0 bytes)", "Spoofing",
-            "REJEITADO", "Verificação 03", builder,
+            "REJEITADO", "Verificação 03 (sintática)", builder,
         )
 
     def spoofing_corrupted_proof(self) -> BatchResult:
         """
         S3 — Proof corrompida: proof legítima com 16 bytes invertidos (bit flip).
         Assinatura RSA válida. Simula adulteração da witness em trânsito.
-        Esperado: REJEITADO pela Verificação 03 (witness^hash(id) ≠ acumulador).
+        Os bytes 50–65 caem dentro da string hexadecimal da witness; o XOR 0xFF
+        gera UTF-8 inválido, então a proof é recusada já na desserialização.
+        Esperado: REJEITADO na Verificação 03 — Rejeição Sintática.
         """
         def builder(i: int) -> bytes:
             ts = int(time.time())
@@ -421,7 +486,7 @@ class SecurityTestSuite:
 
         return self._run_batch(
             "S3", "Proof Corrompida (bit flip)", "Spoofing",
-            "REJEITADO", "Verificação 03", builder,
+            "REJEITADO", "Verificação 03 (sintática)", builder,
         )
 
     def spoofing_wrong_key(self) -> BatchResult:
@@ -439,6 +504,34 @@ class SecurityTestSuite:
         return self._run_batch(
             "S4", "Chave do Atacante (ID clonado)", "Spoofing",
             "REJEITADO", "Verificação 02", builder,
+        )
+
+    def spoofing_foreign_proof(self) -> Optional[BatchResult]:
+        """
+        S5 — Proof de outro sensor: pacote assinado legitimamente com a chave
+        privada do ESP-42, mas carregando no campo "5" a MembershipProof válida
+        e bem formada do ESP-02 (SnifferESP/proofs/ESP_02.proof).
+        Passa V01, V01b, V02 e a desserialização CBOR da V03.
+        Esperado: REJEITADO na Verificação 03 — Rejeição Aritmética
+        (PoE de Wesolowski: acc.verify_membership("ESP-42", proof_ESP02) == false).
+        """
+        try:
+            esp02_proof = load_proof_file(ESP02_PROOF_PATH)
+        except FileNotFoundError as e:
+            print(f"\n  ❌ S5 não executado: {e}")
+            return None
+        print(f"\n  📥 Proof do ESP-02 carregada: {len(esp02_proof)} bytes "
+              f"({os.path.relpath(ESP02_PROOF_PATH, REPO_ROOT)})")
+
+        def builder(i: int) -> bytes:
+            ts = int(time.time())
+            reading = self._get_reading()
+            sig = sign_data(self.esp42_key, SENSOR_ID, ts, reading)
+            return build_cbor_packet(SENSOR_ID, ts, reading, sig, esp02_proof)
+
+        return self._run_batch(
+            "S5", "Proof Válida de Outro Sensor (ESP-02)", "Spoofing",
+            "REJEITADO", "Verificação 03 (aritmética)", builder,
         )
 
     # ──────────────────────────────────────────────────────
@@ -502,12 +595,84 @@ class SecurityTestSuite:
         return batch
 
     # ──────────────────────────────────────────────────────
+    # ROBUSTEZ — entradas malformadas (testes extras)
+    # ──────────────────────────────────────────────────────
+
+    def robustness_malformed(self) -> BatchResult:
+        """
+        D1 — Malformed Packets: 4 variantes de CBOR malformado.
+          (1) 256 bytes aleatórios
+          (2) mapa CBOR com tipos incorretos e sem os campos "4"/"5" (29 B)
+          (3) pacote legítimo truncado pela metade (676 de 1352 B)
+          (4) datagrama vazio (0 B)
+        Esperado: todos DESCARTADOS na Camada 00 (desserialização do mapa
+        CBOR externo), sem panic/crash do controlador.
+        """
+        ts = int(time.time())
+        sig = sign_data(self.esp42_key, SENSOR_ID, ts, 1111)
+        valid_pkt = build_cbor_packet(SENSOR_ID, ts, 1111, sig, ESP42_PROOF_BYTES)
+
+        variants = [
+            ("bytes aleatórios", os.urandom(256)),
+            ("tipos incorretos", cbor2.dumps({"1": SENSOR_ID, "2": "not_a_number", "3": 42})),
+            (f"CBOR truncado ({len(valid_pkt) // 2}/{len(valid_pkt)} B)",
+             valid_pkt[: len(valid_pkt) // 2]),
+            ("pacote vazio", b""),
+        ]
+
+        return self._run_batch(
+            "D1", "Malformed Packets (4 variantes)", "Robustez",
+            "REJEITADO", "Camada 00 (CBOR externo)",
+            lambda i: variants[i][1],
+            reps=len(variants),
+            labels=[label for label, _ in variants],
+        )
+
+    def robustness_burst(self) -> BatchResult:
+        """
+        D2 — Packet Burst: rajada de 100 pacotes aleatórios de 128 bytes enviados
+        sem delay, pelo mesmo socket, para estressar o controlador (CPU/RSS).
+        Os pacotes são gerados antes da rajada para que nada além do sendto()
+        fique entre um envio e outro.
+        Esperado: todos DESCARTADOS na Camada 00; controlador estável.
+        """
+        batch = BatchResult(
+            "D2", f"Packet Burst ({BURST_SIZE}×{BURST_PACKET_LEN} B)", "Robustez",
+            "REJEITADO", "Camada 00 (CBOR externo)", inter_packet_delay_ms=0.0,
+        )
+        self._print_header(batch, BURST_SIZE)
+
+        packets = [os.urandom(BURST_PACKET_LEN) for _ in range(BURST_SIZE)]
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        t_burst = time.perf_counter()
+        for i, pkt in enumerate(packets):
+            t0 = time.perf_counter()
+            try:
+                sock.sendto(pkt, (self.target_ip, self.port))
+                sent = True
+            except OSError:
+                sent = False
+            batch.results.append(
+                PacketResult(i + 1, len(pkt), (time.perf_counter() - t0) * 1000, sent)
+            )
+        burst_s = time.perf_counter() - t_burst
+        sock.close()
+
+        for r in batch.results:
+            self._print_row(r)
+        self._print_footer(batch)
+        rate = BURST_SIZE / burst_s if burst_s > 0 else float("inf")
+        print(f"  Duração da rajada: {burst_s * 1000:.3f} ms ({rate:,.0f} pkt/s)")
+        self.all_batches.append(batch)
+        return batch
+
+    # ──────────────────────────────────────────────────────
     # BASELINE — pacotes legítimos para referência
     # ──────────────────────────────────────────────────────
 
     def baseline_legitimate(self) -> BatchResult:
         """
-        B1 — Pacote legítimo: 10 pacotes 100% válidos como grupo de controle.
+        B1 — Pacote legítimo: 100 pacotes 100% válidos como grupo de controle.
         Assinatura, timestamp e proof corretos.
         Esperado: ACEITO (todas as 3 verificações passam).
         """
@@ -539,6 +704,8 @@ class SecurityTestSuite:
     @staticmethod
     def _print_row(r: PacketResult):
         status = "✓ Enviado" if r.sent else "✗ Falha"
+        if r.label:
+            status += f" — {r.label}"
         print(f"  {r.iteration:>3} │ {r.packet_size:>7} B │ {r.latency_ms:>9.3f} ms │ {status}")
 
     @staticmethod
@@ -560,7 +727,7 @@ class SecurityTestSuite:
 
     def print_final_report(self):
         """Imprime tabela consolidada com todas as baterias executadas."""
-        W = 86  # largura total da tabela
+        W = 89  # largura total da tabela
 
         print(f"\n\n{'═' * W}")
         print(f"{'RELATÓRIO CONSOLIDADO — Avaliação de Segurança':^{W}}")
@@ -568,11 +735,11 @@ class SecurityTestSuite:
 
         # Cabeçalho da tabela
         print(
-            f"  {'Categoria':<10} │ {'ID':>3} │ {'Variante':<35} │ "
+            f"  {'Categoria':<10} │ {'ID':>3} │ {'Variante':<38} │ "
             f"{'Enviados':>8} │ {'Esperado':>10} │ {'Lat.(ms)':>9}"
         )
         print(
-            f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 35}─┼─"
+            f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 38}─┼─"
             f"{'─' * 8}─┼─{'─' * 10}─┼─{'─' * 9}"
         )
 
@@ -581,19 +748,19 @@ class SecurityTestSuite:
         for b in self.all_batches:
             if prev_cat and b.category != prev_cat:
                 print(
-                    f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 35}─┼─"
+                    f"  {'─' * 10}─┼─{'─' * 3}─┼─{'─' * 38}─┼─"
                     f"{'─' * 8}─┼─{'─' * 10}─┼─{'─' * 9}"
                 )
             prev_cat = b.category
 
             n = len(b.results)
             print(
-                f"  {b.category:<10} │ {b.test_id:>3} │ {b.test_name:<35} │ "
+                f"  {b.category:<10} │ {b.test_id:>3} │ {b.test_name:<38} │ "
                 f"{b.total_sent:>4}/{n:<3} │ {b.expected_result:>10} │ "
                 f"{b.avg_latency:>6.3f} ms"
             )
 
-        print(f"  {'═' * 10}═╧═{'═' * 3}═╧═{'═' * 35}═╧═{'═' * 8}═╧═{'═' * 10}═╧═{'═' * 9}")
+        print(f"  {'═' * 10}═╧═{'═' * 3}═╧═{'═' * 38}═╧═{'═' * 8}═╧═{'═' * 10}═╧═{'═' * 9}")
 
         # Resumo numérico
         attack_batches = [b for b in self.all_batches if b.expected_result == "REJEITADO"]
@@ -605,8 +772,16 @@ class SecurityTestSuite:
         for b in attack_batches:
             all_latencies.extend(b.latencies)
 
-        print(f"\n  Pacotes de ataque transmitidos:    {total_attack}")
-        print(f"  Pacotes legítimos transmitidos:    {total_baseline}")
+        main_ids = {"B1", "S1", "S2", "S3", "S4", "S5", "R1", "R2"}
+        main_measured = sum(len(b.results) for b in self.all_batches if b.test_id in main_ids)
+        r2_support = sum(len(b.results) for b in self.all_batches if b.test_id == "R2")
+        robustness = sum(len(b.results) for b in self.all_batches if b.category == "Robustez")
+
+        print(f"\n  Bateria principal (B1, S1–S5, R1–R2): {main_measured + r2_support} pacotes "
+              f"({main_measured} medidos + {r2_support} legítimos de apoio do R2)")
+        print(f"  Testes de robustez (D1–D2):         {robustness} pacotes")
+        print(f"  Pacotes de ataque transmitidos:    {total_attack}")
+        print(f"  Pacotes legítimos transmitidos:    {total_baseline} (+{r2_support} de apoio do R2)")
         print(f"  Taxa de rejeição esperada:         100% ({total_attack}/{total_attack})")
         if all_latencies:
             print(f"  Latência média dos ataques:        {statistics.mean(all_latencies):.3f} ms")
@@ -635,7 +810,9 @@ class SecurityTestSuite:
                 "port": self.port,
                 "batch_size": BATCH_SIZE,
                 "replay_window_secs": REPLAY_WINDOW_SECS,
-                "inter_packet_delay_ms": 200,
+                "inter_packet_delay_ms": INTER_PACKET_DELAY_S * 1000,
+                "burst_size": BURST_SIZE,
+                "burst_packet_len": BURST_PACKET_LEN,
             },
             "summary": {
                 "total_attack_packets": total_attack,
@@ -653,6 +830,7 @@ class SecurityTestSuite:
                 "category": b.category,
                 "expected_result": b.expected_result,
                 "blocked_by": b.blocked_by,
+                "inter_packet_delay_ms": b.inter_packet_delay_ms,
                 "packets_sent": b.total_sent,
                 "packets_total": len(b.results),
                 "latency": {
@@ -668,6 +846,7 @@ class SecurityTestSuite:
                         "size_bytes": r.packet_size,
                         "latency_ms": round(r.latency_ms, 3),
                         "sent": r.sent,
+                        **({"variant": r.label} if r.label else {}),
                     }
                     for r in b.results
                 ],
@@ -694,6 +873,8 @@ Exemplos:
   python3 attack_tests.py --target 172.16.0.72 --test spoofing
   python3 attack_tests.py --target 172.16.0.72 --test replay
   python3 attack_tests.py --target 172.16.0.72 --test baseline
+  python3 attack_tests.py --target 172.16.0.72 --test robustness
+  python3 attack_tests.py --target 127.0.0.1 --no-pause --output /tmp/resultados.json
         """,
     )
     parser.add_argument(
@@ -706,8 +887,12 @@ Exemplos:
     )
     parser.add_argument(
         "--test", default="all",
-        choices=["all", "spoofing", "replay", "baseline"],
-        help="Bateria de testes: all, spoofing, replay ou baseline (default: all)",
+        choices=["all", "spoofing", "replay", "baseline", "robustness"],
+        help="Bateria: all, spoofing, replay, baseline ou robustness (default: all)",
+    )
+    parser.add_argument(
+        "--output", default="resultados_teste.json",
+        help="Arquivo JSON de saída (default: resultados_teste.json)",
     )
     parser.add_argument(
         "--no-pause", action="store_true",
@@ -726,6 +911,7 @@ Exemplos:
     print(f"  Repetições:  {BATCH_SIZE} por variante")
     print(f"  Janela Δt:   {REPLAY_WINDOW_SECS}s")
     print(f"{'═' * 70}")
+    check_embedded_proof()
 
     # ── Montar lista de testes a executar ──
     tests_to_run = []
@@ -739,12 +925,19 @@ Exemplos:
             suite.spoofing_null_proof,
             suite.spoofing_corrupted_proof,
             suite.spoofing_wrong_key,
+            suite.spoofing_foreign_proof,
         ])
 
     if args.test in ("all", "replay"):
         tests_to_run.extend([
             suite.replay_stale_timestamp,
             suite.replay_duplicate,
+        ])
+
+    if args.test in ("all", "robustness"):
+        tests_to_run.extend([
+            suite.robustness_malformed,
+            suite.robustness_burst,
         ])
 
     # ── Executar testes com pausa entre diferentes baterias ──
@@ -760,7 +953,7 @@ Exemplos:
 
     # ── Relatório consolidado e exportação ──
     suite.print_final_report()
-    suite.export_json()
+    suite.export_json(args.output)
 
 
 if __name__ == "__main__":
