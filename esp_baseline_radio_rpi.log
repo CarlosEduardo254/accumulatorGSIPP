@@ -1,0 +1,5629 @@
+Contexto criptográfico inicializado (RSA-2048)
+
+Conectando ao WiFi...
+   SSID: POCO X7 Pro
+...
+WiFi conectado (apenas para NTP)!
+   IP: 10.55.161.170
+Sincronizando relógio via NTP...
+...
+NTP sincronizado! Hora: 2026-11-19 19:41:54
+   UNIX Timestamp: 1795128114
+📡 WiFi desconectado (não é mais necessário)
+
+✅ Pronto! Enviando pacotes...
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #1 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128116 (UNIX)
+   Sensor Data:  1
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 489
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   1
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #2 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128120 (UNIX)
+   Sensor Data:  2
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   2
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #3 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128125 (UNIX)
+   Sensor Data:  3
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   3
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #4 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128129 (UNIX)
+   Sensor Data:  4
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   4
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #5 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128133 (UNIX)
+   Sensor Data:  5
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   5
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #6 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128138 (UNIX)
+   Sensor Data:  6
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   6
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #7 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128142 (UNIX)
+   Sensor Data:  7
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   7
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #8 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128146 (UNIX)
+   Sensor Data:  8
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   8
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #9 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128151 (UNIX)
+   Sensor Data:  9
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   9
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #10 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128155 (UNIX)
+   Sensor Data:  10
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   10
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #11 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128159 (UNIX)
+   Sensor Data:  11
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   11
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #12 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128164 (UNIX)
+   Sensor Data:  12
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   12
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #13 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128168 (UNIX)
+   Sensor Data:  13
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   13
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #14 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128172 (UNIX)
+   Sensor Data:  14
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   14
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #15 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128177 (UNIX)
+   Sensor Data:  15
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   15
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #16 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128181 (UNIX)
+   Sensor Data:  16
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   16
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #17 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128185 (UNIX)
+   Sensor Data:  17
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   17
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #18 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128190 (UNIX)
+   Sensor Data:  18
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   18
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #19 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128194 (UNIX)
+   Sensor Data:  19
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   19
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #20 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128198 (UNIX)
+   Sensor Data:  20
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   20
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #21 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128203 (UNIX)
+   Sensor Data:  21
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   21
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #22 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128207 (UNIX)
+   Sensor Data:  22
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   22
+────────────────────────────────────────
+
+   Preparando envio Rádio: 281 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #23 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128211 (UNIX)
+   Sensor Data:  23
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 281
+Total de pacotes enviados:   23
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #24 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128216 (UNIX)
+   Sensor Data:  24
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   24
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #25 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128220 (UNIX)
+   Sensor Data:  25
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   25
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #26 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128225 (UNIX)
+   Sensor Data:  26
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   26
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #27 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128229 (UNIX)
+   Sensor Data:  27
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   27
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #28 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128233 (UNIX)
+   Sensor Data:  28
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   28
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #29 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128238 (UNIX)
+   Sensor Data:  29
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   29
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #30 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128242 (UNIX)
+   Sensor Data:  30
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   30
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #31 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128246 (UNIX)
+   Sensor Data:  31
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   31
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #32 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128251 (UNIX)
+   Sensor Data:  32
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   32
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #33 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128255 (UNIX)
+   Sensor Data:  33
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   33
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #34 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128259 (UNIX)
+   Sensor Data:  34
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   34
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #35 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128264 (UNIX)
+   Sensor Data:  35
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   35
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #36 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128268 (UNIX)
+   Sensor Data:  36
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   36
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #37 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128272 (UNIX)
+   Sensor Data:  37
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   37
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #38 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128277 (UNIX)
+   Sensor Data:  38
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   38
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #39 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128281 (UNIX)
+   Sensor Data:  39
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   39
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #40 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128285 (UNIX)
+   Sensor Data:  40
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   40
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #41 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128290 (UNIX)
+   Sensor Data:  41
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   41
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #42 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128294 (UNIX)
+   Sensor Data:  42
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   42
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #43 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128298 (UNIX)
+   Sensor Data:  43
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   43
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #44 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128303 (UNIX)
+   Sensor Data:  44
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   44
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #45 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128307 (UNIX)
+   Sensor Data:  45
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   45
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #46 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128311 (UNIX)
+   Sensor Data:  46
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   46
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #47 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128316 (UNIX)
+   Sensor Data:  47
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   47
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #48 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128320 (UNIX)
+   Sensor Data:  48
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   48
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #49 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128325 (UNIX)
+   Sensor Data:  49
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   49
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #50 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128329 (UNIX)
+   Sensor Data:  50
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   50
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #51 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128333 (UNIX)
+   Sensor Data:  51
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   51
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #52 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128338 (UNIX)
+   Sensor Data:  52
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   52
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #53 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128342 (UNIX)
+   Sensor Data:  53
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   53
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #54 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128346 (UNIX)
+   Sensor Data:  54
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   54
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #55 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128351 (UNIX)
+   Sensor Data:  55
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   55
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #56 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128355 (UNIX)
+   Sensor Data:  56
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   56
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #57 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128359 (UNIX)
+   Sensor Data:  57
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   57
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #58 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128364 (UNIX)
+   Sensor Data:  58
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   58
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #59 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128368 (UNIX)
+   Sensor Data:  59
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   59
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #60 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128372 (UNIX)
+   Sensor Data:  60
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   60
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #61 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128377 (UNIX)
+   Sensor Data:  61
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   61
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #62 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128381 (UNIX)
+   Sensor Data:  62
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   62
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #63 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128385 (UNIX)
+   Sensor Data:  63
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   63
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #64 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128390 (UNIX)
+   Sensor Data:  64
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   64
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #65 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128394 (UNIX)
+   Sensor Data:  65
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   65
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #66 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128398 (UNIX)
+   Sensor Data:  66
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   66
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #67 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128403 (UNIX)
+   Sensor Data:  67
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   67
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #68 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128407 (UNIX)
+   Sensor Data:  68
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   68
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #69 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128411 (UNIX)
+   Sensor Data:  69
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   69
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #70 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128416 (UNIX)
+   Sensor Data:  70
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   70
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #71 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128420 (UNIX)
+   Sensor Data:  71
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   71
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #72 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128425 (UNIX)
+   Sensor Data:  72
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   72
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #73 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128429 (UNIX)
+   Sensor Data:  73
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   73
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #74 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128433 (UNIX)
+   Sensor Data:  74
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   74
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #75 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128438 (UNIX)
+   Sensor Data:  75
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   75
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #76 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128442 (UNIX)
+   Sensor Data:  76
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   76
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #77 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128446 (UNIX)
+   Sensor Data:  77
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   77
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #78 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128451 (UNIX)
+   Sensor Data:  78
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   78
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #79 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128455 (UNIX)
+   Sensor Data:  79
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   79
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #80 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128459 (UNIX)
+   Sensor Data:  80
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   80
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #81 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128464 (UNIX)
+   Sensor Data:  81
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   81
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #82 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128468 (UNIX)
+   Sensor Data:  82
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   82
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #83 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128472 (UNIX)
+   Sensor Data:  83
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   83
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #84 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128477 (UNIX)
+   Sensor Data:  84
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   84
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #85 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128481 (UNIX)
+   Sensor Data:  85
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   85
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #86 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128485 (UNIX)
+   Sensor Data:  86
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   86
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #87 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128490 (UNIX)
+   Sensor Data:  87
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   87
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #88 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128494 (UNIX)
+   Sensor Data:  88
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   88
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #89 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128498 (UNIX)
+   Sensor Data:  89
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   89
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #90 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128503 (UNIX)
+   Sensor Data:  90
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   90
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #91 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128507 (UNIX)
+   Sensor Data:  91
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   91
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #92 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128511 (UNIX)
+   Sensor Data:  92
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   92
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #93 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128516 (UNIX)
+   Sensor Data:  93
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 201
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   93
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #94 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128520 (UNIX)
+   Sensor Data:  94
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   94
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #95 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128525 (UNIX)
+   Sensor Data:  95
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   95
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #96 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128529 (UNIX)
+   Sensor Data:  96
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   96
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #97 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128533 (UNIX)
+   Sensor Data:  97
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   97
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #98 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128538 (UNIX)
+   Sensor Data:  98
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   98
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #99 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128542 (UNIX)
+   Sensor Data:  99
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   99
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #100 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128546 (UNIX)
+   Sensor Data:  100
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   100
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #101 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128551 (UNIX)
+   Sensor Data:  101
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   101
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #102 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128555 (UNIX)
+   Sensor Data:  102
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   102
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #103 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128559 (UNIX)
+   Sensor Data:  103
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   103
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #104 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128564 (UNIX)
+   Sensor Data:  104
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   104
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #105 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128568 (UNIX)
+   Sensor Data:  105
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   105
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #106 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128572 (UNIX)
+   Sensor Data:  106
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   106
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #107 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128577 (UNIX)
+   Sensor Data:  107
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   107
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #108 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128581 (UNIX)
+   Sensor Data:  108
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   108
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #109 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128585 (UNIX)
+   Sensor Data:  109
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   109
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #110 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128590 (UNIX)
+   Sensor Data:  110
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   110
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #111 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128594 (UNIX)
+   Sensor Data:  111
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   111
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #112 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128598 (UNIX)
+   Sensor Data:  112
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   112
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #113 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128603 (UNIX)
+   Sensor Data:  113
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   113
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #114 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128607 (UNIX)
+   Sensor Data:  114
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   114
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #115 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128612 (UNIX)
+   Sensor Data:  115
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   115
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #116 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128616 (UNIX)
+   Sensor Data:  116
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   116
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #117 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128620 (UNIX)
+   Sensor Data:  117
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   117
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #118 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128625 (UNIX)
+   Sensor Data:  118
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   118
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #119 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128629 (UNIX)
+   Sensor Data:  119
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   119
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #120 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128633 (UNIX)
+   Sensor Data:  120
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   120
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #121 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128638 (UNIX)
+   Sensor Data:  121
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   121
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #122 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128642 (UNIX)
+   Sensor Data:  122
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   122
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #123 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128646 (UNIX)
+   Sensor Data:  123
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   123
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #124 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128651 (UNIX)
+   Sensor Data:  124
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   124
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #125 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128655 (UNIX)
+   Sensor Data:  125
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   125
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #126 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128659 (UNIX)
+   Sensor Data:  126
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   126
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #127 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128664 (UNIX)
+   Sensor Data:  127
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   127
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #128 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128668 (UNIX)
+   Sensor Data:  128
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   128
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #129 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128672 (UNIX)
+   Sensor Data:  129
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   129
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #130 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128677 (UNIX)
+   Sensor Data:  130
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   130
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #131 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128681 (UNIX)
+   Sensor Data:  131
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   131
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #132 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128685 (UNIX)
+   Sensor Data:  132
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   132
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #133 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128690 (UNIX)
+   Sensor Data:  133
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   133
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #134 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128694 (UNIX)
+   Sensor Data:  134
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   134
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #135 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128698 (UNIX)
+   Sensor Data:  135
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   135
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #136 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128703 (UNIX)
+   Sensor Data:  136
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   136
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #137 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128707 (UNIX)
+   Sensor Data:  137
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   137
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #138 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128712 (UNIX)
+   Sensor Data:  138
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   138
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #139 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128716 (UNIX)
+   Sensor Data:  139
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   139
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #140 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128720 (UNIX)
+   Sensor Data:  140
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 201
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   140
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #141 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128725 (UNIX)
+   Sensor Data:  141
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   141
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #142 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128729 (UNIX)
+   Sensor Data:  142
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   142
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #143 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128733 (UNIX)
+   Sensor Data:  143
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   143
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #144 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128738 (UNIX)
+   Sensor Data:  144
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   144
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #145 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128742 (UNIX)
+   Sensor Data:  145
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   145
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #146 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128746 (UNIX)
+   Sensor Data:  146
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   146
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #147 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128751 (UNIX)
+   Sensor Data:  147
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   147
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #148 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128755 (UNIX)
+   Sensor Data:  148
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   148
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #149 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128759 (UNIX)
+   Sensor Data:  149
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   149
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #150 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128764 (UNIX)
+   Sensor Data:  150
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   150
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #151 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128768 (UNIX)
+   Sensor Data:  151
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   151
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #152 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128772 (UNIX)
+   Sensor Data:  152
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   152
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #153 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128777 (UNIX)
+   Sensor Data:  153
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   153
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #154 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128781 (UNIX)
+   Sensor Data:  154
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   154
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #155 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128785 (UNIX)
+   Sensor Data:  155
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   155
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #156 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128790 (UNIX)
+   Sensor Data:  156
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   156
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #157 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128794 (UNIX)
+   Sensor Data:  157
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   157
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #158 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128799 (UNIX)
+   Sensor Data:  158
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   158
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #159 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128803 (UNIX)
+   Sensor Data:  159
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   159
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #160 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128807 (UNIX)
+   Sensor Data:  160
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   160
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #161 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128812 (UNIX)
+   Sensor Data:  161
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   161
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #162 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128816 (UNIX)
+   Sensor Data:  162
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   162
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #163 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128820 (UNIX)
+   Sensor Data:  163
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   163
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #164 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128825 (UNIX)
+   Sensor Data:  164
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   164
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #165 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128829 (UNIX)
+   Sensor Data:  165
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   165
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #166 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128833 (UNIX)
+   Sensor Data:  166
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   166
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #167 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128838 (UNIX)
+   Sensor Data:  167
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   167
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #168 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128842 (UNIX)
+   Sensor Data:  168
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   168
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #169 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128846 (UNIX)
+   Sensor Data:  169
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   169
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #170 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128851 (UNIX)
+   Sensor Data:  170
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   170
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #171 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128855 (UNIX)
+   Sensor Data:  171
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   171
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #172 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128859 (UNIX)
+   Sensor Data:  172
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   172
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #173 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128864 (UNIX)
+   Sensor Data:  173
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   173
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #174 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128868 (UNIX)
+   Sensor Data:  174
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   174
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #175 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128872 (UNIX)
+   Sensor Data:  175
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   175
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #176 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128877 (UNIX)
+   Sensor Data:  176
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   176
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #177 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128881 (UNIX)
+   Sensor Data:  177
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   177
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #178 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128885 (UNIX)
+   Sensor Data:  178
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   178
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #179 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128890 (UNIX)
+   Sensor Data:  179
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   179
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #180 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128894 (UNIX)
+   Sensor Data:  180
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   180
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #181 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128899 (UNIX)
+   Sensor Data:  181
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   181
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #182 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128903 (UNIX)
+   Sensor Data:  182
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   182
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #183 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128907 (UNIX)
+   Sensor Data:  183
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   183
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #184 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128912 (UNIX)
+   Sensor Data:  184
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   184
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #185 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128916 (UNIX)
+   Sensor Data:  185
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   185
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #186 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128920 (UNIX)
+   Sensor Data:  186
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   186
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #187 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128925 (UNIX)
+   Sensor Data:  187
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 201
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   187
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #188 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128929 (UNIX)
+   Sensor Data:  188
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   188
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #189 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128933 (UNIX)
+   Sensor Data:  189
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   189
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #190 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128938 (UNIX)
+   Sensor Data:  190
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   190
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #191 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128942 (UNIX)
+   Sensor Data:  191
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   191
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #192 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128946 (UNIX)
+   Sensor Data:  192
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   192
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #193 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128951 (UNIX)
+   Sensor Data:  193
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   193
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #194 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128955 (UNIX)
+   Sensor Data:  194
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   194
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #195 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128959 (UNIX)
+   Sensor Data:  195
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   195
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #196 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128964 (UNIX)
+   Sensor Data:  196
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   196
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #197 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128968 (UNIX)
+   Sensor Data:  197
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   197
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #198 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128972 (UNIX)
+   Sensor Data:  198
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   198
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #199 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128977 (UNIX)
+   Sensor Data:  199
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   199
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #200 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128981 (UNIX)
+   Sensor Data:  200
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   200
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #201 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128985 (UNIX)
+   Sensor Data:  201
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   201
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #202 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128990 (UNIX)
+   Sensor Data:  202
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   202
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #203 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128994 (UNIX)
+   Sensor Data:  203
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   203
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #204 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795128999 (UNIX)
+   Sensor Data:  204
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   204
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #205 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129003 (UNIX)
+   Sensor Data:  205
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   205
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #206 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129007 (UNIX)
+   Sensor Data:  206
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   206
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #207 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129012 (UNIX)
+   Sensor Data:  207
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   207
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #208 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129016 (UNIX)
+   Sensor Data:  208
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   208
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #209 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129020 (UNIX)
+   Sensor Data:  209
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   209
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #210 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129025 (UNIX)
+   Sensor Data:  210
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   210
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #211 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129029 (UNIX)
+   Sensor Data:  211
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   211
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #212 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129033 (UNIX)
+   Sensor Data:  212
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   212
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #213 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129038 (UNIX)
+   Sensor Data:  213
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   213
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #214 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129042 (UNIX)
+   Sensor Data:  214
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   214
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #215 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129046 (UNIX)
+   Sensor Data:  215
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   215
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #216 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129051 (UNIX)
+   Sensor Data:  216
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   216
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #217 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129055 (UNIX)
+   Sensor Data:  217
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   217
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #218 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129059 (UNIX)
+   Sensor Data:  218
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   218
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #219 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129064 (UNIX)
+   Sensor Data:  219
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   219
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #220 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129068 (UNIX)
+   Sensor Data:  220
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   220
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #221 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129072 (UNIX)
+   Sensor Data:  221
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   221
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #222 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129077 (UNIX)
+   Sensor Data:  222
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   222
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #223 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129081 (UNIX)
+   Sensor Data:  223
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   223
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #224 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129086 (UNIX)
+   Sensor Data:  224
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   224
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #225 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129090 (UNIX)
+   Sensor Data:  225
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   225
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #226 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129094 (UNIX)
+   Sensor Data:  226
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   226
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #227 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129099 (UNIX)
+   Sensor Data:  227
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   227
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #228 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129103 (UNIX)
+   Sensor Data:  228
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   228
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #229 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129107 (UNIX)
+   Sensor Data:  229
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   229
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #230 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129112 (UNIX)
+   Sensor Data:  230
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   230
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #231 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129116 (UNIX)
+   Sensor Data:  231
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   231
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #232 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129120 (UNIX)
+   Sensor Data:  232
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   232
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #233 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129125 (UNIX)
+   Sensor Data:  233
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   233
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #234 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129129 (UNIX)
+   Sensor Data:  234
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   234
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #235 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129133 (UNIX)
+   Sensor Data:  235
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   235
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #236 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129138 (UNIX)
+   Sensor Data:  236
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   236
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #237 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129142 (UNIX)
+   Sensor Data:  237
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   237
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #238 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129146 (UNIX)
+   Sensor Data:  238
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   238
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #239 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129151 (UNIX)
+   Sensor Data:  239
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   239
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #240 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129155 (UNIX)
+   Sensor Data:  240
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   240
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #241 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129159 (UNIX)
+   Sensor Data:  241
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   241
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #242 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129164 (UNIX)
+   Sensor Data:  242
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   242
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #243 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129168 (UNIX)
+   Sensor Data:  243
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   243
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #244 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129172 (UNIX)
+   Sensor Data:  244
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   244
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #245 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129177 (UNIX)
+   Sensor Data:  245
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   245
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #246 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129181 (UNIX)
+   Sensor Data:  246
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   246
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #247 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129186 (UNIX)
+   Sensor Data:  247
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   247
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #248 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129190 (UNIX)
+   Sensor Data:  248
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   248
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #249 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129194 (UNIX)
+   Sensor Data:  249
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   249
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #250 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129199 (UNIX)
+   Sensor Data:  250
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   250
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #251 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129203 (UNIX)
+   Sensor Data:  251
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   251
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #252 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129207 (UNIX)
+   Sensor Data:  252
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   252
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #253 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129212 (UNIX)
+   Sensor Data:  253
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   253
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #254 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129216 (UNIX)
+   Sensor Data:  254
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   254
+────────────────────────────────────────
+
+   Preparando envio Rádio: 282 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #255 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129220 (UNIX)
+   Sensor Data:  255
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 282
+Total de pacotes enviados:   255
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #256 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129225 (UNIX)
+   Sensor Data:  256
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   256
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #257 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129229 (UNIX)
+   Sensor Data:  257
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   257
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #258 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129233 (UNIX)
+   Sensor Data:  258
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   258
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #259 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129238 (UNIX)
+   Sensor Data:  259
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   259
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #260 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129242 (UNIX)
+   Sensor Data:  260
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   260
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #261 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129246 (UNIX)
+   Sensor Data:  261
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   261
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #262 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129251 (UNIX)
+   Sensor Data:  262
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   262
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #263 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129255 (UNIX)
+   Sensor Data:  263
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   263
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #264 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129259 (UNIX)
+   Sensor Data:  264
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   264
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #265 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129264 (UNIX)
+   Sensor Data:  265
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   265
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #266 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129268 (UNIX)
+   Sensor Data:  266
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   266
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #267 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129272 (UNIX)
+   Sensor Data:  267
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   267
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #268 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129277 (UNIX)
+   Sensor Data:  268
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   268
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #269 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129281 (UNIX)
+   Sensor Data:  269
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   269
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #270 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129286 (UNIX)
+   Sensor Data:  270
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   270
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #271 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129290 (UNIX)
+   Sensor Data:  271
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   271
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #272 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129294 (UNIX)
+   Sensor Data:  272
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   272
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #273 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129299 (UNIX)
+   Sensor Data:  273
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   273
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #274 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129303 (UNIX)
+   Sensor Data:  274
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   274
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #275 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129307 (UNIX)
+   Sensor Data:  275
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   275
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #276 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129312 (UNIX)
+   Sensor Data:  276
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   276
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #277 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129316 (UNIX)
+   Sensor Data:  277
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   277
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #278 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129320 (UNIX)
+   Sensor Data:  278
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   278
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #279 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129325 (UNIX)
+   Sensor Data:  279
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   279
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #280 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129329 (UNIX)
+   Sensor Data:  280
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   280
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #281 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129333 (UNIX)
+   Sensor Data:  281
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   281
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #282 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129338 (UNIX)
+   Sensor Data:  282
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   282
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #283 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129342 (UNIX)
+   Sensor Data:  283
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   283
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #284 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129346 (UNIX)
+   Sensor Data:  284
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   284
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #285 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129351 (UNIX)
+   Sensor Data:  285
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   285
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #286 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129355 (UNIX)
+   Sensor Data:  286
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   286
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #287 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129359 (UNIX)
+   Sensor Data:  287
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   287
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #288 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129364 (UNIX)
+   Sensor Data:  288
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   288
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #289 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129368 (UNIX)
+   Sensor Data:  289
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   289
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #290 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129372 (UNIX)
+   Sensor Data:  290
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   290
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #291 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129377 (UNIX)
+   Sensor Data:  291
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   291
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #292 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129381 (UNIX)
+   Sensor Data:  292
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   292
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #293 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129386 (UNIX)
+   Sensor Data:  293
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   293
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #294 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129390 (UNIX)
+   Sensor Data:  294
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   294
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #295 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129394 (UNIX)
+   Sensor Data:  295
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   295
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #296 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129399 (UNIX)
+   Sensor Data:  296
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   296
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #297 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129403 (UNIX)
+   Sensor Data:  297
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   297
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #298 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129407 (UNIX)
+   Sensor Data:  298
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   298
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #299 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129412 (UNIX)
+   Sensor Data:  299
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   299
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #300 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129416 (UNIX)
+   Sensor Data:  300
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   300
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #301 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129420 (UNIX)
+   Sensor Data:  301
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   301
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #302 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129425 (UNIX)
+   Sensor Data:  302
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   302
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #303 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129429 (UNIX)
+   Sensor Data:  303
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   303
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #304 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129433 (UNIX)
+   Sensor Data:  304
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   304
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #305 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129438 (UNIX)
+   Sensor Data:  305
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   305
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #306 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129442 (UNIX)
+   Sensor Data:  306
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   306
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #307 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129446 (UNIX)
+   Sensor Data:  307
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   307
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #308 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129451 (UNIX)
+   Sensor Data:  308
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   308
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #309 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129455 (UNIX)
+   Sensor Data:  309
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   309
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #310 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129459 (UNIX)
+   Sensor Data:  310
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   310
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #311 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129464 (UNIX)
+   Sensor Data:  311
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   311
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #312 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129468 (UNIX)
+   Sensor Data:  312
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   312
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #313 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129473 (UNIX)
+   Sensor Data:  313
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   313
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #314 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129477 (UNIX)
+   Sensor Data:  314
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   314
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #315 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129481 (UNIX)
+   Sensor Data:  315
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   315
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #316 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129486 (UNIX)
+   Sensor Data:  316
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   316
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #317 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129490 (UNIX)
+   Sensor Data:  317
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   317
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #318 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129494 (UNIX)
+   Sensor Data:  318
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   318
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #319 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129499 (UNIX)
+   Sensor Data:  319
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   319
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #320 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129503 (UNIX)
+   Sensor Data:  320
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   320
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #321 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129507 (UNIX)
+   Sensor Data:  321
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   321
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #322 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129512 (UNIX)
+   Sensor Data:  322
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   322
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #323 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129516 (UNIX)
+   Sensor Data:  323
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   323
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #324 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129520 (UNIX)
+   Sensor Data:  324
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   324
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #325 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129525 (UNIX)
+   Sensor Data:  325
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   325
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #326 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129529 (UNIX)
+   Sensor Data:  326
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   326
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #327 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129533 (UNIX)
+   Sensor Data:  327
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   327
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #328 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129538 (UNIX)
+   Sensor Data:  328
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   328
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #329 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129542 (UNIX)
+   Sensor Data:  329
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   329
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #330 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129546 (UNIX)
+   Sensor Data:  330
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   330
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #331 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129551 (UNIX)
+   Sensor Data:  331
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   331
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #332 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129555 (UNIX)
+   Sensor Data:  332
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   332
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #333 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129559 (UNIX)
+   Sensor Data:  333
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   333
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #334 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129564 (UNIX)
+   Sensor Data:  334
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   334
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #335 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129568 (UNIX)
+   Sensor Data:  335
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   335
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #336 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129573 (UNIX)
+   Sensor Data:  336
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   336
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #337 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129577 (UNIX)
+   Sensor Data:  337
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   337
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #338 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129581 (UNIX)
+   Sensor Data:  338
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   338
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #339 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129586 (UNIX)
+   Sensor Data:  339
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   339
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #340 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129590 (UNIX)
+   Sensor Data:  340
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   340
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #341 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129594 (UNIX)
+   Sensor Data:  341
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   341
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #342 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129599 (UNIX)
+   Sensor Data:  342
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   342
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #343 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129603 (UNIX)
+   Sensor Data:  343
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   343
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #344 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129607 (UNIX)
+   Sensor Data:  344
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   344
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #345 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129612 (UNIX)
+   Sensor Data:  345
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   345
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #346 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129616 (UNIX)
+   Sensor Data:  346
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   346
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #347 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129620 (UNIX)
+   Sensor Data:  347
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   347
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #348 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129625 (UNIX)
+   Sensor Data:  348
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   348
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #349 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129629 (UNIX)
+   Sensor Data:  349
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   349
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #350 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129633 (UNIX)
+   Sensor Data:  350
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   350
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #351 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129638 (UNIX)
+   Sensor Data:  351
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   351
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #352 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129642 (UNIX)
+   Sensor Data:  352
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   352
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #353 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129646 (UNIX)
+   Sensor Data:  353
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   353
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #354 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129651 (UNIX)
+   Sensor Data:  354
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   354
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #355 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129655 (UNIX)
+   Sensor Data:  355
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   355
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #356 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129659 (UNIX)
+   Sensor Data:  356
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   356
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #357 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129664 (UNIX)
+   Sensor Data:  357
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   357
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #358 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129668 (UNIX)
+   Sensor Data:  358
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 196
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   358
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #359 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129673 (UNIX)
+   Sensor Data:  359
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   359
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #360 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129677 (UNIX)
+   Sensor Data:  360
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   360
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #361 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129681 (UNIX)
+   Sensor Data:  361
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   361
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #362 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129686 (UNIX)
+   Sensor Data:  362
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   362
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #363 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129690 (UNIX)
+   Sensor Data:  363
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   363
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #364 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129694 (UNIX)
+   Sensor Data:  364
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   364
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #365 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129699 (UNIX)
+   Sensor Data:  365
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   365
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #366 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129703 (UNIX)
+   Sensor Data:  366
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   366
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #367 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129707 (UNIX)
+   Sensor Data:  367
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   367
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #368 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129712 (UNIX)
+   Sensor Data:  368
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   368
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #369 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129716 (UNIX)
+   Sensor Data:  369
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   369
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #370 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129720 (UNIX)
+   Sensor Data:  370
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   370
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #371 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129725 (UNIX)
+   Sensor Data:  371
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   371
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #372 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129729 (UNIX)
+   Sensor Data:  372
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   372
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #373 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129733 (UNIX)
+   Sensor Data:  373
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   373
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #374 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129738 (UNIX)
+   Sensor Data:  374
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   374
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #375 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129742 (UNIX)
+   Sensor Data:  375
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   375
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #376 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129746 (UNIX)
+   Sensor Data:  376
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   376
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #377 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129751 (UNIX)
+   Sensor Data:  377
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   377
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #378 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129755 (UNIX)
+   Sensor Data:  378
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   378
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #379 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129760 (UNIX)
+   Sensor Data:  379
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   379
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #380 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129764 (UNIX)
+   Sensor Data:  380
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   380
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #381 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129768 (UNIX)
+   Sensor Data:  381
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   381
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #382 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129773 (UNIX)
+   Sensor Data:  382
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   382
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #383 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129777 (UNIX)
+   Sensor Data:  383
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   383
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #384 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129781 (UNIX)
+   Sensor Data:  384
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   384
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #385 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129786 (UNIX)
+   Sensor Data:  385
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   385
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #386 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129790 (UNIX)
+   Sensor Data:  386
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   386
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #387 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129794 (UNIX)
+   Sensor Data:  387
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   387
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #388 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129799 (UNIX)
+   Sensor Data:  388
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   388
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #389 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129803 (UNIX)
+   Sensor Data:  389
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 200
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   389
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #390 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129807 (UNIX)
+   Sensor Data:  390
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   390
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #391 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129812 (UNIX)
+   Sensor Data:  391
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   391
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #392 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129816 (UNIX)
+   Sensor Data:  392
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   392
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #393 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129820 (UNIX)
+   Sensor Data:  393
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   393
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #394 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129825 (UNIX)
+   Sensor Data:  394
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   394
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #395 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129829 (UNIX)
+   Sensor Data:  395
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   395
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #396 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129833 (UNIX)
+   Sensor Data:  396
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   396
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #397 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129838 (UNIX)
+   Sensor Data:  397
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 197
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   397
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #398 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129842 (UNIX)
+   Sensor Data:  398
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   398
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #399 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129846 (UNIX)
+   Sensor Data:  399
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   399
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #400 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129851 (UNIX)
+   Sensor Data:  400
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 198
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   400
+────────────────────────────────────────
+
+   Preparando envio Rádio: 283 bytes em 1 fragmentos...
+────────────────────────────────────────
+✅ Pacote #401 enviado com sucesso via rádio
+   Sensor ID:    ESP-42
+   Timestamp:    1795129855 (UNIX)
+   Sensor Data:  401
+   Assinatura:   256 bytes (RSA-2048)
+   Quadros:      1/1
+────────────────────────────────────────
+Tempo de processamento (ms): 199
+Overhead de rede e tamanho do pacote (bytes): 283
+Total de pacotes enviados:   401
+────────────────────────────────────────
+

@@ -1,26 +1,35 @@
 // ═══════════════════════════════════════════════════════════════════════
-// Controller — Servidor de Verificação para ITS (Arquitetura TCC GSIPP)
+// Controller Rádio — BASELINE (Somente Assinatura Digital, sem Acumulador)
 // ═══════════════════════════════════════════════════════════════════════
+//
+// Branch `baseline-radio-signature-only`: camada de comunicação da
+// `comunicacao-radio` (UART + COBS + E49 433 MHz) com a lógica de
+// verificação da `baseline-signature-only` (sem Camada 03 e sem o campo "5").
+// O pacote CBOR tem 4 campos (~283 bytes) e viaja em 1 único quadro (1/1).
+//
+// Enquadramento no fio (por quadro):
+//   0x00 | COBS( [sensor_id u8][packet_id u8][total u8][idx u8][len u16 BE] + payload ) | 0x00
+//   (o campo len passou de u8 para u16 porque o CBOR de 4 campos > 255 bytes)
 //
 // Fluxo de verificações para cada pacote remontado de um sensor ESP32:
 //   0. Camada 00: desserialização do mapa CBOR externo (pacote malformado)
 //   1. Timestamp (anti-replay): diferença máxima de 5s
 //      1b. Anti-replay intra-janela (deduplicação dentro do Δt)
 //   2. Assinatura RSA-2048: SHA-256 (com delimitador) + PKCS#1 v1.5
-//   3. Acumulador criptográfico (Witness + PoE de Wesolowski):
-//      3a. Sintática:  desserialização da MembershipProof
-//      3b. Aritmética: acc.verify_membership(id, proof) == false
+//   (sem Verificação 03 — não há accumulator.dat nem verify_membership)
 //
 // Métricas de desempenho e resiliência:
 //   - Tempo de verificação no controlador (ms), medido a partir da remontagem
 //     completa do pacote (inclui o decode CBOR externo; exclui I/O de log)
+//   - Latência OTA Δt = t_recepção (relógio do RPi) − t_envio (campo "2").
+//     ATENÇÃO: o timestamp do ESP tem resolução de 1 s (truncado), então o Δt
+//     tem viés de [0, 1) s e depende do sincronismo NTP dos dois relógios.
 //   - RAM consumida pelo processo (MB)
-//   - Rastreamento de gaps de sequência e perdas de fragmentos
+//   - Pacotes recebidos/perdidos e PER (pela sequência do campo "3")
 //   - Estatísticas de sessão em tempo real e no encerramento (Ctrl+C)
 //
 // Executar (da raiz do repositório): cargo run --bin udp_controller --release
 
-use accumulator::{group::Rsa2048, Accumulator, MembershipProof};
 use anyhow::{Context, Result};
 use rsa::pkcs8::DecodePublicKey;
 use rsa::sha2::Sha256;
@@ -46,14 +55,16 @@ const REPLAY_WINDOW_SECS: u64 = 5;
 const REASSEMBLY_TIMEOUT_SECS: u64 = 10;
 /// Máximo de pacotes em reassembly simultâneo — limita alocação em caso de flood
 const MAX_CONCURRENT_PACKETS: usize = 8;
-/// Maior frame válido no fio: cabeçalho (5) + payload (até 255, pois o campo
-/// de tamanho é u8) + overhead COBS (até 2) + delimitador 0x00 (1).
-const MAX_FRAME_LEN: usize = 5 + 255 + 2 + 1;
+/// Cabeçalho cru do fragmento: sensor, pacote, total, índice, tamanho (u16 BE)
+const HEADER_LEN: usize = 6;
+/// Maior payload por fragmento — deve ser igual ao FRAG_SIZE do ESP32
+const MAX_FRAG_PAYLOAD: usize = 400;
+/// Maior frame válido no fio: cabeçalho + payload + overhead COBS (1 byte a
+/// cada 254 + 1) + delimitador 0x00 (1).
+const MAX_FRAME_LEN: usize =
+    HEADER_LEN + MAX_FRAG_PAYLOAD + (HEADER_LEN + MAX_FRAG_PAYLOAD) / 254 + 1 + 1;
 /// Bytes exibidos no dump hexadecimal de frames inválidos
 const HEX_DUMP_LEN: usize = 16;
-/// Locais onde o accumulator.dat é procurado (em ordem). O primeiro permite
-/// `cargo run --bin udp_controller` direto da raiz do repositório.
-const ACCUMULATOR_PATHS: [&str; 2] = ["SnifferESP/accumulator.dat", "./accumulator.dat"];
 
 // ============================================
 // CHAVE PÚBLICA RSA-2048 DE TESTE
@@ -73,7 +84,7 @@ PQIDAQAB
 -----END PUBLIC KEY-----";
 
 // ============================================
-// PAYLOAD CBOR — 5 campos
+// PAYLOAD CBOR — 4 campos (baseline: sem membershipproof)
 // ============================================
 
 #[derive(Deserialize, Debug)]
@@ -93,10 +104,6 @@ struct Payload {
     /// Campo "4": Assinatura digital RSA-2048 (256 bytes)
     #[serde(rename = "4", with = "serde_bytes")]
     signature: Vec<u8>,
-
-    /// Campo "5": MembershipProof serializada (Witness + PoE)
-    #[serde(rename = "5", with = "serde_bytes")]
-    membership_proof: Vec<u8>,
 }
 
 // ============================================
@@ -125,6 +132,45 @@ impl Bucket {
     }
 }
 
+/// Estatística simples (n, soma, mín, máx) de uma grandeza em segundos.
+#[derive(Default, Debug, Clone, Copy)]
+struct SecStats {
+    n: u64,
+    sum: f64,
+    min: f64,
+    max: f64,
+}
+
+impl SecStats {
+    fn record(&mut self, v: f64) {
+        if self.n == 0 {
+            self.min = v;
+            self.max = v;
+        } else {
+            self.min = self.min.min(v);
+            self.max = self.max.max(v);
+        }
+        self.n += 1;
+        self.sum += v;
+    }
+
+    fn mean(&self) -> f64 {
+        if self.n > 0 {
+            self.sum / self.n as f64
+        } else {
+            0.0
+        }
+    }
+}
+
+/// Sequência (campo "3") vista de um sensor — base do cálculo de PER.
+#[derive(Default, Debug)]
+struct SeqTracker {
+    min: u64,
+    max: u64,
+    seen: HashSet<u64>,
+}
+
 #[derive(Default, Debug)]
 struct SessionStats {
     total_reconstructed: u64,
@@ -137,33 +183,65 @@ struct SessionStats {
     rejected_unknown_sensor: Bucket,
     /// Verificação 02 — assinatura RSA inválida
     rejected_invalid_sig: Bucket,
-    /// Verificação 03 sintática — MembershipProof não desserializa
-    rejected_proof_syntax: Bucket,
-    /// Verificação 03 aritmética — verify_membership == false
-    rejected_invalid_proof: Bucket,
     /// Camada 00 — mapa CBOR externo malformado
     corrupted_cbor: Bucket,
     reassembly_timeouts: u64,
     sequence_gaps: u64,
+    /// Latência OTA (s) dos pacotes aceitos
+    ota_latency: SecStats,
+    /// Sequências recebidas por sensor (CBOR decodificado com sucesso)
+    seq: HashMap<String, SeqTracker>,
 }
 
 impl SessionStats {
     /// Pacotes cujo CBOR externo foi decodificado e passaram pelas verificações.
-    fn verified_buckets(&self) -> [&Bucket; 7] {
+    fn verified_buckets(&self) -> [&Bucket; 5] {
         [
             &self.accepted,
             &self.rejected_replay,
             &self.rejected_replay_duplicate,
             &self.rejected_unknown_sensor,
             &self.rejected_invalid_sig,
-            &self.rejected_proof_syntax,
-            &self.rejected_invalid_proof,
         ]
     }
 
     fn total_rejected(&self) -> u64 {
         self.verified_buckets().iter().map(|b| b.count).sum::<u64>() - self.accepted.count
             + self.corrupted_cbor.count
+    }
+
+    fn note_reading(&mut self, id: &str, reading: u64) {
+        let t = self
+            .seq
+            .entry(id.to_string())
+            .or_insert_with(|| SeqTracker {
+                min: reading,
+                max: reading,
+                seen: HashSet::new(),
+            });
+        t.min = t.min.min(reading);
+        t.max = t.max.max(reading);
+        t.seen.insert(reading);
+    }
+
+    /// (esperados, recebidos, perdidos) no intervalo [1ª, última] sequência
+    /// vista de cada sensor. Cada sequência ausente conta uma única vez,
+    /// seja qual for a causa (perda no ar, CBOR corrompido, timeout).
+    fn delivery(&self) -> (u64, u64, u64) {
+        self.seq.values().fold((0, 0, 0), |(e, r, l), t| {
+            let exp = t.max - t.min + 1;
+            let rec = t.seen.len() as u64;
+            (e + exp, r + rec, l + exp.saturating_sub(rec))
+        })
+    }
+
+    fn per_pct(&self) -> f64 {
+        let (exp, _, lost) = self.delivery();
+        if exp > 0 {
+            lost as f64 / exp as f64 * 100.0
+        } else {
+            0.0
+        }
     }
 
     fn print_summary(&self) {
@@ -185,16 +263,14 @@ impl SessionStats {
         };
 
         println!("\n═══════════════════════════════════════════════════════════════════════");
-        println!("                  RESUMO DA SESSÃO — ITS GSIPP (Rádio)");
+        println!("   RESUMO DA SESSÃO — ITS GSIPP (Rádio) — BASELINE (sem acumulador)");
         println!("═══════════════════════════════════════════════════════════════════════");
         println!(" Total de pacotes remontados:       {}", self.total_reconstructed);
-        line("Aceitos (3 etapas validadas):", &self.accepted);
+        line("Aceitos (V01, V01b e V02 OK):", &self.accepted);
         line("V01  Anti-Replay (timestamp):", &self.rejected_replay);
         line("V01b Anti-Replay (duplicata):", &self.rejected_replay_duplicate);
         line("V02  Sensor desconhecido:", &self.rejected_unknown_sensor);
         line("V02  Assinatura RSA inválida:", &self.rejected_invalid_sig);
-        line("V03  Proof sintática (CBOR):", &self.rejected_proof_syntax);
-        line("V03  Proof aritmética (PoE):", &self.rejected_invalid_proof);
         line("C00  CBOR externo malformado:", &self.corrupted_cbor);
         println!("  Pacotes incompletos (timeout):     {}", self.reassembly_timeouts);
         println!("  Gaps de sequência detectados:      {}", self.sequence_gaps);
@@ -205,9 +281,24 @@ impl SessionStats {
             .fold((0u64, 0.0f64), |(n, t), b| (n + b.count, t + b.total_ms));
         let avg_time = if n > 0 { total_ms / n as f64 } else { 0.0 };
         println!(
-            "  Tempo médio verificação (V01–V03): {:.3} ms (exclui Camada 00)",
+            "  Tempo médio verificação (V01–V02): {:.3} ms (exclui Camada 00)",
             avg_time
         );
+
+        let o = &self.ota_latency;
+        println!(
+            "  Latência OTA (s) [aceitos, n={}]:  média {:.3} | mín {:.3} | máx {:.3} (resolução 1 s)",
+            o.n,
+            o.mean(),
+            o.min,
+            o.max
+        );
+
+        let (exp, rec, lost) = self.delivery();
+        println!("  Pacotes esperados (seq. 1ª→últ.): {}", exp);
+        println!("  Pacotes recebidos (CBOR válido):  {}", rec);
+        println!("  Pacotes perdidos:                 {}", lost);
+        println!("  PER (Packet Error Rate):          {:.2}%", self.per_pct());
         println!("═══════════════════════════════════════════════════════════════════════\n");
     }
 }
@@ -263,13 +354,12 @@ impl ProcMonitor {
 }
 
 // ============================================
-// PROCESSAMENTO DO PACOTE — 3 VERIFICAÇÕES
+// PROCESSAMENTO DO PACOTE — V01, V01b e V02 (sem V03)
 // ============================================
 
 fn process_packet(
     raw: &[u8],
     key_store: &HashMap<String, RsaPublicKey>,
-    acc: &Accumulator<Rsa2048, String>,
     mon: &mut ProcMonitor,
     stats: &mut SessionStats,
     last_readings: &mut HashMap<String, u64>,
@@ -281,6 +371,11 @@ fn process_packet(
     // INÍCIO DA MEDIÇÃO — imediatamente após a remontagem do pacote
     // ════════════════════════════════════════════════════
     let t_recv = Instant::now();
+    // Instante de recepção no relógio de parede (para a latência OTA)
+    let t_rx_unix = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .context("Erro ao obter tempo do sistema")?
+        .as_secs_f64();
 
     // ──────────────────────────────────────────────────
     // CAMADA 00: Desserialização do mapa CBOR externo
@@ -294,6 +389,7 @@ fn process_packet(
                 "REJEITADO (CBOR Externo Malformado)",
                 elapsed,
                 raw.len(),
+                None,
                 mon,
                 stats,
             );
@@ -309,12 +405,15 @@ fn process_packet(
     // abaixo (cabeçalho + gap) fica fora da medição.
     let t_decode = t_recv.elapsed();
 
+    // Latência OTA: t_recepção (RPi) − t_envio (campo "2", segundos inteiros)
+    let ota = Some(t_rx_unix - payload.timestamp as f64);
+    stats.note_reading(&payload.id, payload.reading);
+
     println!("\n════════════════════════════════════════════════════");
     println!("Pacote recebido de: {}", payload.id);
     println!("   Timestamp:  {}", payload.timestamp);
     println!("   Reading:    {}", payload.reading);
     println!("   Assinatura: {} bytes", payload.signature.len());
-    println!("   Proof:      {} bytes", payload.membership_proof.len());
 
     // ──────────────────────────────────────────────────
     // DETECÇÃO DE GAP DE SEQUÊNCIA
@@ -338,7 +437,7 @@ fn process_packet(
     println!("════════════════════════════════════════════════════");
 
     // ════════════════════════════════════════════════════
-    // RETOMADA DA MEDIÇÃO — verificações V01 a V03
+    // RETOMADA DA MEDIÇÃO — verificações V01 a V02
     // ════════════════════════════════════════════════════
     let t_start = Instant::now();
     let since_recv = move || t_decode + t_start.elapsed();
@@ -361,7 +460,7 @@ fn process_packet(
         let elapsed = since_recv();
         stats.rejected_replay.record(elapsed);
 
-        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), mon, stats);
+        print_metrics("REJEITADO (Replay Attack)", elapsed, raw.len(), ota, mon, stats);
         println!(
             "   Verificação 01 FALHOU: Diferença de timestamp = {}s (máx: {}s)",
             time_diff, REPLAY_WINDOW_SECS
@@ -393,6 +492,7 @@ fn process_packet(
             "REJEITADO (Replay Intra-Janela)",
             elapsed,
             raw.len(),
+            ota,
             mon,
             stats,
         );
@@ -416,6 +516,7 @@ fn process_packet(
                 "REJEITADO (Sensor Desconhecido)",
                 elapsed,
                 raw.len(),
+                ota,
                 mon,
                 stats,
             );
@@ -451,6 +552,7 @@ fn process_packet(
                 "REJEITADO (Assinatura Inválida)",
                 elapsed,
                 raw.len(),
+                ota,
                 mon,
                 stats,
             );
@@ -459,66 +561,20 @@ fn process_packet(
         }
     }
 
-    // ──────────────────────────────────────────────────
-    // VERIFICAÇÃO 03: Acumulador Criptográfico
-    // ──────────────────────────────────────────────────
-    // 03a — Sintática: a MembershipProof (campo "5") precisa desserializar.
-    let proof: MembershipProof<Rsa2048, String> =
-        match serde_cbor::from_slice(&payload.membership_proof) {
-            Ok(p) => p,
-            Err(e) => {
-                let elapsed = since_recv();
-                stats.rejected_proof_syntax.record(elapsed);
-                print_metrics(
-                    "REJEITADO (V03 Sintática — Proof Malformada)",
-                    elapsed,
-                    raw.len(),
-                    mon,
-                    stats,
-                );
-                println!(
-                    "   Verificação 03 (sintática) FALHOU em {:.3} ms ao desserializar MembershipProof ({} bytes): {:#}\n",
-                    elapsed.as_secs_f64() * 1000.0,
-                    payload.membership_proof.len(),
-                    e
-                );
-                return Ok(());
-            }
-        };
-
-    // 03b — Aritmética: witness + PoE de Wesolowski contra o acumulador.
-    if acc.verify_membership(&payload.id, &proof) {
-        println!("   Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)");
-    } else {
-        let elapsed = since_recv();
-        stats.rejected_invalid_proof.record(elapsed);
-
-        print_metrics(
-            "REJEITADO (V03 Aritmética — Prova Inválida)",
-            elapsed,
-            raw.len(),
-            mon,
-            stats,
-        );
-        println!(
-            "   Verificação 03 (aritmética) FALHOU em {:.3} ms: o sensor '{}' NÃO pertence ao acumulador com esta prova.\n",
-            elapsed.as_secs_f64() * 1000.0,
-            payload.id
-        );
-        return Ok(());
-    }
-
     // ════════════════════════════════════════════════════
     // FIM DA MEDIÇÃO — PACOTE ACEITO
     // ════════════════════════════════════════════════════
 
-    // Registrar no cache intra-replay (apenas pacotes que passaram nas 3 etapas)
+    // Registrar no cache intra-replay (apenas pacotes que passaram em V01–V02)
     replay_seen.insert(replay_key);
 
     let elapsed = since_recv();
     stats.accepted.record(elapsed);
+    if let Some(dt) = ota {
+        stats.ota_latency.record(dt);
+    }
 
-    print_metrics("ACEITO", elapsed, raw.len(), mon, stats);
+    print_metrics("ACEITO", elapsed, raw.len(), ota, mon, stats);
     println!();
 
     Ok(())
@@ -532,11 +588,15 @@ fn print_metrics(
     status: &str,
     elapsed: std::time::Duration,
     packet_size: usize,
+    ota_secs: Option<f64>,
     mon: &mut ProcMonitor,
     stats: &SessionStats,
 ) {
     let ram_mb = mon.ram_mb();
+    let (_, received, lost) = stats.delivery();
 
+    // Ordem Status → Tempo → Overhead → (OTA) → RAM: a linha de RAM fecha o
+    // bloco no parser de teste_apenas_assinatura.py (mesmo formato do Wi-Fi).
     println!("────────────────────────────────────────────────────");
     println!("Status: {}", status);
     println!(
@@ -547,12 +607,18 @@ fn print_metrics(
         "   Overhead de rede e tamanho do pacote (bytes): {}",
         packet_size
     );
+    match ota_secs {
+        Some(dt) => println!("   Latência OTA Δt (s): {:.3}", dt),
+        None => println!("   Latência OTA Δt (s): n/d (CBOR não decodificado)"),
+    }
     println!("   RAM consumida pelo processo (MB): {:.2}", ram_mb);
     println!(
-        "   Sessão: {} aceitos | {} rejeitados | {} perdidos",
+        "   Sessão: {} recebidos | {} aceitos | {} rejeitados | {} perdidos | PER {:.2}%",
+        received,
         stats.accepted.count,
         stats.total_rejected(),
-        stats.reassembly_timeouts + stats.sequence_gaps
+        lost,
+        stats.per_pct()
     );
     println!("────────────────────────────────────────────────────");
 }
@@ -679,9 +745,11 @@ impl ReassemblyBuffer {
 fn main() -> Result<()> {
     println!("═══════════════════════════════════════════════════════");
     println!("  Controller — ITS (Arquitetura TCC GSIPP) via Rádio");
+    println!("  *** BASELINE: Somente Assinatura (sem Acumulador) ***");
     println!("═══════════════════════════════════════════════════════");
-    println!("  Verificações: Timestamp + RSA-2048 + Acumulador");
+    println!("  Verificações: Timestamp + Deduplicação + RSA-2048");
     println!("  Rádio UART:   {} a {} bps", SERIAL_PORT, BAUD_RATE);
+    println!("  Quadro máx.:  {} bytes de payload por fragmento", MAX_FRAG_PAYLOAD);
     println!("  Anti-Replay:  Janela de {}s", REPLAY_WINDOW_SECS);
     println!("  Reassembly:   Timeout de {}s", REASSEMBLY_TIMEOUT_SECS);
     println!("═══════════════════════════════════════════════════════\n");
@@ -693,33 +761,14 @@ fn main() -> Result<()> {
         println!("   - {}", sensor_id);
     }
 
-    // --- 2. Carregar acumulador serializado do disco ---
-    let (acc_path, acc_bytes) = ACCUMULATOR_PATHS
-        .iter()
-        .find_map(|p| std::fs::read(p).ok().map(|b| (*p, b)))
-        .with_context(|| {
-            format!(
-                "Arquivo accumulator.dat não encontrado em {:?}. \
-                 Execute 'cd SnifferESP && cargo run --release --bin setup' primeiro.",
-                ACCUMULATOR_PATHS
-            )
-        })?;
-    let acc: Accumulator<Rsa2048, String> = serde_cbor::from_slice(&acc_bytes)
-        .with_context(|| format!("Falha ao desserializar {}", acc_path))?;
-    println!(
-        "\nAcumulador carregado de '{}' ({} bytes).",
-        acc_path,
-        acc_bytes.len()
-    );
-
-    // --- 3. Inicializar monitor de processo e estatísticas ---
+    // --- 2. Inicializar monitor de processo e estatísticas ---
     let mut mon = ProcMonitor::new();
     let stats_arc = Arc::new(Mutex::new(SessionStats::default()));
     let mut last_readings: HashMap<String, u64> = HashMap::new();
     // Cache de (id, timestamp, reading) vistos — descarta replays dentro da janela Δt
     let mut replay_seen: HashSet<(String, u64, u64)> = HashSet::new();
 
-    // --- 4. Configurar handler para Ctrl+C (relatório final) ---
+    // --- 3. Configurar handler para Ctrl+C (relatório final) ---
     let running = Arc::new(AtomicBool::new(true));
     {
         let r = running.clone();
@@ -735,7 +784,7 @@ fn main() -> Result<()> {
         .expect("Erro ao configurar handler de Ctrl+C");
     }
 
-    // --- 5. Abrir porta serial ---
+    // --- 4. Abrir porta serial ---
     let mut port = serialport::new(SERIAL_PORT, BAUD_RATE)
         .timeout(Duration::from_millis(100))
         .open()
@@ -756,8 +805,8 @@ fn main() -> Result<()> {
                 while let Some(pos) = stream_buffer.iter().position(|&b| b == 0x00) {
                     let frame = stream_buffer.drain(..=pos).collect::<Vec<u8>>();
                     
-                    if frame.len() <= 6 {
-                        // Muito pequeno para ser um frame válido (precisa ter header 5 bytes + dados + 0x00 overhead).
+                    if frame.len() <= HEADER_LEN + 1 {
+                        // Muito pequeno para ser um frame válido (precisa ter header 6 bytes + dados + 0x00 overhead).
                         // Inclui o frame vazio gerado pelo delimitador inicial que o ESP envia
                         // antes de cada fragmento e o preâmbulo de wake-up (FF FF FF FF 00).
                         continue;
@@ -777,31 +826,35 @@ fn main() -> Result<()> {
                     // Decodificar COBS (tirando o 0x00 final)
                     match decode_vec(&frame[..frame.len() - 1]) {
                         Ok(decoded) => {
-                            if decoded.len() < 5 {
+                            if decoded.len() < HEADER_LEN {
                                 println!("[Radio] Frame decodificado muito pequeno.");
                                 continue;
                             }
-                            
+
                             let sensor_id = decoded[0];
                             let packet_id = decoded[1];
                             let total_frags = decoded[2];
                             let frag_idx = decoded[3];
-                            let payload_len = decoded[4] as usize;
-                            
-                            if total_frags == 0 || frag_idx >= total_frags || payload_len == 0 {
+                            let payload_len = u16::from_be_bytes([decoded[4], decoded[5]]) as usize;
+
+                            if total_frags == 0
+                                || frag_idx >= total_frags
+                                || payload_len == 0
+                                || payload_len > MAX_FRAG_PAYLOAD
+                            {
                                 println!(
                                     "[Radio] Cabeçalho decodificado corrompido: Sensor={}, ID={}, Total={}, Frag={}, Len={}",
                                     sensor_id, packet_id, total_frags, frag_idx, payload_len
                                 );
                                 continue;
                             }
-                            
-                            if decoded.len() < 5 + payload_len {
-                                println!("[Radio] Tamanho real ({}) menor que payload_len ({}).", decoded.len() - 5, payload_len);
+
+                            if decoded.len() < HEADER_LEN + payload_len {
+                                println!("[Radio] Tamanho real ({}) menor que payload_len ({}).", decoded.len() - HEADER_LEN, payload_len);
                                 continue;
                             }
-                            
-                            let payload = decoded[5..5 + payload_len].to_vec();
+
+                            let payload = decoded[HEADER_LEN..HEADER_LEN + payload_len].to_vec();
                             
                             println!(
                                 "   [Radio] RX: Fragmento {}/{} (Sensor ID: {}, Pacote ID: {}) — {} bytes",
@@ -828,7 +881,6 @@ fn main() -> Result<()> {
                                 if let Err(e) = process_packet(
                                     &full_cb_raw,
                                     &key_store,
-                                    &acc,
                                     &mut mon,
                                     &mut stats,
                                     &mut last_readings,
