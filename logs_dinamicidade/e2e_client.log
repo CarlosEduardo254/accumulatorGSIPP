@@ -1,0 +1,67 @@
+═══════════════════════════════════════════════════════════════════════
+  dynamic_e2e — Revogação e adição fim-a-fim via UDP (porta 4242)
+═══════════════════════════════════════════════════════════════════════
+  Destino:        127.0.0.1:4242
+  Pacotes/cenário: 50 (intervalo 20 ms)
+  Artefatos TMC:  target/e2e_dinamicidade
+  Modo:           LOCAL — o teste inicia o udp_controller em cada fase e confere a saída dele
+
+───────────────────────────────────────────────────────────────────────
+ Fase 1 — Controlador com A1 = {ESP-01, ESP-02, ESP-42}
+───────────────────────────────────────────────────────────────────────
+   Iniciando: udp_controller --acc target/e2e_dinamicidade/accumulator_A1.dat --pubkey ESP-02=target/e2e_dinamicidade/keys/ESP_02.pub.pem --pubkey ESP-99=target/e2e_dinamicidade/keys/ESP_99.pub.pem --max-packets 100 --bind 127.0.0.1:4242
+   F1-A [ESP-42] enviando 50 pacotes... ok
+   F1-B [ESP-02] enviando 50 pacotes... ok
+
+───────────────────────────────────────────────────────────────────────
+ Fase 2 — TMC (offline): revogação do ESP-42 e atualização da witness do ESP-02
+───────────────────────────────────────────────────────────────────────
+   A2_revoke_delete_ESP42          6.5203 ms
+   A2_witness_update_ESP02         3.7138 ms
+   A2_proof_regen_ESP02            3.2722 ms
+   Novo acumulador: accumulator_A2.dat | nova proof: proofs/ESP_02_A2.proof
+
+───────────────────────────────────────────────────────────────────────
+ Fase 3 — Controlador com A2 = {ESP-01, ESP-02} (chave do ESP-42 mantida no HashMap)
+───────────────────────────────────────────────────────────────────────
+   Iniciando: udp_controller --acc target/e2e_dinamicidade/accumulator_A2.dat --pubkey ESP-02=target/e2e_dinamicidade/keys/ESP_02.pub.pem --pubkey ESP-99=target/e2e_dinamicidade/keys/ESP_99.pub.pem --max-packets 150 --bind 127.0.0.1:4242
+   F3-A [ESP-42] enviando 50 pacotes... ok
+   F3-B [ESP-02] enviando 50 pacotes... ok
+   F3-C [ESP-02] enviando 50 pacotes... ok
+
+───────────────────────────────────────────────────────────────────────
+ Fase 4 — Controlador com A3 = {ESP-01, ESP-02, ESP-99}
+───────────────────────────────────────────────────────────────────────
+   Iniciando: udp_controller --acc target/e2e_dinamicidade/accumulator_A3.dat --pubkey ESP-02=target/e2e_dinamicidade/keys/ESP_02.pub.pem --pubkey ESP-99=target/e2e_dinamicidade/keys/ESP_99.pub.pem --max-packets 200 --bind 127.0.0.1:4242
+   F4-A [ESP-99] enviando 50 pacotes... ok
+   F4-B [ESP-02] enviando 50 pacotes... ok
+   F4-C [ESP-02] enviando 50 pacotes... ok
+   F4-D [ESP-42] enviando 50 pacotes... ok
+
+═══════════════════════════════════════════════════════════════════════════════════════════════
+  RESULTADO FIM-A-FIM (desfecho de cada pacote extraído do stdout do udp_controller)
+═══════════════════════════════════════════════════════════════════════════════════════════════
+  Cen.  Acc Sensor   Envio  Aceitos   Rejeit.  t̄ (ms)  Esperado                   Camada observada           OK?
+  F1-A  A1  ESP-42      50       50         0    6.088  ACEITO                     ACEITO×50                  PASSOU
+  F1-B  A1  ESP-02      50       50         0    4.925  ACEITO                     ACEITO×50                  PASSOU  (controle adicional)
+  F3-A  A2  ESP-42      50        0        50    7.043  REJEITADO_V03_ARITMETICA   REJEITADO_V03_ARITMETICA×50 PASSOU
+  F3-B  A2  ESP-02      50        0        50    4.889  REJEITADO_V03_ARITMETICA   REJEITADO_V03_ARITMETICA×50 PASSOU
+  F3-C  A2  ESP-02      50       50         0    4.758  ACEITO                     ACEITO×50                  PASSOU
+  F4-A  A3  ESP-99      50       50         0    4.827  ACEITO                     ACEITO×50                  PASSOU
+  F4-B  A3  ESP-02      50       50         0    4.857  ACEITO                     ACEITO×50                  PASSOU
+  F4-C  A3  ESP-02      50        0        50    5.051  REJEITADO_V03_ARITMETICA   REJEITADO_V03_ARITMETICA×50 PASSOU  (controle adicional)
+  F4-D  A3  ESP-42      50        0        50    5.278  REJEITADO_V03_ARITMETICA   REJEITADO_V03_ARITMETICA×50 PASSOU  (controle adicional)
+    F1-A: ESP-42 legítimo, proof de A1
+    F1-B: ESP-02 legítimo, proof de A1 (controle)
+    F3-A: ESP-42 REVOGADO, assinatura RSA legítima + proof antiga (A1)
+    F3-B: ESP-02 com witness DESATUALIZADA (A1)
+    F3-C: ESP-02 com witness ATUALIZADA (A2)
+    F4-A: ESP-99 NOVO sensor, proof de A3
+    F4-B: ESP-02 com witness atualizada para A3
+    F4-C: ESP-02 com witness de A2 (controle)
+    F4-D: ESP-42 revogado, proof de A1 (controle)
+
+✓ Resultados JSON: logs_dinamicidade/resultados_e2e.json
+✓ Log do controlador: logs_dinamicidade/e2e_controller.log
+
+✅ TODOS OS CENÁRIOS SE COMPORTARAM COMO ESPERADO.

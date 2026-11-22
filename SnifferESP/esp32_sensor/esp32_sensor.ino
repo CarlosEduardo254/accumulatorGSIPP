@@ -40,7 +40,6 @@
 #endif
 
 const uint16_t SERVER_PORT = 4242;
-const char *SENSOR_ID = "ESP-42";
 const uint32_t SEND_INTERVAL_MS = 3000;
 
 // ============================================
@@ -50,6 +49,19 @@ const uint32_t SEND_INTERVAL_MS = 3000;
 const char *NTP_SERVER = "pool.ntp.org";
 const long GMT_OFFSET_SEC = -10800; // UTC-3 (Brasília)
 const int DAYLIGHT_OFFSET_SEC = 0;
+
+// ============================================
+// IDENTIDADE DO SENSOR (ID + chave privada + MembershipProof)
+// ============================================
+// Se existir sensor_identity.h (gerado por SnifferESP/gen_sensor_identity.py a
+// partir dos artefatos do TMC — ignorado no Git por conter chave privada), ele
+// define SENSOR_ID, PRIVATE_KEY_PEM e MEMBERSHIP_PROOF. Caso contrário, vale a
+// identidade padrão embutida abaixo (ESP-42, proof do setup original).
+#if __has_include("sensor_identity.h")
+#include "sensor_identity.h"
+#else
+
+const char *SENSOR_ID = "ESP-42";
 
 // ============================================
 // CHAVE PRIVADA RSA-2048
@@ -183,6 +195,9 @@ const uint8_t MEMBERSHIP_PROOF[] = {
     0x38, 0x36, 0x36, 0x66, 0x35, 0x38, 0x66, 0x65, 0x38, 0x64, 0x34, 0x61,
     0x33, 0x63, 0x39, 0x30, 0x37, 0x65, 0x62, 0x37, 0x61, 0x63, 0x34, 0x31,
     0x37, 0x62, 0x65, 0x38, 0x38, 0x63, 0x37, 0x64};
+
+#endif // sensor_identity.h
+
 const size_t PROOF_SIZE = sizeof(MEMBERSHIP_PROOF);
 
 // ============================================

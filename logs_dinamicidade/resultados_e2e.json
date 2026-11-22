@@ -1,0 +1,200 @@
+[
+  {
+    "phase": 1,
+    "accumulator": "A1",
+    "code": "F1-A",
+    "description": "ESP-42 legítimo, proof de A1",
+    "sensor": "ESP-42",
+    "proof_file": "proofs/ESP_42_A1.proof",
+    "proof_bytes": 1064,
+    "additional_control": false,
+    "expected": "Aceito",
+    "sent": 50,
+    "observed_by_layer": {
+      "ACEITO": 50
+    },
+    "accepted": 50,
+    "rejected": 0,
+    "acceptance_rate_pct": 100.0,
+    "controller_verify_ms_mean": 6.087859999999999,
+    "controller_verify_ms_median": 4.9275,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 1,
+    "accumulator": "A1",
+    "code": "F1-B",
+    "description": "ESP-02 legítimo, proof de A1 (controle)",
+    "sensor": "ESP-02",
+    "proof_file": "proofs/ESP_02_A1.proof",
+    "proof_bytes": 551,
+    "additional_control": true,
+    "expected": "Aceito",
+    "sent": 50,
+    "observed_by_layer": {
+      "ACEITO": 50
+    },
+    "accepted": 50,
+    "rejected": 0,
+    "acceptance_rate_pct": 100.0,
+    "controller_verify_ms_mean": 4.92468,
+    "controller_verify_ms_median": 3.8635,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 3,
+    "accumulator": "A2",
+    "code": "F3-A",
+    "description": "ESP-42 REVOGADO, assinatura RSA legítima + proof antiga (A1)",
+    "sensor": "ESP-42",
+    "proof_file": "proofs/ESP_42_A1.proof",
+    "proof_bytes": 1064,
+    "additional_control": false,
+    "expected": "RejeitadoV03Aritmetica",
+    "sent": 50,
+    "observed_by_layer": {
+      "REJEITADO_V03_ARITMETICA": 50
+    },
+    "accepted": 0,
+    "rejected": 50,
+    "acceptance_rate_pct": 0.0,
+    "controller_verify_ms_mean": 7.04288,
+    "controller_verify_ms_median": 5.618,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 3,
+    "accumulator": "A2",
+    "code": "F3-B",
+    "description": "ESP-02 com witness DESATUALIZADA (A1)",
+    "sensor": "ESP-02",
+    "proof_file": "proofs/ESP_02_A1.proof",
+    "proof_bytes": 551,
+    "additional_control": false,
+    "expected": "RejeitadoV03Aritmetica",
+    "sent": 50,
+    "observed_by_layer": {
+      "REJEITADO_V03_ARITMETICA": 50
+    },
+    "accepted": 0,
+    "rejected": 50,
+    "acceptance_rate_pct": 0.0,
+    "controller_verify_ms_mean": 4.889199999999999,
+    "controller_verify_ms_median": 3.8545,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 3,
+    "accumulator": "A2",
+    "code": "F3-C",
+    "description": "ESP-02 com witness ATUALIZADA (A2)",
+    "sensor": "ESP-02",
+    "proof_file": "proofs/ESP_02_A2.proof",
+    "proof_bytes": 551,
+    "additional_control": false,
+    "expected": "Aceito",
+    "sent": 50,
+    "observed_by_layer": {
+      "ACEITO": 50
+    },
+    "accepted": 50,
+    "rejected": 0,
+    "acceptance_rate_pct": 100.0,
+    "controller_verify_ms_mean": 4.7580399999999985,
+    "controller_verify_ms_median": 3.777,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 4,
+    "accumulator": "A3",
+    "code": "F4-A",
+    "description": "ESP-99 NOVO sensor, proof de A3",
+    "sensor": "ESP-99",
+    "proof_file": "proofs/ESP_99_A3.proof",
+    "proof_bytes": 551,
+    "additional_control": false,
+    "expected": "Aceito",
+    "sent": 50,
+    "observed_by_layer": {
+      "ACEITO": 50
+    },
+    "accepted": 50,
+    "rejected": 0,
+    "acceptance_rate_pct": 100.0,
+    "controller_verify_ms_mean": 4.8267799999999985,
+    "controller_verify_ms_median": 3.9370000000000003,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 4,
+    "accumulator": "A3",
+    "code": "F4-B",
+    "description": "ESP-02 com witness atualizada para A3",
+    "sensor": "ESP-02",
+    "proof_file": "proofs/ESP_02_A3.proof",
+    "proof_bytes": 550,
+    "additional_control": false,
+    "expected": "Aceito",
+    "sent": 50,
+    "observed_by_layer": {
+      "ACEITO": 50
+    },
+    "accepted": 50,
+    "rejected": 0,
+    "acceptance_rate_pct": 100.0,
+    "controller_verify_ms_mean": 4.856579999999999,
+    "controller_verify_ms_median": 3.8895,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 4,
+    "accumulator": "A3",
+    "code": "F4-C",
+    "description": "ESP-02 com witness de A2 (controle)",
+    "sensor": "ESP-02",
+    "proof_file": "proofs/ESP_02_A2.proof",
+    "proof_bytes": 551,
+    "additional_control": true,
+    "expected": "RejeitadoV03Aritmetica",
+    "sent": 50,
+    "observed_by_layer": {
+      "REJEITADO_V03_ARITMETICA": 50
+    },
+    "accepted": 0,
+    "rejected": 50,
+    "acceptance_rate_pct": 0.0,
+    "controller_verify_ms_mean": 5.051339999999999,
+    "controller_verify_ms_median": 4.191,
+    "verified_from_controller_log": true,
+    "pass": true
+  },
+  {
+    "phase": 4,
+    "accumulator": "A3",
+    "code": "F4-D",
+    "description": "ESP-42 revogado, proof de A1 (controle)",
+    "sensor": "ESP-42",
+    "proof_file": "proofs/ESP_42_A1.proof",
+    "proof_bytes": 1064,
+    "additional_control": true,
+    "expected": "RejeitadoV03Aritmetica",
+    "sent": 50,
+    "observed_by_layer": {
+      "REJEITADO_V03_ARITMETICA": 50
+    },
+    "accepted": 0,
+    "rejected": 50,
+    "acceptance_rate_pct": 0.0,
+    "controller_verify_ms_mean": 5.277919999999999,
+    "controller_verify_ms_median": 4.287,
+    "verified_from_controller_log": true,
+    "pass": true
+  }
+]

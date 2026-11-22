@@ -13,7 +13,7 @@ use gmp_mpfr_sys::gmp::mpz_t;
 use rug::integer::Order;
 use rug::Integer;
 use std::cmp::{min, Ord, Ordering, PartialOrd};
-use std::convert::From;
+use std::convert::{From, TryFrom};
 use std::mem::transmute;
 use std::ops;
 use std::ptr;
@@ -104,7 +104,7 @@ macro_rules! u_types {
         }
 
         pub fn is_perfect_square(&self) -> bool {
-          let issqr = unsafe { gmp::mpn_perfect_square_p(self.data(), self.size) };
+          let issqr = unsafe { gmp::mpn_perfect_square_p(self.data(), self.size as gmp::size_t) };
           issqr != 0
         }
 
@@ -126,13 +126,22 @@ macro_rules! u_types {
 
         pub fn is_divisible_u(&self, u: u64) -> bool {
           let s = self.as_mpz();
-          let divisible = unsafe {gmp::mpz_divisible_ui_p(mut_ptr(&s), u)};
+          // `unsigned long` tem 32 bits no Windows (64 no Linux): usa a versão `_ui` quando o
+          // divisor cabe nele e, caso contrário, divide por um mpz com o mesmo valor.
+          let divisible = match std::os::raw::c_ulong::try_from(u) {
+            Ok(ul) => unsafe { gmp::mpz_divisible_ui_p(mut_ptr(&s), ul) },
+            Err(_) => {
+              let d = Self::from(u);
+              let d = d.as_mpz();
+              unsafe { gmp::mpz_divisible_p(mut_ptr(&s), mut_ptr(&d)) }
+            }
+          };
           divisible != 0
         }
 
         /// Panics if `buf` is not large enough.
         pub fn write_binary(&self, buf: &mut [u8]) -> usize {
-          unsafe { gmp::mpn_get_str(mut_ptr(&buf[0]), 2, self.data(), self.size) }
+          unsafe { gmp::mpn_get_str(mut_ptr(&buf[0]), 2, self.data(), self.size as gmp::size_t) }
         }
 
         pub fn from_be_bytes(bytes: &[u8]) -> Self {
@@ -330,9 +339,9 @@ macro_rules! u_types {
               rem.data(),
               0,
               self.data(),
-              self.size,
+              self.size as gmp::size_t,
               x.data(),
-              x.size,
+              x.size as gmp::size_t,
             )
           };
           rem.normalize_size();
@@ -360,9 +369,9 @@ macro_rules! u_types {
               self.data(),
               0,
               self.data(),
-              self.size,
+              self.size as gmp::size_t,
               x.data(),
-              x.size,
+              x.size as gmp::size_t,
             )
           };
           self.normalize_size();
@@ -389,9 +398,9 @@ macro_rules! u_types {
               rem.data(),
               0,
               self.data(),
-              self.size,
+              self.size as gmp::size_t,
               x.data(),
-              x.size,
+              x.size as gmp::size_t,
             )
           };
           y.normalize_size();
@@ -459,9 +468,9 @@ impl ops::Rem<&U256> for U512 {
         rem.data(),
         0,
         self.data(),
-        self.size,
+        self.size as gmp::size_t,
         x.data(),
-        x.size,
+        x.size as gmp::size_t,
       )
     };
     rem.normalize_size();
@@ -487,7 +496,7 @@ impl U256 {
     let f = f.as_mpz();
     let c = unsafe { gmp::mpz_remove(mut_ptr(&outmpz), mut_ptr(&s), mut_ptr(&f)) };
     out.size = i64::from(outmpz.size);
-    (out.low_u256(), c)
+    (out.low_u256(), u64::from(c))
   }
 }
 

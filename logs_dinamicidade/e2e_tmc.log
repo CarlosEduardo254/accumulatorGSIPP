@@ -1,0 +1,52 @@
+═══════════════════════════════════════════════════════════
+  dynamic_tmc — TMC offline: A1 → (revoga ESP-42) A2 → (join ESP-99) A3
+═══════════════════════════════════════════════════════════
+
+[Setup] A1 = {ESP-01, ESP-02, ESP-42} — proofs de ESP-42 e ESP-02 geradas
+        A1 == SnifferESP/accumulator.dat ? true
+        proof ESP-42 (A1) == SnifferESP/proofs/ESP_42.proof ? true
+
+[Fase 2] Revogação: A2 = A1.delete([(ESP-42, w42)])  →  A2 = {ESP-01, ESP-02}
+         witness de ESP-02 atualizada (LLX) e nova PoE gerada
+
+[Fase 4] Join: A3 = A2.add([ESP-99])  →  A3 = {ESP-01, ESP-02, ESP-99}
+         proof do ESP-99 gerada (witness = A2); witness de ESP-02 atualizada
+
+[Chaves] Gerando pares RSA-2048 de teste para ESP-02 e ESP-99...
+
+  Tempos no TMC (ms):
+    A1_setup_add_3                       5.3113
+    A1_setup_witnesses_3                11.8227
+    A2_proof_regen_ESP02                 3.2722
+    A2_revoke_delete_ESP42               6.5203
+    A2_witness_update_ESP02              3.7138
+    A3_join_add_ESP99                    1.4331
+    A3_proof_new_ESP99                  12.8761
+    A3_proof_regen_ESP02                 3.1405
+    A3_witness_update_ESP02              1.6874
+
+  Tamanhos (bytes):
+    accumulator_A1                          531
+    accumulator_A2                          531
+    accumulator_A3                          531
+    proof_ESP_02_A1                         551
+    proof_ESP_02_A2                         551
+    proof_ESP_02_A3                         550
+    proof_ESP_42_A1                        1064
+    proof_ESP_99_A3                         551
+
+  Checagens matemáticas:
+    [OK] A1_igual_SnifferESP_accumulator_dat
+    [OK] A2_ESP02_proof_A1_rejeitada
+    [OK] A2_ESP02_proof_A2_aceita
+    [OK] A2_ESP42_proof_antiga_rejeitada
+    [OK] A2_igual_reconstrucao_do_zero
+    [OK] A3_ESP02_proof_A2_rejeitada
+    [OK] A3_ESP02_proof_A3_aceita
+    [OK] A3_ESP42_proof_antiga_rejeitada
+    [OK] A3_ESP99_proof_aceita
+    [OK] A3_igual_reconstrucao_do_zero
+    [OK] proof_ESP42_A1_igual_firmware
+
+✓ Artefatos gravados em 'target/e2e_dinamicidade'
+✓ Manifesto: 'target/e2e_dinamicidade\tmc_manifest.json'

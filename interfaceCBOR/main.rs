@@ -19,6 +19,19 @@
 //   - Estatísticas de sessão em tempo real e no encerramento (Ctrl+C)
 //
 // Executar (da raiz do repositório): cargo run --bin udp_controller --release
+//
+// Flags opcionais (sem flags o comportamento é o original):
+//   --acc <arquivo>           carrega o acumulador deste arquivo (ex.: accumulator_A2.dat)
+//                             em vez de procurar SnifferESP/accumulator.dat / ./accumulator.dat
+//   --pubkey <ID>=<pem>       cadastra mais uma chave pública RSA (SPKI/PEM) no HashMap;
+//                             pode ser repetida. A chave embutida do ESP-42 é sempre mantida.
+//   --bind <ip:porta>         endereço do socket UDP (padrão 0.0.0.0:4242)
+//   --max-packets <n>         encerra após n datagramas, imprimindo o resumo da sessão
+//                             (usado pelos testes automatizados; padrão: sem limite)
+//
+// Exemplo (experimento de dinamicidade, fase 3):
+//   cargo run --release --bin udp_controller -- --acc target/e2e_dinamicidade/accumulator_A2.dat \
+//       --pubkey ESP-02=target/e2e_dinamicidade/keys/ESP_02.pub.pem
 
 use accumulator::{group::Rsa2048, Accumulator, MembershipProof};
 use anyhow::{Context, Result};
@@ -207,7 +220,9 @@ impl SessionStats {
 
 /// Constrói o HashMap<sensor_id, RsaPublicKey> simulando o banco de dados
 /// do controlador. Em produção, isso viria de um banco real ou arquivo de config.
-fn build_key_store() -> HashMap<String, RsaPublicKey> {
+///
+/// `extra_keys` vem das flags `--pubkey ID=arquivo.pem`.
+fn build_key_store(extra_keys: &[(String, String)]) -> Result<HashMap<String, RsaPublicKey>> {
     let mut store = HashMap::new();
 
     // Parsear a chave pública PEM do ESP-42
@@ -216,10 +231,66 @@ fn build_key_store() -> HashMap<String, RsaPublicKey> {
 
     store.insert("ESP-42".to_string(), pub_key);
 
-    // Adicione mais sensores aqui conforme necessário:
-    // store.insert("ESP-43".to_string(), outra_chave);
+    // Chaves adicionais informadas via CLI
+    for (id, path) in extra_keys {
+        let pem = std::fs::read_to_string(path)
+            .with_context(|| format!("Falha ao ler chave pública de '{}' ({})", id, path))?;
+        let key = RsaPublicKey::from_public_key_pem(&pem)
+            .with_context(|| format!("Chave pública PEM inválida para '{}' ({})", id, path))?;
+        store.insert(id.clone(), key);
+    }
 
-    store
+    Ok(store)
+}
+
+// ============================================
+// ARGUMENTOS DE LINHA DE COMANDO
+// ============================================
+
+#[derive(Debug, Default)]
+struct Cli {
+    acc_path: Option<String>,
+    extra_keys: Vec<(String, String)>,
+    bind: Option<String>,
+    max_packets: Option<u64>,
+}
+
+fn parse_cli() -> Result<Cli> {
+    let mut cli = Cli::default();
+    let mut args = std::env::args().skip(1);
+    while let Some(arg) = args.next() {
+        let mut value = |flag: &str| {
+            args.next()
+                .with_context(|| format!("Faltou o valor da flag {}", flag))
+        };
+        match arg.as_str() {
+            "--acc" => cli.acc_path = Some(value("--acc")?),
+            "--pubkey" => {
+                let v = value("--pubkey")?;
+                let (id, path) = v
+                    .split_once('=')
+                    .with_context(|| format!("--pubkey espera ID=arquivo.pem, recebeu '{}'", v))?;
+                cli.extra_keys.push((id.to_string(), path.to_string()));
+            }
+            "--bind" => cli.bind = Some(value("--bind")?),
+            "--max-packets" => {
+                let v = value("--max-packets")?;
+                cli.max_packets = Some(
+                    v.parse()
+                        .with_context(|| format!("--max-packets inválido: '{}'", v))?,
+                );
+            }
+            "-h" | "--help" => {
+                println!(
+                    "uso: udp_controller [--acc <arquivo>] [--pubkey ID=arquivo.pem]... \
+                     [--bind ip:porta] [--max-packets n]"
+                );
+                std::process::exit(0);
+            }
+            other => anyhow::bail!("Flag desconhecida: {}", other),
+        }
+    }
+    Ok(cli)
 }
 
 // ============================================
@@ -546,35 +617,49 @@ fn print_metrics(
 // ============================================
 
 fn main() -> Result<()> {
+    let cli = parse_cli()?;
+    let bind_addr = cli.bind.clone().unwrap_or_else(|| BIND_ADDR.to_string());
+
     println!("═══════════════════════════════════════════════════════");
     println!("  UDP Controller — ITS (Arquitetura TCC GSIPP)");
     println!("═══════════════════════════════════════════════════════");
     println!("  Verificações: Timestamp + RSA-2048 + Acumulador");
-    println!("  Porta UDP:    {}", BIND_ADDR);
+    println!("  Porta UDP:    {}", bind_addr);
     println!("  Anti-Replay:  Janela de {}s", REPLAY_WINDOW_SECS);
+    if let Some(max) = cli.max_packets {
+        println!("  Encerramento automático após {} pacote(s)", max);
+    }
     println!("═══════════════════════════════════════════════════════\n");
 
     // --- 1. Construir dicionário de chaves públicas ---
-    let key_store = build_key_store();
+    let key_store = build_key_store(&cli.extra_keys)?;
     println!(
         " Chaves públicas carregadas: {} sensor(es)",
         key_store.len()
     );
-    for sensor_id in key_store.keys() {
+    let mut sensor_ids: Vec<&String> = key_store.keys().collect();
+    sensor_ids.sort();
+    for sensor_id in sensor_ids {
         println!("   - {}", sensor_id);
     }
 
     // --- 2. Carregar acumulador serializado do disco ---
-    let (acc_path, acc_bytes) = ACCUMULATOR_PATHS
-        .iter()
-        .find_map(|p| std::fs::read(p).ok().map(|b| (*p, b)))
-        .with_context(|| {
-            format!(
-                "Arquivo accumulator.dat não encontrado em {:?}. \
-                 Execute 'cd SnifferESP && cargo run --release --bin setup' primeiro.",
-                ACCUMULATOR_PATHS
-            )
-        })?;
+    let (acc_path, acc_bytes) = match &cli.acc_path {
+        Some(p) => (
+            p.as_str(),
+            std::fs::read(p).with_context(|| format!("Falha ao ler o acumulador '{}'", p))?,
+        ),
+        None => ACCUMULATOR_PATHS
+            .iter()
+            .find_map(|p| std::fs::read(p).ok().map(|b| (*p, b)))
+            .with_context(|| {
+                format!(
+                    "Arquivo accumulator.dat não encontrado em {:?}. \
+                     Execute 'cd SnifferESP && cargo run --release --bin setup' primeiro.",
+                    ACCUMULATOR_PATHS
+                )
+            })?,
+    };
     let acc: Accumulator<Rsa2048, String> = serde_cbor::from_slice(&acc_bytes)
         .with_context(|| format!("Falha ao desserializar {}", acc_path))?;
     println!(
@@ -606,8 +691,8 @@ fn main() -> Result<()> {
     }
 
     // --- 5. Abrir socket UDP ---
-    let socket = UdpSocket::bind(BIND_ADDR).context("Falha ao fazer bind no socket UDP")?;
-    println!("\n📡 Aguardando pacotes UDP em {}...\n", BIND_ADDR);
+    let socket = UdpSocket::bind(&bind_addr).context("Falha ao fazer bind no socket UDP")?;
+    println!("\n📡 Aguardando pacotes UDP em {}...\n", bind_addr);
 
     let mut buf = [0u8; MAX_PACKET_SIZE];
 
@@ -626,6 +711,14 @@ fn main() -> Result<()> {
                     &mut replay_seen,
                 ) {
                     eprintln!(" Erro ao processar pacote: {:#}", e);
+                }
+                if cli.max_packets.map_or(false, |max| stats.total_received >= max) {
+                    println!(
+                        "\n Limite de {} pacote(s) atingido (--max-packets). Encerrando servidor UDP.",
+                        stats.total_received
+                    );
+                    stats.print_summary();
+                    break;
                 }
             }
             Err(e) => {

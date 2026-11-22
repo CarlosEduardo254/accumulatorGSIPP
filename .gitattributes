@@ -1,0 +1,2 @@
+# Scripts shell precisam de LF para rodar no WSL / Raspberry Pi (core.autocrlf=true no Windows).
+*.sh text eol=lf

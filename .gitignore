@@ -27,6 +27,8 @@ accumulator.dat
 
 # Credenciais de rede (Wi-Fi / IP do controlador) — usar os templates *.example.h
 SnifferESP/esp32_sensor/wifi_config.h
+# Identidade gerada para o ESP32 (contém chave privada) — gen_sensor_identity.py
+SnifferESP/esp32_sensor/sensor_identity.h
 wifi_config.h
 .env
 
@@ -37,3 +39,6 @@ __pycache__/
 
 # PlatformIO (build do firmware)
 .pio/
+
+# Binários cross-compilados para o Raspberry Pi (scripts/cross_build_rpi.sh)
+dist/
