@@ -1,0 +1,70 @@
+{
+  "a1": [
+    "ESP-01",
+    "ESP-02",
+    "ESP-42"
+  ],
+  "a2": [
+    "ESP-01",
+    "ESP-02"
+  ],
+  "a3": [
+    "ESP-01",
+    "ESP-02",
+    "ESP-99"
+  ],
+  "accumulator_files": {
+    "A1": "target/e2e_dinamicidade/accumulator_A1.dat",
+    "A2": "target/e2e_dinamicidade/accumulator_A2.dat",
+    "A3": "target/e2e_dinamicidade/accumulator_A3.dat"
+  },
+  "proof_files": {
+    "ESP_02_A1": "target/e2e_dinamicidade/proofs/ESP_02_A1.proof",
+    "ESP_02_A2": "target/e2e_dinamicidade/proofs/ESP_02_A2.proof",
+    "ESP_02_A3": "target/e2e_dinamicidade/proofs/ESP_02_A3.proof",
+    "ESP_42_A1": "target/e2e_dinamicidade/proofs/ESP_42_A1.proof",
+    "ESP_99_A3": "target/e2e_dinamicidade/proofs/ESP_99_A3.proof"
+  },
+  "public_key_files": {
+    "ESP-02": "target/e2e_dinamicidade/keys/ESP_02.pub.pem",
+    "ESP-99": "target/e2e_dinamicidade/keys/ESP_99.pub.pem"
+  },
+  "private_key_files": {
+    "ESP-02": "target/e2e_dinamicidade/keys/ESP_02.key.pem",
+    "ESP-99": "target/e2e_dinamicidade/keys/ESP_99.key.pem"
+  },
+  "timings_ms": {
+    "A1_setup_add_3": 3.391541,
+    "A1_setup_witnesses_3": 4.931127,
+    "A2_proof_regen_ESP02": 1.873099,
+    "A2_revoke_delete_ESP42": 2.001209,
+    "A2_witness_update_ESP02": 1.926266,
+    "A3_join_add_ESP99": 0.723236,
+    "A3_proof_new_ESP99": 1.4432559999999999,
+    "A3_proof_regen_ESP02": 1.393743,
+    "A3_witness_update_ESP02": 0.760211
+  },
+  "sizes_bytes": {
+    "accumulator_A1": 531,
+    "accumulator_A2": 531,
+    "accumulator_A3": 531,
+    "proof_ESP_02_A1": 551,
+    "proof_ESP_02_A2": 551,
+    "proof_ESP_02_A3": 550,
+    "proof_ESP_42_A1": 1064,
+    "proof_ESP_99_A3": 551
+  },
+  "checks": {
+    "A1_igual_SnifferESP_accumulator_dat": true,
+    "A2_ESP02_proof_A1_rejeitada": true,
+    "A2_ESP02_proof_A2_aceita": true,
+    "A2_ESP42_proof_antiga_rejeitada": true,
+    "A2_igual_reconstrucao_do_zero": true,
+    "A3_ESP02_proof_A2_rejeitada": true,
+    "A3_ESP02_proof_A3_aceita": true,
+    "A3_ESP42_proof_antiga_rejeitada": true,
+    "A3_ESP99_proof_aceita": true,
+    "A3_igual_reconstrucao_do_zero": true,
+    "proof_ESP42_A1_igual_firmware": true
+  }
+}

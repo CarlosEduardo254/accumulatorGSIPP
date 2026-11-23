@@ -1,0 +1,544 @@
+{
+ "A1": {
+  "arquivo": "rpi/controller_A1_20261123_143235.log",
+  "pacotes": 60,
+  "ram_mb_min_max": [
+   2.76,
+   2.8
+  ],
+  "cenarios": {
+   "ESP-42 (ESP32)": {
+    "camadas": {
+     "ACEITO": 40
+    },
+    "v02_assinatura_valida": 40,
+    "ms": {
+     "n": 40,
+     "media": 36.744,
+     "mediana": 38.12,
+     "dp": 2.82,
+     "p95": 38.816,
+     "min": 28.308,
+     "max": 39.126
+    },
+    "regimes_ms": {
+     "rapido": null,
+     "lento": {
+      "n": 37,
+      "media": 37.413,
+      "mediana": 38.141,
+      "dp": 1.57,
+      "p95": 38.816,
+      "min": 34.058,
+      "max": 39.126
+     },
+     "transicao": {
+      "n": 3,
+      "media": 28.485,
+      "mediana": 28.403,
+      "dp": 0.229,
+      "p95": 28.743,
+      "min": 28.308,
+      "max": 28.743
+     }
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     1350,
+     1351
+    ],
+    "proof_bytes": [
+     1064
+    ],
+    "ip_origem": [
+     "10.5.40.221"
+    ],
+    "reading_ini_fim": [
+     1,
+     40
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 127
+   },
+   "F1-B (ESP-02, PC)": {
+    "camadas": {
+     "ACEITO": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 28.446,
+     "mediana": 29.868,
+     "dp": 3.005,
+     "p95": 31.478,
+     "min": 23.075,
+     "max": 31.496
+    },
+    "regimes_ms": {
+     "rapido": null,
+     "lento": {
+      "n": 17,
+      "media": 29.378,
+      "mediana": 30.656,
+      "dp": 2.139,
+      "p95": 31.478,
+      "min": 25.821,
+      "max": 31.496
+     },
+     "transicao": {
+      "n": 3,
+      "media": 23.169,
+      "mediana": 23.208,
+      "dp": 0.082,
+      "p95": 23.225,
+      "min": 23.075,
+      "max": 23.225
+     }
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     837
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     1,
+     20
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 3
+   }
+  }
+ },
+ "A2": {
+  "arquivo": "rpi/controller_A2_20261123_155532.log",
+  "pacotes": 100,
+  "ram_mb_min_max": [
+   2.76,
+   2.79
+  ],
+  "cenarios": {
+   "ESP-42 (ESP32)": {
+    "camadas": {
+     "V03_ARITMETICA": 40
+    },
+    "v02_assinatura_valida": 40,
+    "ms": {
+     "n": 40,
+     "media": 38.638,
+     "mediana": 41.588,
+     "dp": 5.236,
+     "p95": 42.219,
+     "min": 17.967,
+     "max": 42.356
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 1,
+      "media": 17.967,
+      "mediana": 17.967,
+      "dp": 0.0,
+      "p95": 17.967,
+      "min": 17.967,
+      "max": 17.967
+     },
+     "lento": {
+      "n": 38,
+      "media": 39.563,
+      "mediana": 41.627,
+      "dp": 3.283,
+      "p95": 42.219,
+      "min": 31.286,
+      "max": 42.356
+     },
+     "transicao": {
+      "n": 1,
+      "media": 24.129,
+      "mediana": 24.129,
+      "dp": 0.0,
+      "p95": 24.129,
+      "min": 24.129,
+      "max": 24.129
+     }
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     1350,
+     1351
+    ],
+    "proof_bytes": [
+     1064
+    ],
+    "ip_origem": [
+     "10.5.40.221"
+    ],
+    "reading_ini_fim": [
+     1,
+     40
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 127
+   },
+   "F1-B* (ESP-02, PC)": {
+    "camadas": {
+     "V03_ARITMETICA": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 29.034,
+     "mediana": 30.416,
+     "dp": 2.945,
+     "p95": 31.169,
+     "min": 21.543,
+     "max": 32.198
+    },
+    "regimes_ms": {
+     "rapido": null,
+     "lento": {
+      "n": 18,
+      "media": 29.865,
+      "mediana": 30.596,
+      "dp": 1.543,
+      "p95": 31.169,
+      "min": 26.408,
+      "max": 32.198
+     },
+     "transicao": {
+      "n": 2,
+      "media": 21.556,
+      "mediana": 21.556,
+      "dp": 0.018,
+      "p95": 21.568,
+      "min": 21.543,
+      "max": 21.568
+     }
+    },
+    "delta_timestamp_s": [
+     0
+    ],
+    "bytes_udp": [
+     837
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     1,
+     20
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 3
+   },
+   "F3-B (ESP-02, PC)": {
+    "camadas": {
+     "V03_ARITMETICA": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 28.95,
+     "mediana": 30.691,
+     "dp": 4.478,
+     "p95": 31.222,
+     "min": 13.287,
+     "max": 31.24
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 1,
+      "media": 13.287,
+      "mediana": 13.287,
+      "dp": 0.0,
+      "p95": 13.287,
+      "min": 13.287,
+      "max": 13.287
+     },
+     "lento": {
+      "n": 18,
+      "media": 30.274,
+      "mediana": 30.712,
+      "dp": 1.48,
+      "p95": 31.222,
+      "min": 26.219,
+      "max": 31.24
+     },
+     "transicao": {
+      "n": 1,
+      "media": 20.776,
+      "mediana": 20.776,
+      "dp": 0.0,
+      "p95": 20.776,
+      "min": 20.776,
+      "max": 20.776
+     }
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     837,
+     838
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     21,
+     40
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 4
+   },
+   "F3-C (ESP-02, PC)": {
+    "camadas": {
+     "ACEITO": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 13.54,
+     "mediana": 13.485,
+     "dp": 0.284,
+     "p95": 13.934,
+     "min": 13.211,
+     "max": 14.15
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 20,
+      "media": 13.54,
+      "mediana": 13.485,
+      "dp": 0.284,
+      "p95": 13.934,
+      "min": 13.211,
+      "max": 14.15
+     },
+     "lento": null,
+     "transicao": null
+    },
+    "delta_timestamp_s": [
+     0
+    ],
+    "bytes_udp": [
+     838
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     41,
+     60
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 4
+   }
+  }
+ },
+ "A3": {
+  "arquivo": "rpi/controller_A3_20261123_160544.log",
+  "pacotes": 70,
+  "ram_mb_min_max": [
+   2.76,
+   2.79
+  ],
+  "cenarios": {
+   "ESP-99 (ESP32)": {
+    "camadas": {
+     "ACEITO": 30
+    },
+    "v02_assinatura_valida": 30,
+    "ms": {
+     "n": 30,
+     "media": 30.079,
+     "mediana": 31.164,
+     "dp": 3.839,
+     "p95": 32.844,
+     "min": 13.597,
+     "max": 33.251
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 1,
+      "media": 13.597,
+      "mediana": 13.597,
+      "dp": 0.0,
+      "p95": 13.597,
+      "min": 13.597,
+      "max": 13.597
+     },
+     "lento": {
+      "n": 28,
+      "media": 31.008,
+      "mediana": 31.186,
+      "dp": 1.228,
+      "p95": 32.844,
+      "min": 26.673,
+      "max": 33.251
+     },
+     "transicao": {
+      "n": 1,
+      "media": 20.543,
+      "mediana": 20.543,
+      "dp": 0.0,
+      "p95": 20.543,
+      "min": 20.543,
+      "max": 20.543
+     }
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     837,
+     838
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.40.221"
+    ],
+    "reading_ini_fim": [
+     1,
+     30
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 95
+   },
+   "F4-B (ESP-02, PC)": {
+    "camadas": {
+     "ACEITO": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 19.874,
+     "mediana": 13.305,
+     "dp": 7.796,
+     "p95": 30.487,
+     "min": 12.96,
+     "max": 30.762
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 11,
+      "media": 13.126,
+      "mediana": 13.052,
+      "dp": 0.151,
+      "p95": 13.306,
+      "min": 12.96,
+      "max": 13.306
+     },
+     "lento": {
+      "n": 9,
+      "media": 28.122,
+      "mediana": 27.687,
+      "dp": 2.273,
+      "p95": 30.762,
+      "min": 25.827,
+      "max": 30.762
+     },
+     "transicao": null
+    },
+    "delta_timestamp_s": [
+     0,
+     1
+    ],
+    "bytes_udp": [
+     837
+    ],
+    "proof_bytes": [
+     550
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     61,
+     80
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 4
+   },
+   "F4-C (ESP-02, PC)": {
+    "camadas": {
+     "V03_ARITMETICA": 20
+    },
+    "v02_assinatura_valida": 20,
+    "ms": {
+     "n": 20,
+     "media": 20.346,
+     "mediana": 14.165,
+     "dp": 8.835,
+     "p95": 32.713,
+     "min": 13.897,
+     "max": 32.771
+    },
+    "regimes_ms": {
+     "rapido": {
+      "n": 13,
+      "media": 14.067,
+      "mediana": 14.037,
+      "dp": 0.132,
+      "p95": 14.224,
+      "min": 13.897,
+      "max": 14.355
+     },
+     "lento": {
+      "n": 7,
+      "media": 32.005,
+      "mediana": 32.656,
+      "dp": 1.769,
+      "p95": 32.771,
+      "min": 27.996,
+      "max": 32.771
+     },
+     "transicao": null
+    },
+    "delta_timestamp_s": [
+     0
+    ],
+    "bytes_udp": [
+     838
+    ],
+    "proof_bytes": [
+     551
+    ],
+    "ip_origem": [
+     "10.5.18.62"
+    ],
+    "reading_ini_fim": [
+     81,
+     100
+    ],
+    "lacunas_sequencia": 0,
+    "duracao_s": 4
+   }
+  }
+ }
+}

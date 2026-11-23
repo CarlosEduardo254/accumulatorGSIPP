@@ -1,0 +1,1236 @@
+═══════════════════════════════════════════════════════
+  UDP Controller — ITS (Arquitetura TCC GSIPP)
+═══════════════════════════════════════════════════════
+  Verificações: Timestamp + RSA-2048 + Acumulador
+  Porta UDP:    0.0.0.0:4242
+  Anti-Replay:  Janela de 5s
+═══════════════════════════════════════════════════════
+
+ Chaves públicas carregadas: 3 sensor(es)
+   - ESP-02
+   - ESP-42
+   - ESP-99
+
+ Acumulador carregado de 'target/e2e_dinamicidade/accumulator_A1.dat' (531 bytes).
+
+📡 Aguardando pacotes UDP em 0.0.0.0:4242...
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444385
+   Reading:    1
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.963
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.76
+    Sessão: 1 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444389
+   Reading:    2
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.141
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.78
+    Sessão: 2 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444392
+   Reading:    3
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.161
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 3 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444395
+   Reading:    4
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 37.859
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 4 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444398
+   Reading:    5
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 37.669
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 5 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444402
+   Reading:    6
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 37.943
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 6 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444405
+   Reading:    7
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.129
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 7 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444408
+   Reading:    8
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.112
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 8 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444411
+   Reading:    9
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 34.650
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 9 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444415
+   Reading:    10
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.495
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 10 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444418
+   Reading:    11
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 35.219
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 11 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444421
+   Reading:    12
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.097
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 12 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444424
+   Reading:    13
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.202
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 13 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444428
+   Reading:    14
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 35.479
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 14 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444431
+   Reading:    15
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.241
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 15 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444434
+   Reading:    16
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.516
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 16 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444437
+   Reading:    17
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.816
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 17 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444441
+   Reading:    18
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.435
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 18 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444444
+   Reading:    19
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.311
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 19 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444447
+   Reading:    20
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 35.316
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 20 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444450
+   Reading:    21
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.574
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 21 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444454
+   Reading:    22
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.247
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 22 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444457
+   Reading:    23
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 36.440
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 23 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444460
+   Reading:    24
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.346
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 24 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444463
+   Reading:    25
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 28.743
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 25 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444467
+   Reading:    26
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.538
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 26 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444470
+   Reading:    27
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 35.209
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 27 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444474
+   Reading:    1
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 31.478
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 28 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444474
+   Reading:    2
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 31.496
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 29 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444473
+   Reading:    28
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 28.308
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 30 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444474
+   Reading:    3
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 23.208
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 31 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444474
+   Reading:    4
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 30.813
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 32 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444474
+   Reading:    5
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 30.656
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 33 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444475
+   Reading:    6
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 31.396
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 34 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444475
+   Reading:    7
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 23.225
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 35 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444475
+   Reading:    8
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 30.805
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 36 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444475
+   Reading:    9
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 31.011
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 37 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444475
+   Reading:    10
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 31.043
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 38 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444476
+   Reading:    11
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 26.832
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 39 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444476
+   Reading:    12
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 25.821
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 40 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444476
+   Reading:    13
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 27.816
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 41 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444476
+   Reading:    14
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 26.577
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 42 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444476
+   Reading:    15
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 26.444
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 43 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444477
+   Reading:    16
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 26.544
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 44 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444477
+   Reading:    17
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 30.055
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 45 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444477
+   Reading:    18
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 29.681
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 46 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444476
+   Reading:    29
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 28.403
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 47 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444477
+   Reading:    19
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 23.075
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 48 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.18.62:60637 (837 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-02
+   Timestamp:  1795444477
+   Reading:    20
+   Assinatura: 256 bytes
+   Proof:      551 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 30.952
+   Overhead de rede e tamanho do pacote (bytes): 837
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 49 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444480
+   Reading:    30
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.062
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.79
+    Sessão: 50 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444483
+   Reading:    31
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 34.267
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 51 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444486
+   Reading:    32
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 39.126
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 52 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444489
+   Reading:    33
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 34.946
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 53 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444493
+   Reading:    34
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 34.199
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 54 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444496
+   Reading:    35
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.166
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 55 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444499
+   Reading:    36
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 34.058
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 56 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444502
+   Reading:    37
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.247
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 57 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444506
+   Reading:    38
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 37.994
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 58 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444509
+   Reading:    39
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.632
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 59 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:56760 (1351 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444512
+   Reading:    40
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.494
+   Overhead de rede e tamanho do pacote (bytes): 1351
+   RAM consumida pelo processo (MB): 2.80
+    Sessão: 60 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+
+ Interrupção recebida (Ctrl+C)... Encerrando servidor UDP.
+
+═══════════════════════════════════════════════════════════════════════
+                 RESUMO DA SESSÃO — ITS GSIPP (UDP)
+═══════════════════════════════════════════════════════════════════════
+ Total de pacotes recebidos:        60
+  Aceitos (3 etapas validadas):          60 (100.0%) | média   33.978 ms
+  V01  Anti-Replay (timestamp):           0 (  0.0%) | média    0.000 ms
+  V01b Anti-Replay (duplicata):           0 (  0.0%) | média    0.000 ms
+  V02  Sensor desconhecido:               0 (  0.0%) | média    0.000 ms
+  V02  Assinatura RSA inválida:           0 (  0.0%) | média    0.000 ms
+  V03  Proof sintática (CBOR):            0 (  0.0%) | média    0.000 ms
+  V03  Proof aritmética (PoE):            0 (  0.0%) | média    0.000 ms
+  C00  CBOR externo malformado:           0 (  0.0%) | média    0.000 ms
+  Gaps de sequência detectados:      0
+  Tempo médio verificação (V01–V03): 33.978 ms (exclui Camada 00)
+═══════════════════════════════════════════════════════════════════════
+

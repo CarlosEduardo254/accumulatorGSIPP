@@ -1,0 +1,76 @@
+═══════════════════════════════════════════════════════
+  UDP Controller — ITS (Arquitetura TCC GSIPP)
+═══════════════════════════════════════════════════════
+  Verificações: Timestamp + RSA-2048 + Acumulador
+  Porta UDP:    0.0.0.0:4242
+  Anti-Replay:  Janela de 5s
+═══════════════════════════════════════════════════════
+
+ Chaves públicas carregadas: 3 sensor(es)
+   - ESP-02
+   - ESP-42
+   - ESP-99
+
+ Acumulador carregado de 'target/e2e_dinamicidade/accumulator_A1.dat' (531 bytes).
+
+📡 Aguardando pacotes UDP em 0.0.0.0:4242...
+
+──── Pacote de 10.5.40.221:65080 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444324
+   Reading:    8
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 1s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 38.111
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.76
+    Sessão: 1 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+──── Pacote de 10.5.40.221:65080 (1350 bytes) ────
+
+════════════════════════════════════════════════════
+ Pacote recebido de: ESP-42
+   Timestamp:  1795444328
+   Reading:    9
+   Assinatura: 256 bytes
+   Proof:      1064 bytes
+════════════════════════════════════════════════════
+    Verificação 01: Timestamp OK (Δ = 0s ≤ 5s)
+    Verificação 02: Assinatura RSA-2048 VÁLIDA
+    Verificação 03: MembershipProof VÁLIDA (witness^hash(id) == acc)
+────────────────────────────────────────────────────
+ Status: ACEITO 
+   Tempo de verificação no controlador (ms): 37.992
+   Overhead de rede e tamanho do pacote (bytes): 1350
+   RAM consumida pelo processo (MB): 2.78
+    Sessão: 2 aceitos | 0 rejeitados | 0 perdidos
+────────────────────────────────────────────────────
+
+
+ Interrupção recebida (Ctrl+C)... Encerrando servidor UDP.
+
+═══════════════════════════════════════════════════════════════════════
+                 RESUMO DA SESSÃO — ITS GSIPP (UDP)
+═══════════════════════════════════════════════════════════════════════
+ Total de pacotes recebidos:        2
+  Aceitos (3 etapas validadas):           2 (100.0%) | média   38.052 ms
+  V01  Anti-Replay (timestamp):           0 (  0.0%) | média    0.000 ms
+  V01b Anti-Replay (duplicata):           0 (  0.0%) | média    0.000 ms
+  V02  Sensor desconhecido:               0 (  0.0%) | média    0.000 ms
+  V02  Assinatura RSA inválida:           0 (  0.0%) | média    0.000 ms
+  V03  Proof sintática (CBOR):            0 (  0.0%) | média    0.000 ms
+  V03  Proof aritmética (PoE):            0 (  0.0%) | média    0.000 ms
+  C00  CBOR externo malformado:           0 (  0.0%) | média    0.000 ms
+  Gaps de sequência detectados:      0
+  Tempo médio verificação (V01–V03): 38.052 ms (exclui Camada 00)
+═══════════════════════════════════════════════════════════════════════
+

@@ -1,0 +1,36 @@
+═══════════════════════════════════════════════════════
+  UDP Controller — ITS (Arquitetura TCC GSIPP)
+═══════════════════════════════════════════════════════
+  Verificações: Timestamp + RSA-2048 + Acumulador
+  Porta UDP:    0.0.0.0:4242
+  Anti-Replay:  Janela de 5s
+═══════════════════════════════════════════════════════
+
+ Chaves públicas carregadas: 3 sensor(es)
+   - ESP-02
+   - ESP-42
+   - ESP-99
+
+ Acumulador carregado de 'target/e2e_dinamicidade/accumulator_A1.dat' (531 bytes).
+
+📡 Aguardando pacotes UDP em 0.0.0.0:4242...
+
+
+ Interrupção recebida (Ctrl+C)... Encerrando servidor UDP.
+
+═══════════════════════════════════════════════════════════════════════
+                 RESUMO DA SESSÃO — ITS GSIPP (UDP)
+═══════════════════════════════════════════════════════════════════════
+ Total de pacotes recebidos:        0
+  Aceitos (3 etapas validadas):           0 (  0.0%) | média    0.000 ms
+  V01  Anti-Replay (timestamp):           0 (  0.0%) | média    0.000 ms
+  V01b Anti-Replay (duplicata):           0 (  0.0%) | média    0.000 ms
+  V02  Sensor desconhecido:               0 (  0.0%) | média    0.000 ms
+  V02  Assinatura RSA inválida:           0 (  0.0%) | média    0.000 ms
+  V03  Proof sintática (CBOR):            0 (  0.0%) | média    0.000 ms
+  V03  Proof aritmética (PoE):            0 (  0.0%) | média    0.000 ms
+  C00  CBOR externo malformado:           0 (  0.0%) | média    0.000 ms
+  Gaps de sequência detectados:      0
+  Tempo médio verificação (V01–V03): 0.000 ms (exclui Camada 00)
+═══════════════════════════════════════════════════════════════════════
+

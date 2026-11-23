@@ -1,0 +1,76 @@
+[
+  {
+    "log": "rpi/controller_A1_20261123_143235.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A1.dat",
+    "sensor": "ESP-42",
+    "total": 40,
+    "accepted": 40,
+    "layers": {
+      "ACEITO": 40
+    },
+    "verify_ms_mean": 36.743825,
+    "verify_ms_median": 38.1205
+  },
+  {
+    "log": "rpi/controller_A1_20261123_143235.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A1.dat",
+    "sensor": "ESP-02",
+    "total": 20,
+    "accepted": 20,
+    "layers": {
+      "ACEITO": 20
+    },
+    "verify_ms_mean": 28.4464,
+    "verify_ms_median": 29.868000000000002
+  },
+  {
+    "log": "rpi/controller_A2_20261123_155532.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A2.dat",
+    "sensor": "ESP-42",
+    "total": 40,
+    "accepted": 0,
+    "layers": {
+      "V03_ARITMETICA": 40
+    },
+    "verify_ms_mean": 38.637675,
+    "verify_ms_median": 41.588499999999996
+  },
+  {
+    "log": "rpi/controller_A2_20261123_155532.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A2.dat",
+    "sensor": "ESP-02",
+    "total": 60,
+    "accepted": 20,
+    "layers": {
+      "V03_ARITMETICA": 40,
+      "ACEITO": 20
+    },
+    "verify_ms_mean": 23.84155,
+    "verify_ms_median": 28.8845
+  },
+  {
+    "log": "rpi/controller_A3_20261123_160544.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A3.dat",
+    "sensor": "ESP-99",
+    "total": 30,
+    "accepted": 30,
+    "layers": {
+      "ACEITO": 30
+    },
+    "verify_ms_mean": 30.0786,
+    "verify_ms_median": 31.164
+  },
+  {
+    "log": "rpi/controller_A3_20261123_160544.log",
+    "accumulator": "target/e2e_dinamicidade/accumulator_A3.dat",
+    "sensor": "ESP-02",
+    "total": 40,
+    "accepted": 20,
+    "layers": {
+      "ACEITO": 20,
+      "V03_ARITMETICA": 20
+    },
+    "verify_ms_mean": 20.10985,
+    "verify_ms_median": 14.128499999999999
+  }
+]
